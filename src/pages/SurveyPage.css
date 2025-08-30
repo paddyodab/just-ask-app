@@ -1,0 +1,64 @@
+.survey-page {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.survey-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.survey-header h1 {
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+}
+
+.survey-header p {
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.survey-container {
+  background: white;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.survey-complete {
+  text-align: center;
+  padding: 3rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.survey-complete h2 {
+  color: #27ae60;
+  margin-bottom: 1rem;
+}
+
+.response-id {
+  font-family: monospace;
+  background: #f5f5f5;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  display: inline-block;
+  margin: 1rem 0;
+}
+
+.restart-button {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.restart-button:hover {
+  background-color: #2980b9;
+}

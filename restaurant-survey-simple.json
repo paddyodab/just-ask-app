@@ -1,0 +1,112 @@
+{
+  "title": "Quick Restaurant Survey",
+  "description": "Share your dining preferences in just a few questions",
+  "showProgressBar": "top",
+  "pages": [
+    {
+      "name": "cuisinePage",
+      "title": "Cuisine Selection",
+      "elements": [
+        {
+          "type": "dropdown",
+          "name": "favorite_cuisine",
+          "title": "What type of food do you enjoy most?",
+          "isRequired": true,
+          "choicesByUrl": {
+            "url": "/30f8f53cf8034393b00665f664a60ddb/restaurant-survey/lookups/cuisine-types",
+            "valueName": "key",
+            "titleName": "text"
+          },
+          "placeholder": "Choose your favorite..."
+        }
+      ]
+    },
+    {
+      "name": "restaurantPage",
+      "title": "Your Restaurants",
+      "elements": [
+        {
+          "type": "checkbox",
+          "name": "visited_restaurants",
+          "title": "Select all the {favorite_cuisine} restaurants you've been to:",
+          "visibleIf": "{favorite_cuisine} notempty",
+          "isRequired": true,
+          "choicesByUrl": {
+            "url": "/30f8f53cf8034393b00665f664a60ddb/restaurant-survey/lookups/restaurants?cuisine={favorite_cuisine}",
+            "valueName": "key",
+            "titleName": "text"
+          },
+          "validators": [
+            {
+              "type": "expression",
+              "text": "Please select at least one restaurant",
+              "expression": "{visited_restaurants.length} > 0"
+            }
+          ]
+        },
+        {
+          "type": "dropdown",
+          "name": "favorite_restaurant",
+          "title": "Which one is your absolute favorite?",
+          "visibleIf": "{visited_restaurants} notempty",
+          "isRequired": true,
+          "choicesVisibleIf": "{visited_restaurants} contains {item}",
+          "choicesByUrl": {
+            "url": "/30f8f53cf8034393b00665f664a60ddb/restaurant-survey/lookups/restaurants?cuisine={favorite_cuisine}",
+            "valueName": "key",
+            "titleName": "text"
+          },
+          "placeholder": "Pick your #1..."
+        }
+      ]
+    },
+    {
+      "name": "preferencesPage",
+      "title": "Quick Preferences",
+      "elements": [
+        {
+          "type": "checkbox",
+          "name": "dietary_restrictions",
+          "title": "Any dietary needs we should know about?",
+          "description": "Check all that apply",
+          "choicesByUrl": {
+            "url": "/30f8f53cf8034393b00665f664a60ddb/restaurant-survey/lookups/dietary-restrictions",
+            "valueName": "key",
+            "titleName": "text"
+          },
+          "showNoneItem": true,
+          "noneText": "No Restrictions"
+        },
+        {
+          "type": "radiogroup",
+          "name": "dining_frequency",
+          "title": "How often do you dine out?",
+          "isRequired": true,
+          "choices": [
+            { "value": "daily", "text": "Every day" },
+            { "value": "weekly", "text": "Few times a week" },
+            { "value": "biweekly", "text": "Weekly" },
+            { "value": "monthly", "text": "Few times a month" },
+            { "value": "rarely", "text": "Rarely" }
+          ]
+        },
+        {
+          "type": "rating",
+          "name": "recommend_likelihood",
+          "title": "How likely are you to recommend your favorite restaurant to a friend?",
+          "isRequired": true,
+          "rateMax": 10,
+          "minRateDescription": "Not at all",
+          "maxRateDescription": "Definitely!"
+        }
+      ]
+    }
+  ],
+  "completedHtml": "<h2>Thanks!</h2><p>We appreciate your feedback about local restaurants.</p>",
+  "showQuestionNumbers": "off",
+  "questionErrorLocation": "bottom",
+  "completeText": "Submit",
+  "previewText": "Review",
+  "editText": "Change",
+  "startSurveyText": "Let's Go!"
+}

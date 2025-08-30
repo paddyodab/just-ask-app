@@ -1,0 +1,11 @@
+{
+  "namespace": "market-areas",
+  "lookups": [
+    {"value": "ma-001", "text": "North Region"},
+    {"value": "ma-002", "text": "South Region"},
+    {"value": "ma-003", "text": "East Region"},
+    {"value": "ma-004", "text": "West Region"},
+    {"value": "ma-005", "text": "Central Region"}
+  ],
+  "replace_existing": false
+}
