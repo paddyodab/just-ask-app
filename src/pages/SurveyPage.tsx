@@ -57,7 +57,8 @@ const SurveyPage: React.FC = () => {
     console.log('Survey completed:', surveyData)
     
     try {
-      const response = await fetch(`/${customerHex}/${namespace}/responses`, {
+      // Include the survey_name parameter in the submission URL
+      const response = await fetch(`/${customerHex}/${namespace}/responses?survey_name=${surveyName}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
