@@ -21,12 +21,13 @@ export const SurveyRenderer: React.FC<SurveyRendererProps> = ({
     const model = new Model(surveyJson)
     
     // Configure choicesByUrl authentication and dynamic URLs
-    model.onLoadChoicesFromServer.add((sender, options) => {
-      // For the new restaurant survey API, we don't need auth headers
-      // since it uses customer hex in the URL
-      const isNewApiStructure = options.url && (
-        options.url.includes('/restaurant-survey/') || 
-        options.url.includes('/30f8f53cf8034393b00665f664a60ddb/')
+    model.onLoadChoicesFromServer.add((sender, options: any) => {
+      // Check if this is using the new API structure with customer hex in URL
+      // The new API structure has customer hex and namespace in the path
+      const url = options.url as string
+      const isNewApiStructure = url && (
+        // Check for hex pattern (32 characters) followed by namespace
+        /\/[a-f0-9]{32}\/[\w-]+\//.test(url)
       )
       
       if (!isNewApiStructure) {
@@ -40,18 +41,18 @@ export const SurveyRenderer: React.FC<SurveyRendererProps> = ({
       // Handle search for large lists
       const question = options.question
       if ((question as any).searchEnabled && options.searchText) {
-        const url = new URL(options.url, window.location.origin)
-        url.searchParams.set('search', options.searchText)
-        options.url = url.toString()
+        const urlObj = new URL(url, window.location.origin)
+        urlObj.searchParams.set('search', options.searchText)
+        options.url = urlObj.toString()
       }
 
       // Handle cascading dropdowns with parent values
       // The URL can contain placeholders like {parent_field}
-      let finalUrl = options.url
+      let finalUrl = url
       const regex = /{([^}]+)}/g
       let match
       
-      while ((match = regex.exec(options.url)) !== null) {
+      while ((match = regex.exec(url)) !== null) {
         const fieldName = match[1]
         const fieldValue = sender.getValue(fieldName)
         if (fieldValue) {
@@ -59,7 +60,7 @@ export const SurveyRenderer: React.FC<SurveyRendererProps> = ({
         }
       }
       
-      console.log('SurveyJS URL transformation:', { original: options.url, final: finalUrl })
+      console.log('SurveyJS URL transformation:', { original: url, final: finalUrl })
       options.url = finalUrl
       
       // Add callback to process the result
