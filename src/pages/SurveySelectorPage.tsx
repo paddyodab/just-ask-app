@@ -165,33 +165,39 @@ const SurveySelectorPage: React.FC = () => {
       setLoadingSurveys(true)
       setError(null)
       
-      // Since there's no list endpoint yet, we'll check for known survey names
-      // by trying to fetch them and seeing what exists
-      const commonSurveyNames = ['default', 'simple', 'v2', 'draft']
-      const availableSurveys: Survey[] = []
+      // Fetch surveys from the real backend endpoint
+      const response = await fetch(`/api/v1/operations/customers/${customerHex}/namespaces/${namespaceSlug}/surveys`)
       
-      for (const surveyName of commonSurveyNames) {
-        try {
-          const response = await fetch(`/${customerHex}/${namespaceSlug}/survey?survey_name=${surveyName}`)
-          if (response.ok) {
-            const surveyData = await response.json()
-            availableSurveys.push({
-              name: surveyName,
-              title: surveyData.title || `${surveyName} Survey`,
-              description: surveyData.description || `Survey version: ${surveyName}`,
+      if (response.ok) {
+        const data = await response.json()
+        console.log('Surveys fetched:', data)
+        
+        // Transform the response to our format - the API returns { namespace, surveys: [...] }
+        const surveysList = data.surveys || data
+        
+        if (Array.isArray(surveysList) && surveysList.length > 0) {
+          const transformedSurveys = surveysList.map((survey: any) => ({
+            name: survey.survey_id,  // Use survey_id as the identifier
+            title: survey.name || 'Untitled Survey',
+            description: `Version ${survey.version || '1.0'} - ${survey.response_count || 0} responses`,
+            status: survey.updated_at ? 'updated' : 'published',
+            created_at: survey.created_at
+          }))
+          setSurveys(transformedSurveys)
+        } else {
+          // If no surveys found, show at least the default option
+          setSurveys([
+            {
+              name: 'default',
+              title: 'Default Survey',
+              description: 'Standard survey configuration',
               status: 'published'
-            })
-          }
-        } catch (err) {
-          // Survey doesn't exist, skip it
-          console.log(`Survey '${surveyName}' not found`)
+            }
+          ])
         }
-      }
-      
-      if (availableSurveys.length > 0) {
-        setSurveys(availableSurveys)
       } else {
-        // If no surveys found, show at least the default option
+        console.warn('Failed to fetch surveys, using fallback')
+        // Fallback to default survey
         setSurveys([
           {
             name: 'default',
