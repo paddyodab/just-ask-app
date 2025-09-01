@@ -33,6 +33,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             >
               View Responses
             </Link>
+            <Link 
+              to="/admin" 
+              className={`nav-link ${location.pathname.startsWith('/admin') ? 'active' : ''}`}
+            >
+              Admin
+            </Link>
           </nav>
         </div>
       </header>

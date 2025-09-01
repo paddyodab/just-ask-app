@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  frontend:
+    build: .
+    ports:
+      - "3000:80"
+    environment:
+      - API_URL=http://backend:8000
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+  backend:
+    image: your-backend-image:latest  # Replace with actual backend image
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://user:pass@db:5432/justask
+    networks:
+      - app-network
+    # Add other backend configuration as needed
+
+networks:
+  app-network:
+    driver: bridge

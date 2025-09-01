@@ -1,0 +1,96 @@
+.namespace-management {
+  width: 100%;
+}
+
+.header-actions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.customer-select {
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  background: white;
+  color: #333;
+  transition: border-color 0.2s;
+  min-width: 200px;
+}
+
+.customer-select:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+}
+
+.namespaces-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1.5rem;
+}
+
+.namespace-card {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 1.5rem;
+  border: 1px solid #e0e0e0;
+  transition: all 0.2s;
+}
+
+.namespace-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.namespace-info h3 {
+  margin: 0 0 0.5rem 0;
+  color: #333;
+}
+
+.namespace-slug {
+  font-family: monospace;
+  font-size: 0.85rem;
+  color: #666;
+  margin: 0.5rem 0;
+}
+
+.namespace-description {
+  font-size: 0.9rem;
+  color: #777;
+  margin: 0.5rem 0;
+}
+
+.namespace-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.form-group small {
+  display: block;
+  margin-top: 0.25rem;
+  color: #999;
+  font-size: 0.85rem;
+}
+
+.form-group textarea {
+  resize: vertical;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .header-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .customer-select {
+    width: 100%;
+  }
+  
+  .namespaces-grid {
+    grid-template-columns: 1fr;
+  }
+}

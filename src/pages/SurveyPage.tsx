@@ -192,10 +192,6 @@ const SurveyPage: React.FC = () => {
 
   return (
     <div className="survey-page">
-      <div className="survey-header">
-        <h1>{surveyJson.title || 'Survey'}</h1>
-        <p>{surveyJson.description || ''}</p>
-      </div>
       <div className="survey-container">
         <SurveyRenderer
           surveyJson={surveyJson}
