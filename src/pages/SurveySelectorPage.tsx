@@ -72,13 +72,22 @@ const SurveySelectorPage: React.FC = () => {
       setLoadingCustomers(true)
       setError(null)
       
-      // Try to fetch from backend
-      const response = await fetch('/api/customers')
+      // Fetch from the real backend endpoint
+      const response = await fetch('/api/v1/operations/customers')
       
       if (response.ok) {
         const data = await response.json()
-        setCustomers(data)
+        console.log('Customers fetched:', data)
+        // Transform the response to our format - the API returns { total, customers: [...] }
+        const customersList = data.customers || data
+        const transformedCustomers = customersList.map((customer: any) => ({
+          id: customer.id,
+          name: customer.name,
+          hex: customer.hex_id || customer.hex
+        }))
+        setCustomers(transformedCustomers)
       } else {
+        console.warn('Failed to fetch customers, using fallback')
         // Fallback to demo customer for now
         setCustomers([
           {
@@ -108,13 +117,23 @@ const SurveySelectorPage: React.FC = () => {
       setLoadingNamespaces(true)
       setError(null)
       
-      // Try to fetch from backend
-      const response = await fetch(`/${customerHex}/namespaces`)
+      // Fetch from the real backend endpoint
+      const response = await fetch(`/api/v1/operations/customers/${customerHex}/namespaces`)
       
       if (response.ok) {
         const data = await response.json()
-        setNamespaces(data)
+        console.log('Namespaces fetched:', data)
+        // Transform the response to our format - the API returns { customer, namespaces: [...] }
+        const namespacesList = data.namespaces || data
+        const transformedNamespaces = namespacesList.map((ns: any) => ({
+          id: ns.id,
+          name: ns.name,
+          slug: ns.slug,
+          description: ns.description
+        }))
+        setNamespaces(transformedNamespaces)
       } else {
+        console.warn('Failed to fetch namespaces, using fallback')
         // Fallback to demo namespace
         setNamespaces([
           {
@@ -146,14 +165,33 @@ const SurveySelectorPage: React.FC = () => {
       setLoadingSurveys(true)
       setError(null)
       
-      // Try to fetch survey list from backend
-      const response = await fetch(`/${customerHex}/${namespaceSlug}/surveys`)
+      // Since there's no list endpoint yet, we'll check for known survey names
+      // by trying to fetch them and seeing what exists
+      const commonSurveyNames = ['default', 'simple', 'v2', 'draft']
+      const availableSurveys: Survey[] = []
       
-      if (response.ok) {
-        const data = await response.json()
-        setSurveys(data)
+      for (const surveyName of commonSurveyNames) {
+        try {
+          const response = await fetch(`/${customerHex}/${namespaceSlug}/survey?survey_name=${surveyName}`)
+          if (response.ok) {
+            const surveyData = await response.json()
+            availableSurveys.push({
+              name: surveyName,
+              title: surveyData.title || `${surveyName} Survey`,
+              description: surveyData.description || `Survey version: ${surveyName}`,
+              status: 'published'
+            })
+          }
+        } catch (err) {
+          // Survey doesn't exist, skip it
+          console.log(`Survey '${surveyName}' not found`)
+        }
+      }
+      
+      if (availableSurveys.length > 0) {
+        setSurveys(availableSurveys)
       } else {
-        // Fallback to default survey
+        // If no surveys found, show at least the default option
         setSurveys([
           {
             name: 'default',
