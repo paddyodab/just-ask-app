@@ -19,19 +19,19 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               to="/" 
               className={`nav-link ${location.pathname === '/' ? 'active' : ''}`}
             >
-              Survey
+              Survey Selector
             </Link>
             <Link 
-              to="/select" 
-              className={`nav-link ${location.pathname === '/select' ? 'active' : ''}`}
+              to="/survey" 
+              className={`nav-link ${location.pathname === '/survey' ? 'active' : ''}`}
             >
-              Survey Selector
+              Take Survey
             </Link>
             <Link 
               to="/responses" 
               className={`nav-link ${location.pathname === '/responses' ? 'active' : ''}`}
             >
-              Responses
+              View Responses
             </Link>
           </nav>
         </div>

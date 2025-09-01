@@ -9,8 +9,8 @@ function App() {
   return (
     <Layout>
       <Routes>
-        <Route path="/" element={<SurveyPage />} />
-        <Route path="/select" element={<SurveySelectorPage />} />
+        <Route path="/" element={<SurveySelectorPage />} />
+        <Route path="/survey" element={<SurveyPage />} />
         <Route path="/responses" element={<SurveyResponsesPage />} />
       </Routes>
     </Layout>

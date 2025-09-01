@@ -231,7 +231,7 @@ const SurveySelectorPage: React.FC = () => {
         namespace: selectedNamespace,
         survey: selectedSurvey
       })
-      navigate(`/?${params.toString()}`)
+      navigate(`/survey?${params.toString()}`)
     }
   }
 
@@ -337,7 +337,7 @@ const SurveySelectorPage: React.FC = () => {
           <div className="preview-section">
             <h3>Survey URL:</h3>
             <code className="survey-url">
-              {window.location.origin}/?customer={selectedCustomer}&namespace={selectedNamespace}&survey={selectedSurvey}
+              {window.location.origin}/survey?customer={selectedCustomer}&namespace={selectedNamespace}&survey={selectedSurvey}
             </code>
           </div>
         )}

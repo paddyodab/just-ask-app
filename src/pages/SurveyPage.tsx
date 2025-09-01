@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { useSearchParams, useNavigate } from 'react-router-dom'
 import { Model } from 'survey-core'
 import SurveyRenderer from '../components/Survey/SurveyRenderer'
-import { restaurantSurvey } from '../surveys/restaurantSurvey'
+import { demoSurvey } from '../surveys/demoSurvey'
 import { useSubmitSurveyResponse } from '../hooks/useSurvey'
 import LoadingSpinner from '../components/common/LoadingSpinner'
 import './SurveyPage.css'
 
 const SurveyPage: React.FC = () => {
   const [searchParams] = useSearchParams()
+  const navigate = useNavigate()
   const [surveyComplete, setSurveyComplete] = useState(false)
   const [responseId, setResponseId] = useState<string | null>(null)
   const [surveyJson, setSurveyJson] = useState<any>(null)
@@ -16,12 +17,18 @@ const SurveyPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null)
   const submitResponse = useSubmitSurveyResponse()
   
-  // Get configuration from URL params or use defaults
-  const surveyName = searchParams.get('survey') || 'default'
-  const customerHex = searchParams.get('customer') || '30f8f53cf8034393b00665f664a60ddb'
-  const namespace = searchParams.get('namespace') || 'restaurant-survey'
+  // Get configuration from URL params
+  const surveyName = searchParams.get('survey')
+  const customerHex = searchParams.get('customer')
+  const namespace = searchParams.get('namespace')
   
   useEffect(() => {
+    // Check if required parameters are missing
+    if (!customerHex || !namespace || !surveyName) {
+      setLoading(false)
+      return
+    }
+    
     const loadSurvey = async () => {
       try {
         // Try to fetch survey from backend with survey_name parameter
@@ -33,17 +40,17 @@ const SurveyPage: React.FC = () => {
           // The backend returns the survey directly
           setSurveyJson(data)
         } else if (response.status === 404) {
-          // If no survey found on backend, use the local one
-          console.log(`Survey '${surveyName}' not found on backend, using local restaurant survey`)
-          setSurveyJson(restaurantSurvey)
+          // If no survey found on backend, use the demo survey
+          console.log(`Survey '${surveyName}' not found on backend, using demo survey`)
+          setSurveyJson(demoSurvey)
         } else {
           throw new Error(`Failed to load survey: ${response.status}`)
         }
       } catch (err) {
         console.error('Error loading survey:', err)
-        // Fallback to local survey
-        console.log('Using fallback local survey due to error')
-        setSurveyJson(restaurantSurvey)
+        // Fallback to demo survey
+        console.log('Using demo survey due to backend connection error')
+        setSurveyJson(demoSurvey)
       } finally {
         setLoading(false)
       }
@@ -55,6 +62,14 @@ const SurveyPage: React.FC = () => {
   const handleSurveyComplete = async (sender: Model) => {
     const surveyData = sender.data
     console.log('Survey completed:', surveyData)
+    
+    // Check if this is the demo survey
+    if (surveyJson === demoSurvey) {
+      console.log('Demo survey completed - not submitting to backend')
+      setResponseId(`demo-${Date.now()}`)
+      setSurveyComplete(true)
+      return
+    }
     
     try {
       // Include the survey_name parameter in the submission URL
@@ -105,6 +120,24 @@ const SurveyPage: React.FC = () => {
     setResponseId(null)
   }
 
+  // Show message if no survey parameters
+  if (!customerHex || !namespace || !surveyName) {
+    return (
+      <div className="survey-page">
+        <div className="survey-selector-prompt">
+          <h2>No Survey Selected</h2>
+          <p>Please select a survey to take.</p>
+          <button 
+            onClick={() => navigate('/')} 
+            className="btn btn-primary"
+          >
+            Go to Survey Selector
+          </button>
+        </div>
+      </div>
+    )
+  }
+  
   if (loading) {
     return (
       <div className="survey-page">
@@ -125,14 +158,21 @@ const SurveyPage: React.FC = () => {
   }
   
   if (surveyComplete && responseId) {
+    const isDemo = responseId.startsWith('demo-')
     return (
       <div className="survey-page">
         <div className="survey-complete">
-          <h2>Thank You!</h2>
-          <p>Your survey response has been successfully submitted.</p>
-          <p className="response-id">Response ID: {responseId}</p>
+          <h2>{isDemo ? 'Demo Complete!' : 'Thank You!'}</h2>
+          <p>
+            {isDemo 
+              ? 'This was a demo survey. No data was saved because the backend is not connected.'
+              : 'Your survey response has been successfully submitted.'}
+          </p>
+          <p className="response-id">
+            {isDemo ? 'Demo ID' : 'Response ID'}: {responseId}
+          </p>
           <button onClick={handleRestartSurvey} className="restart-button">
-            Take Another Survey
+            {isDemo ? 'Restart Demo' : 'Take Another Survey'}
           </button>
         </div>
       </div>
