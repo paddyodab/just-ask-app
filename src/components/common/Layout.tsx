@@ -27,6 +27,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             >
               Survey Selector
             </Link>
+            <Link 
+              to="/responses" 
+              className={`nav-link ${location.pathname === '/responses' ? 'active' : ''}`}
+            >
+              Responses
+            </Link>
           </nav>
         </div>
       </header>
