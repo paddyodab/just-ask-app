@@ -249,7 +249,7 @@ const SurveySelectorPage: React.FC = () => {
           </div>
         )}
 
-        <div className="selector-form">
+        <div className="selector-section">
           {/* Customer Selection */}
           <div className="form-group">
             <label htmlFor="customer">Customer</label>
@@ -289,7 +289,6 @@ const SurveySelectorPage: React.FC = () => {
                   {namespaces.map((namespace) => (
                     <option key={namespace.id} value={namespace.slug}>
                       {namespace.name}
-                      {namespace.description && ` - ${namespace.description}`}
                     </option>
                   ))}
                 </select>
@@ -314,36 +313,34 @@ const SurveySelectorPage: React.FC = () => {
                   {surveys.map((survey) => (
                     <option key={survey.name} value={survey.name}>
                       {survey.title || survey.name}
-                      {survey.description && ` - ${survey.description}`}
-                      {survey.status && survey.status !== 'published' && ` (${survey.status})`}
                     </option>
                   ))}
                 </select>
               )}
             </div>
           )}
-
-          {/* Launch Button */}
-          <div className="form-actions">
-            <button
-              onClick={handleLaunchSurvey}
-              disabled={!canLaunch}
-              className="btn btn-primary"
-            >
-              Launch Survey
-            </button>
-          </div>
-
-          {/* Preview URL */}
-          {canLaunch && (
-            <div className="preview-section">
-              <h3>Survey URL:</h3>
-              <code className="survey-url">
-                {window.location.origin}/?customer={selectedCustomer}&namespace={selectedNamespace}&survey={selectedSurvey}
-              </code>
-            </div>
-          )}
         </div>
+
+        {/* Launch Button */}
+        <div className="form-actions">
+          <button
+            onClick={handleLaunchSurvey}
+            disabled={!canLaunch}
+            className="btn btn-primary"
+          >
+            Launch Survey
+          </button>
+        </div>
+
+        {/* Preview URL */}
+        {canLaunch && (
+          <div className="preview-section">
+            <h3>Survey URL:</h3>
+            <code className="survey-url">
+              {window.location.origin}/?customer={selectedCustomer}&namespace={selectedNamespace}&survey={selectedSurvey}
+            </code>
+          </div>
+        )}
       </div>
     </div>
   )
