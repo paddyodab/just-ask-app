@@ -195,8 +195,9 @@ const LookupManagement: React.FC = () => {
     setLoadingData(true)
     
     try {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000'
       const response = await fetch(
-        `/${selectedCustomer}/${selectedNamespace}/lookups/${lookup.name}?page=1&size=1000&reverse=false`
+        `${apiUrl}/${selectedCustomer}/${selectedNamespace}/lookups/${lookup.name}?page=1&size=1000&reverse=false`
       )
       
       if (response.ok) {
@@ -685,11 +686,11 @@ Option 2`}</pre>
               
               <div className="url-box">
                 <code className="api-url">
-                  /{selectedCustomer}/{selectedNamespace}/lookup/{urlLookup.name}
+                  /{selectedCustomer}/{selectedNamespace}/lookups/{urlLookup.name}
                 </code>
                 <button 
                   className="copy-button"
-                  onClick={() => copyToClipboard(`/${selectedCustomer}/${selectedNamespace}/lookup/${urlLookup.name}`)}
+                  onClick={() => copyToClipboard(`/${selectedCustomer}/${selectedNamespace}/lookups/${urlLookup.name}`)}
                   title="Copy URL"
                 >
                   📋
@@ -704,7 +705,7 @@ Option 2`}</pre>
   "title": "Choose an option:",
   "choicesOrder": "asc",
   "choices": {
-    "url": "/${selectedCustomer}/${selectedNamespace}/lookup/${urlLookup.name}",
+    "url": "/${selectedCustomer}/${selectedNamespace}/lookups/${urlLookup.name}",
     "valueName": "${urlLookup.type === 'key_value' ? 'key' : 'value'}",
     "titleName": "value"
   }

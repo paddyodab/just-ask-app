@@ -189,10 +189,18 @@ class AssetLoader {
    * Process logo URL with tenant/namespace replacement
    */
   processAssetUrl(url: string, tenantId: string, namespace: string): string {
-    return url
+    const processedUrl = url
       .replace('{tenant_id}', tenantId)
       .replace('{namespace}', namespace)
       .replace('{namespace_slug}', namespace)
+    
+    // Add API URL prefix if the URL starts with /
+    if (processedUrl.startsWith('/')) {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+      return `${apiUrl}${processedUrl}`
+    }
+    
+    return processedUrl
   }
 }
 

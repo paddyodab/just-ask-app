@@ -1,0 +1,236 @@
+{
+  "title": "Employee Pulse Survey 2025",
+  "description": "Help us make TechFlow an even better place to work! Your feedback is confidential and helps shape our workplace culture.",
+  "logo": "/{tenant_id}/{namespace}/assets/techflow-logo.svg",
+  "logoPosition": "top",
+  "logoWidth": "200px",
+  "assets": {
+    "stylesheets": [
+      "/{tenant_id}/{namespace}/assets/techflow-brand.css"
+    ]
+  },
+  "pages": [
+    {
+      "name": "demographics",
+      "title": "About You",
+      "description": "Help us understand our team better",
+      "elements": [
+        {
+          "type": "dropdown",
+          "name": "department",
+          "title": "Which department do you work in?",
+          "isRequired": true,
+          "choicesByUrl": {
+            "url": "REPLACE_WITH_DEPARTMENTS_LOOKUP_URL"
+          }
+        },
+        {
+          "type": "dropdown",
+          "name": "location",
+          "title": "What is your primary work location?",
+          "isRequired": true,
+          "choicesByUrl": {
+            "url": "REPLACE_WITH_LOCATIONS_LOOKUP_URL"
+          }
+        },
+        {
+          "type": "dropdown",
+          "name": "tenure",
+          "title": "How long have you been with TechFlow?",
+          "isRequired": true,
+          "choicesByUrl": {
+            "url": "REPLACE_WITH_TENURE_LOOKUP_URL"
+          }
+        },
+        {
+          "type": "dropdown",
+          "name": "employment_type",
+          "title": "What is your employment type?",
+          "isRequired": true,
+          "choicesByUrl": {
+            "url": "REPLACE_WITH_EMPLOYMENT_TYPE_LOOKUP_URL"
+          }
+        }
+      ]
+    },
+    {
+      "name": "satisfaction",
+      "title": "Job Satisfaction",
+      "elements": [
+        {
+          "type": "rating",
+          "name": "overall_satisfaction",
+          "title": "How satisfied are you with your job at TechFlow?",
+          "isRequired": true,
+          "rateMin": 1,
+          "rateMax": 10,
+          "minRateDescription": "Very Dissatisfied",
+          "maxRateDescription": "Very Satisfied"
+        },
+        {
+          "type": "rating",
+          "name": "work_life_balance",
+          "title": "How would you rate your work-life balance?",
+          "isRequired": true,
+          "rateMin": 1,
+          "rateMax": 10,
+          "minRateDescription": "Poor",
+          "maxRateDescription": "Excellent"
+        },
+        {
+          "type": "rating",
+          "name": "career_development",
+          "title": "How satisfied are you with career development opportunities?",
+          "isRequired": true,
+          "rateMin": 1,
+          "rateMax": 10,
+          "minRateDescription": "Very Dissatisfied",
+          "maxRateDescription": "Very Satisfied"
+        }
+      ]
+    },
+    {
+      "name": "culture",
+      "title": "Company Culture",
+      "elements": [
+        {
+          "type": "matrix",
+          "name": "culture_aspects",
+          "title": "Please rate the following aspects of our company culture:",
+          "isRequired": true,
+          "columns": [
+            {
+              "value": "strongly_disagree",
+              "text": "Strongly Disagree"
+            },
+            {
+              "value": "disagree",
+              "text": "Disagree"
+            },
+            {
+              "value": "neutral",
+              "text": "Neutral"
+            },
+            {
+              "value": "agree",
+              "text": "Agree"
+            },
+            {
+              "value": "strongly_agree",
+              "text": "Strongly Agree"
+            }
+          ],
+          "rows": [
+            {
+              "value": "values_aligned",
+              "text": "I feel my values align with TechFlow's values"
+            },
+            {
+              "value": "feel_valued",
+              "text": "I feel valued as an employee"
+            },
+            {
+              "value": "team_collaboration",
+              "text": "My team collaborates effectively"
+            },
+            {
+              "value": "communication",
+              "text": "Communication is clear and transparent"
+            },
+            {
+              "value": "diversity_inclusion",
+              "text": "TechFlow promotes diversity and inclusion"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "management",
+      "title": "Management & Leadership",
+      "elements": [
+        {
+          "type": "rating",
+          "name": "manager_support",
+          "title": "How well does your direct manager support you?",
+          "isRequired": true,
+          "rateMin": 1,
+          "rateMax": 10,
+          "minRateDescription": "No Support",
+          "maxRateDescription": "Excellent Support"
+        },
+        {
+          "type": "radiogroup",
+          "name": "feedback_frequency",
+          "title": "How often do you receive constructive feedback?",
+          "isRequired": true,
+          "choices": [
+            "Weekly",
+            "Bi-weekly",
+            "Monthly",
+            "Quarterly",
+            "Rarely",
+            "Never"
+          ]
+        },
+        {
+          "type": "boolean",
+          "name": "leadership_trust",
+          "title": "Do you trust the senior leadership team?",
+          "isRequired": true
+        }
+      ]
+    },
+    {
+      "name": "future",
+      "title": "Looking Forward",
+      "elements": [
+        {
+          "type": "radiogroup",
+          "name": "recommend_employer",
+          "title": "Would you recommend TechFlow as a great place to work?",
+          "isRequired": true,
+          "choices": [
+            "Definitely yes",
+            "Probably yes",
+            "Not sure",
+            "Probably not",
+            "Definitely not"
+          ]
+        },
+        {
+          "type": "radiogroup",
+          "name": "future_outlook",
+          "title": "How long do you see yourself working at TechFlow?",
+          "isRequired": true,
+          "choices": [
+            "Less than 1 year",
+            "1-2 years",
+            "3-5 years",
+            "More than 5 years",
+            "Until retirement"
+          ]
+        },
+        {
+          "type": "comment",
+          "name": "improvement_suggestions",
+          "title": "What's one thing we could do to make TechFlow a better place to work?",
+          "rows": 4
+        },
+        {
+          "type": "comment",
+          "name": "additional_comments",
+          "title": "Any additional comments or feedback?",
+          "rows": 4
+        }
+      ]
+    }
+  ],
+  "showProgressBar": "top",
+  "progressBarType": "questions",
+  "showQuestionNumbers": "on",
+  "questionStartIndex": "1",
+  "completeText": "Submit Feedback",
+  "completedHtml": "<h3>Thank you for your feedback!</h3><p>Your responses have been recorded and will help us improve TechFlow for everyone. We truly appreciate you taking the time to share your thoughts.</p><p><strong>Your feedback matters and drives positive change.</strong></p>",
+  "navigateToUrl": "https://techflow.example.com/thank-you"
+}

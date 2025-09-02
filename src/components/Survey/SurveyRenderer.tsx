@@ -141,7 +141,40 @@ export const SurveyRenderer: React.FC<SurveyRendererProps> = ({
   }
 
   useEffect(() => {
-    const model = new Model(surveyJson)
+    // Preprocess the survey JSON to add API URL to choicesByUrl
+    const processedSurveyJson = JSON.parse(JSON.stringify(surveyJson))
+    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+    
+    const processQuestions = (questions: any[]) => {
+      questions?.forEach(question => {
+        if (question.choicesByUrl?.url && question.choicesByUrl.url.startsWith('/')) {
+          question.choicesByUrl.url = `${apiUrl}${question.choicesByUrl.url}`
+          console.log(`Modified URL for ${question.name}:`, question.choicesByUrl.url)
+        }
+        // Handle nested questions in panels
+        if (question.elements) {
+          processQuestions(question.elements)
+        }
+      })
+    }
+    
+    // Process all pages
+    processedSurveyJson.pages?.forEach((page: any) => {
+      if (page.elements) {
+        processQuestions(page.elements)
+      }
+    })
+
+    const model = new Model(processedSurveyJson)
+    
+    // Disable browser autocomplete on all inputs
+    model.onAfterRenderQuestion.add((sender, options) => {
+      const inputElements = options.htmlElement.querySelectorAll('input, select')
+      inputElements.forEach((el: any) => {
+        el.setAttribute('autocomplete', 'off')
+        el.setAttribute('data-form-type', 'other')
+      })
+    })
     
     // Process logo URL if present
     if (surveyJson.logo && tenantId && namespace) {
@@ -163,9 +196,27 @@ export const SurveyRenderer: React.FC<SurveyRendererProps> = ({
     
     // Configure choicesByUrl authentication and dynamic URLs
     model.onLoadChoicesFromServer.add((sender, options: any) => {
-      // Check if this is using the new API structure with customer hex in URL
-      // The new API structure has customer hex and namespace in the path
-      const url = options.url as string
+      console.log('SurveyJS onLoadChoicesFromServer options:', options)
+      
+      // The URL might be in options.request.url for newer versions of SurveyJS
+      let url = options.url || (options.request && options.request.url)
+      console.log('Initial URL from SurveyJS:', url)
+      
+      // Add API URL prefix if the URL starts with /
+      if (url && url.startsWith('/')) {
+        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+        console.log('Adding API URL prefix:', apiUrl)
+        url = `${apiUrl}${url}`
+        console.log('URL after adding prefix:', url)
+        
+        // Update the URL in the right place
+        if (options.request) {
+          options.request.url = url
+        } else {
+          options.url = url
+        }
+      }
+      
       const isNewApiStructure = url && (
         // Check for hex pattern (32 characters) followed by namespace
         /\/[a-f0-9]{32}\/[\w-]+\//.test(url)
@@ -182,9 +233,9 @@ export const SurveyRenderer: React.FC<SurveyRendererProps> = ({
       // Handle search for large lists
       const question = options.question
       if ((question as any).searchEnabled && options.searchText) {
-        const urlObj = new URL(url, window.location.origin)
+        const urlObj = new URL(url)
         urlObj.searchParams.set('search', options.searchText)
-        options.url = urlObj.toString()
+        url = urlObj.toString()
       }
 
       // Handle cascading dropdowns with parent values
@@ -193,7 +244,7 @@ export const SurveyRenderer: React.FC<SurveyRendererProps> = ({
       const regex = /{([^}]+)}/g
       let match
       
-      while ((match = regex.exec(url)) !== null) {
+      while ((match = regex.exec(finalUrl)) !== null) {
         const fieldName = match[1]
         const fieldValue = sender.getValue(fieldName)
         if (fieldValue) {
@@ -202,20 +253,36 @@ export const SurveyRenderer: React.FC<SurveyRendererProps> = ({
       }
       
       console.log('SurveyJS URL transformation:', { original: url, final: finalUrl })
-      options.url = finalUrl
+      
+      // Update the URL in the right place
+      if (options.request) {
+        options.request.url = finalUrl
+      } else {
+        options.url = finalUrl
+      }
+      
+      // Add error handling
+      options.onError = (error: any) => {
+        console.error('Error loading choices from:', finalUrl, error)
+      }
       
       // Add callback to process the result
-      if (options.onProcessItems) {
-        const originalCallback = options.onProcessItems
-        options.onProcessItems = (items: any[]) => {
-          console.log('SurveyJS received items:', items)
-          return originalCallback ? originalCallback(items) : items
+      const originalCallback = options.onProcessItems
+      options.onProcessItems = (items: any[]) => {
+        console.log('SurveyJS received items from', finalUrl, ':', items)
+        
+        // Check if the items need to be transformed
+        if (items && items.length > 0 && items[0].key && items[0].value) {
+          console.log('Transforming key-value pairs to SurveyJS format')
+          // Transform key-value pairs to SurveyJS expected format
+          const transformed = items.map(item => ({
+            value: item.key,
+            text: item.value
+          }))
+          return originalCallback ? originalCallback(transformed) : transformed
         }
-      } else {
-        options.onProcessItems = (items: any[]) => {
-          console.log('SurveyJS received items:', items)
-          return items
-        }
+        
+        return originalCallback ? originalCallback(items) : items
       }
     })
 

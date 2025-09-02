@@ -32,7 +32,12 @@ const SurveyPage: React.FC = () => {
     const loadSurvey = async () => {
       try {
         // Try to fetch survey from backend with survey_name parameter
-        const response = await fetch(`/${customerHex}/${namespace}/survey?survey_name=${surveyName}`)
+        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+        const surveyUrl = `${apiUrl}/${customerHex}/${namespace}/survey?survey_name=${surveyName}`
+        console.log('Fetching survey from:', surveyUrl)
+        
+        const response = await fetch(surveyUrl)
+        console.log('Survey response status:', response.status)
         
         if (response.ok) {
           const data = await response.json()
@@ -41,9 +46,11 @@ const SurveyPage: React.FC = () => {
           setSurveyJson(data)
         } else if (response.status === 404) {
           // If no survey found on backend, use the demo survey
-          console.log(`Survey '${surveyName}' not found on backend, using demo survey`)
+          console.log(`Survey '${surveyName}' not found on backend (404), using demo survey`)
           setSurveyJson(demoSurvey)
         } else {
+          const errorText = await response.text()
+          console.error(`Failed to load survey: ${response.status}`, errorText)
           throw new Error(`Failed to load survey: ${response.status}`)
         }
       } catch (err) {
@@ -62,6 +69,9 @@ const SurveyPage: React.FC = () => {
   const handleSurveyComplete = async (sender: Model) => {
     const surveyData = sender.data
     console.log('Survey completed:', surveyData)
+    console.log('Survey name:', surveyName)
+    console.log('Customer hex:', customerHex)
+    console.log('Namespace:', namespace)
     
     // Check if this is the demo survey
     if (surveyJson === demoSurvey) {
@@ -73,7 +83,11 @@ const SurveyPage: React.FC = () => {
     
     try {
       // Include the survey_name parameter in the submission URL
-      const response = await fetch(`/${customerHex}/${namespace}/responses?survey_name=${surveyName}`, {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+      const submissionUrl = `${apiUrl}/${customerHex}/${namespace}/responses?survey_name=${surveyName}`
+      console.log('Submitting to:', submissionUrl)
+      
+      const response = await fetch(submissionUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

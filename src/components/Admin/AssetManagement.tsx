@@ -115,46 +115,28 @@ const AssetManagement: React.FC = () => {
     try {
       setLoading(true)
       setError(null)
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000'
       const response = await fetch(
-        `/${customerHex}/${namespaceSlug}/assets`
+        `${apiUrl}/${customerHex}/${namespaceSlug}/assets`
       )
       
       if (response.ok) {
         const data = await response.json()
         setAssets(data.assets || [])
+        setError(null)
+      } else if (response.status === 404) {
+        // No assets found is not an error
+        setAssets([])
+        setError(null)
       } else {
-        throw new Error('Failed to fetch assets')
+        console.error('Failed to fetch assets:', response.status, response.statusText)
+        setError(`Failed to load assets (${response.status})`)
+        setAssets([])
       }
     } catch (err) {
       console.error('Error fetching assets:', err)
-      setError('Failed to load assets')
-      // Demo data
-      setAssets([
-        {
-          name: 'brand.css',
-          type: 'text/css',
-          size: 15234,
-          url: `/${customerHex}/${namespaceSlug}/assets/brand.css`,
-          uploaded_at: new Date().toISOString(),
-          content_type: 'text/css'
-        },
-        {
-          name: 'logo.png',
-          type: 'image/png',
-          size: 45678,
-          url: `/${customerHex}/${namespaceSlug}/assets/logo.png`,
-          uploaded_at: new Date().toISOString(),
-          content_type: 'image/png'
-        },
-        {
-          name: 'logo.svg',
-          type: 'image/svg+xml',
-          size: 8901,
-          url: `/${customerHex}/${namespaceSlug}/assets/logo.svg`,
-          uploaded_at: new Date().toISOString(),
-          content_type: 'image/svg+xml'
-        }
-      ])
+      setError('Failed to load assets - network error')
+      setAssets([])
     } finally {
       setLoading(false)
     }
@@ -230,7 +212,9 @@ const AssetManagement: React.FC = () => {
     // For CSS files, fetch the content
     if (asset.content_type?.includes('css') || asset.name.endsWith('.css')) {
       try {
-        const response = await fetch(asset.url)
+        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+        const fullUrl = asset.url.startsWith('http') ? asset.url : `${apiUrl}${asset.url}`
+        const response = await fetch(fullUrl)
         if (response.ok) {
           const content = await response.text()
           setPreviewContent(content)
@@ -510,7 +494,12 @@ const AssetManagement: React.FC = () => {
             <div className="asset-preview-content">
               {previewAsset.content_type?.includes('image') ? (
                 <div className="image-preview">
-                  <img src={previewAsset.url} alt={previewAsset.name} />
+                  <img 
+                    src={previewAsset.url.startsWith('http') 
+                      ? previewAsset.url 
+                      : `${import.meta.env.VITE_API_URL || 'http://localhost:8000'}${previewAsset.url}`} 
+                    alt={previewAsset.name} 
+                  />
                 </div>
               ) : previewAsset.content_type?.includes('css') || previewAsset.name.endsWith('.css') ? (
                 <div className="code-preview">

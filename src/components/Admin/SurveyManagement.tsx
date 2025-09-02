@@ -175,14 +175,23 @@ const SurveyManagement: React.FC = () => {
         surveyJson = JSON.parse(uploadData.jsonContent)
       }
       
+      // Extract survey_id, name/title, and version from the JSON if present
+      const surveyId = uploadData.surveyId || surveyJson.survey_id
+      const surveyName = uploadData.name || surveyJson.name || surveyJson.title
+      const surveyVersion = uploadData.version || surveyJson.version || '1.0'
+      
+      // Remove metadata fields from the survey definition to get clean SurveyJS schema
+      const { survey_id, name, version, ...surveyDefinition } = surveyJson
+      
       const formData = new FormData()
-      formData.append('survey_id', uploadData.surveyId)
-      formData.append('name', uploadData.name)
-      formData.append('version', uploadData.version)
-      formData.append('survey_json', JSON.stringify(surveyJson))
+      formData.append('survey_id', surveyId)
+      formData.append('name', surveyName)
+      formData.append('version', surveyVersion)
+      // Send the definition as a string in the form field (for /surveys endpoint)
+      formData.append('definition', JSON.stringify(surveyDefinition))
       
       const response = await fetch(
-        `/api/v1/operations/customers/${selectedCustomer}/namespaces/${selectedNamespace}/surveys/upload`,
+        `/api/v1/operations/customers/${selectedCustomer}/namespaces/${selectedNamespace}/surveys`,
         {
           method: 'POST',
           body: formData
@@ -194,7 +203,9 @@ const SurveyManagement: React.FC = () => {
         setUploadData({ surveyId: '', name: '', version: '1.0', jsonFile: null, jsonContent: '' })
         setShowUploadModal(false)
       } else {
-        throw new Error('Failed to upload survey')
+        const errorText = await response.text()
+        console.error('Server error response:', errorText)
+        throw new Error(`Failed to upload survey: ${errorText}`)
       }
     } catch (err) {
       console.error('Error uploading survey:', err)
@@ -210,8 +221,9 @@ const SurveyManagement: React.FC = () => {
 
   const handleViewSurvey = async (survey: Survey) => {
     try {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000'
       const response = await fetch(
-        `/${selectedCustomer}/${selectedNamespace}/survey?survey_name=${survey.survey_id}`
+        `${apiUrl}/${selectedCustomer}/${selectedNamespace}/survey?survey_name=${survey.survey_id}`
       )
       if (response.ok) {
         const data = await response.json()
@@ -237,8 +249,9 @@ const SurveyManagement: React.FC = () => {
   const handleEditSurvey = async (survey: Survey) => {
     try {
       // Fetch the full survey definition
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000'
       const response = await fetch(
-        `/${selectedCustomer}/${selectedNamespace}/survey?survey_name=${survey.survey_id}`
+        `${apiUrl}/${selectedCustomer}/${selectedNamespace}/survey?survey_name=${survey.survey_id}`
       )
       if (response.ok) {
         const surveyData = await response.json()
@@ -262,30 +275,37 @@ const SurveyManagement: React.FC = () => {
   const handleCreateNewVersion = async (survey: Survey) => {
     try {
       // Fetch the full survey definition
-      const response = await fetch(
-        `/${selectedCustomer}/${selectedNamespace}/survey?survey_name=${survey.survey_id}`
-      )
-      if (response.ok) {
-        const surveyData = await response.json()
-        setEditingSurvey(survey)
-        setIsNewVersion(true)
-        
-        // Auto-increment version
-        const currentVersion = parseFloat(survey.version || '1.0')
-        const newVersion = (Math.floor(currentVersion) + 1) + '.0'
-        
-        setUploadData({
-          surveyId: survey.survey_id,
-          name: survey.name,
-          version: newVersion,
-          jsonFile: null,
-          jsonContent: JSON.stringify(surveyData, null, 2)
-        })
-        setShowEditModal(true)
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+      const surveyUrl = `${apiUrl}/${selectedCustomer}/${selectedNamespace}/survey?survey_name=${survey.survey_id}`
+      console.log('Fetching survey for new version from:', surveyUrl)
+      
+      const response = await fetch(surveyUrl)
+      
+      if (!response.ok) {
+        const errorText = await response.text()
+        console.error('Failed to fetch survey:', response.status, errorText)
+        throw new Error(`Failed to fetch survey: ${response.status}`)
       }
+      
+      const surveyData = await response.json()
+      setEditingSurvey(survey)
+      setIsNewVersion(true)
+      
+      // Auto-increment version
+      const currentVersion = parseFloat(survey.version || '1.0')
+      const newVersion = (Math.floor(currentVersion) + 1) + '.0'
+      
+      setUploadData({
+        surveyId: survey.survey_id,
+        name: survey.name,
+        version: newVersion,
+        jsonFile: null,
+        jsonContent: JSON.stringify(surveyData, null, 2)
+      })
+      setShowEditModal(true)
     } catch (err) {
       console.error('Error fetching survey for new version:', err)
-      setError('Failed to load survey for new version')
+      setError('Failed to load survey for new version. Please try again.')
     }
   }
 
@@ -294,27 +314,50 @@ const SurveyManagement: React.FC = () => {
       return
     }
 
+    // Determine if we're updating existing survey (both edit and new version use PUT)
+    // Only use POST when creating a completely new survey
+    const isUpdating = editingSurvey !== null  // If we have an existing survey, we're updating it
+
     try {
       setUploading(true)
       setError(null)
       
       const surveyJson = JSON.parse(uploadData.jsonContent)
       
-      // Determine the endpoint based on whether it's a new version or edit
-      const endpoint = isNewVersion
-        ? `/api/v1/operations/customers/${selectedCustomer}/namespaces/${selectedNamespace}/surveys/upload`
-        : `/api/v1/operations/customers/${selectedCustomer}/namespaces/${selectedNamespace}/surveys/${uploadData.surveyId}`
+      // Extract survey_id, name/title, and version from the JSON if present
+      const surveyId = uploadData.surveyId || surveyJson.survey_id
+      const surveyName = uploadData.name || surveyJson.name || surveyJson.title
+      const surveyVersion = uploadData.version || surveyJson.version || '1.0'
       
-      const method = isNewVersion ? 'POST' : 'PUT'
+      // Remove metadata fields from the survey definition to get clean SurveyJS schema
+      const { survey_id, name, version, ...surveyDefinition } = surveyJson
+      const endpoint = isUpdating
+        ? `/api/v1/operations/customers/${selectedCustomer}/namespaces/${selectedNamespace}/surveys/${surveyId}`
+        : `/api/v1/operations/customers/${selectedCustomer}/namespaces/${selectedNamespace}/surveys`
       
       const formData = new FormData()
-      formData.append('survey_id', uploadData.surveyId)
-      formData.append('name', uploadData.name)
-      formData.append('version', uploadData.version)
-      formData.append('survey_json', JSON.stringify(surveyJson))
+      
+      if (isUpdating) {
+        // For PUT, send the fields that are being updated
+        // For new version, always send the new version number
+        if (isNewVersion) {
+          formData.append('version', surveyVersion)  // Always send new version
+        } else {
+          // For regular edit, only send changed fields
+          if (surveyName !== editingSurvey.name) formData.append('name', surveyName)
+          if (surveyVersion !== editingSurvey.version) formData.append('version', surveyVersion)
+        }
+        formData.append('definition', JSON.stringify(surveyDefinition))
+      } else {
+        // For POST (completely new survey), all fields are required
+        formData.append('survey_id', surveyId)
+        formData.append('name', surveyName)
+        formData.append('version', surveyVersion)
+        formData.append('definition', JSON.stringify(surveyDefinition))
+      }
       
       const response = await fetch(endpoint, {
-        method: method,
+        method: isUpdating ? 'PUT' : 'POST',
         body: formData
       })
 
@@ -325,14 +368,18 @@ const SurveyManagement: React.FC = () => {
         setEditingSurvey(null)
         setIsNewVersion(false)
       } else {
-        throw new Error(isNewVersion ? 'Failed to create new version' : 'Failed to update survey')
+        const errorText = await response.text()
+        console.error('Server error response:', errorText)
+        const errorMsg = isUpdating ? 'Failed to update survey' : 'Failed to create new version'
+        throw new Error(`${errorMsg}: ${errorText}`)
       }
     } catch (err) {
       console.error('Error saving survey:', err)
       if (err instanceof SyntaxError) {
         setError('Invalid JSON format in survey definition')
       } else {
-        setError(isNewVersion ? 'Failed to create new version' : 'Failed to update survey')
+        const errorMsg = isUpdating ? 'Failed to update survey' : 'Failed to create new version'
+        setError(errorMsg)
       }
     } finally {
       setUploading(false)

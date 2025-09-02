@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200" height="60" viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg">
+  <!-- Gradient Definitions -->
+  <defs>
+    <linearGradient id="techGradient" x1="0%" y1="0%" x2="100%%" y2="0%">
+      <stop offset="0%" style="stop-color:#00d4ff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0066ff;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="flowGradient" x1="0%" y1="0%" x2="100%%" y2="0%">
+      <stop offset="0%" style="stop-color:#0066ff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#6610f2;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Logo Icon - Abstract Flow Symbol -->
+  <g id="icon">
+    <!-- Flow waves -->
+    <path d="M15 25 Q25 20, 35 25 T55 25" stroke="url(#techGradient)" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <path d="M15 30 Q25 35, 35 30 T55 30" stroke="url(#flowGradient)" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <path d="M15 35 Q25 30, 35 35 T55 35" stroke="url(#techGradient)" stroke-width="3" fill="none" stroke-linecap="round"/>
+    
+    <!-- Dots representing nodes -->
+    <circle cx="15" cy="30" r="3" fill="#00d4ff"/>
+    <circle cx="35" cy="30" r="3" fill="#0066ff"/>
+    <circle cx="55" cy="30" r="3" fill="#6610f2"/>
+  </g>
+  
+  <!-- Company Name -->
+  <text x="70" y="32" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif" font-size="24" font-weight="700">
+    <tspan fill="url(#techGradient)">Tech</tspan><tspan fill="url(#flowGradient)">Flow</tspan>
+  </text>
+  
+  <!-- Tagline -->
+  <text x="70" y="48" font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif" font-size="10" fill="#666" letter-spacing="1">
+    PULSE SURVEY 2025
+  </text>
+</svg>
