@@ -13,6 +13,8 @@ interface Namespace {
   name: string
   slug: string
   description?: string
+  is_deleted?: boolean
+  deleted_at?: string
   created_at?: string
   updated_at?: string
 }
@@ -25,7 +27,11 @@ const NamespaceManagement: React.FC = () => {
   const [error, setError] = useState<string | null>(null)
   const [showCreateModal, setShowCreateModal] = useState(false)
   const [showEditModal, setShowEditModal] = useState(false)
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
   const [editingNamespace, setEditingNamespace] = useState<Namespace | null>(null)
+  const [deletingNamespace, setDeletingNamespace] = useState<Namespace | null>(null)
+  const [deleteType, setDeleteType] = useState<'soft' | 'hard'>('soft')
+  const [showDeleted, setShowDeleted] = useState(false)
   const [formData, setFormData] = useState({
     name: '',
     slug: '',
@@ -50,9 +56,11 @@ const NamespaceManagement: React.FC = () => {
       const response = await fetch('/api/v1/operations/customers')
       if (response.ok) {
         const data = await response.json()
-        setCustomers(data.customers || [])
-        if (data.customers?.length > 0) {
-          setSelectedCustomer(data.customers[0].hex_id)
+        const customersList = data.customers || []
+        setCustomers(customersList)
+        // Auto-select the first customer if available
+        if (customersList.length > 0 && !selectedCustomer) {
+          setSelectedCustomer(customersList[0].hex_id)
         }
       } else {
         throw new Error('Failed to fetch customers')
@@ -68,7 +76,10 @@ const NamespaceManagement: React.FC = () => {
         }
       ]
       setCustomers(demoCustomers)
-      setSelectedCustomer(demoCustomers[0].hex_id)
+      // Auto-select the demo customer
+      if (!selectedCustomer) {
+        setSelectedCustomer(demoCustomers[0].hex_id)
+      }
     }
   }
 
@@ -76,7 +87,8 @@ const NamespaceManagement: React.FC = () => {
     try {
       setLoading(true)
       setError(null)
-      const response = await fetch(`/api/v1/operations/customers/${customerHex}/namespaces`)
+      // Include deleted namespaces in the response
+      const response = await fetch(`/api/v1/operations/customers/${customerHex}/namespaces?include_deleted=true`)
       
       if (response.ok) {
         const data = await response.json()
@@ -177,28 +189,62 @@ const NamespaceManagement: React.FC = () => {
     }
   }
 
-  const handleDeleteNamespace = async (namespace: Namespace) => {
-    if (!confirm(`Delete namespace "${namespace.name}"? This will also delete all associated data.`)) {
-      return
-    }
+  const handleDeleteNamespace = (namespace: Namespace) => {
+    setDeletingNamespace(namespace)
+    setShowDeleteModal(true)
+    setDeleteType(namespace.is_deleted ? 'hard' : 'soft')
+  }
+
+  const confirmDeleteNamespace = async () => {
+    if (!deletingNamespace) return
 
     try {
       setError(null)
-      const response = await fetch(
-        `/api/v1/operations/customers/${selectedCustomer}/namespaces/${namespace.slug}`,
-        {
-          method: 'DELETE'
-        }
-      )
+      const url = deleteType === 'hard'
+        ? `/api/v1/operations/customers/${selectedCustomer}/namespaces/${deletingNamespace.slug}?hard_delete=true`
+        : `/api/v1/operations/customers/${selectedCustomer}/namespaces/${deletingNamespace.slug}`
+      
+      const response = await fetch(url, {
+        method: 'DELETE'
+      })
 
       if (response.ok) {
-        setNamespaces(namespaces.filter(ns => ns.slug !== namespace.slug))
+        // Refresh the namespace list to get updated state from backend
+        await fetchNamespaces(selectedCustomer)
+        
+        setShowDeleteModal(false)
+        setDeletingNamespace(null)
+        setDeleteType('soft')
       } else {
         throw new Error('Failed to delete namespace')
       }
     } catch (err) {
       console.error('Error deleting namespace:', err)
       setError('Failed to delete namespace')
+      setShowDeleteModal(false)
+      setDeletingNamespace(null)
+    }
+  }
+
+  const handleRestoreNamespace = async (namespace: Namespace) => {
+    try {
+      setError(null)
+      const response = await fetch(
+        `/api/v1/operations/customers/${selectedCustomer}/namespaces/${namespace.slug}/restore`,
+        {
+          method: 'POST'
+        }
+      )
+
+      if (response.ok) {
+        // Refresh the namespace list to get updated state from backend
+        await fetchNamespaces(selectedCustomer)
+      } else {
+        throw new Error('Failed to restore namespace')
+      }
+    } catch (err) {
+      console.error('Error restoring namespace:', err)
+      setError('Failed to restore namespace')
     }
   }
 
@@ -218,6 +264,13 @@ const NamespaceManagement: React.FC = () => {
       .replace(/^-+|-+$/g, '')
   }
 
+  // Filter namespaces based on showDeleted toggle
+  const visibleNamespaces = showDeleted 
+    ? namespaces 
+    : namespaces.filter(ns => !ns.is_deleted)
+  
+  const deletedCount = namespaces.filter(ns => ns.is_deleted).length
+
   return (
     <div className="namespace-management">
       <div className="management-header">
@@ -235,6 +288,16 @@ const NamespaceManagement: React.FC = () => {
               </option>
             ))}
           </select>
+          {deletedCount > 0 && selectedCustomer && (
+            <label className="toggle-deleted">
+              <input 
+                type="checkbox"
+                checked={showDeleted}
+                onChange={(e) => setShowDeleted(e.target.checked)}
+              />
+              Show deleted ({deletedCount})
+            </label>
+          )}
           <button 
             className="btn btn-primary"
             onClick={() => setShowCreateModal(true)}
@@ -259,9 +322,20 @@ const NamespaceManagement: React.FC = () => {
         <LoadingSpinner />
       ) : (
         <div className="namespaces-grid">
-          {namespaces.length === 0 ? (
+          {visibleNamespaces.length === 0 ? (
             <div className="empty-state">
-              <p>No namespaces found for this customer</p>
+              <p>{showDeleted ? 'No namespaces found' : 'No active namespaces found'}</p>
+              {!showDeleted && deletedCount > 0 && (
+                <p className="hint">
+                  {deletedCount} deleted namespace(s) hidden. 
+                  <button 
+                    className="link-button"
+                    onClick={() => setShowDeleted(true)}
+                  >
+                    Show deleted
+                  </button>
+                </p>
+              )}
               <button 
                 className="btn btn-primary"
                 onClick={() => setShowCreateModal(true)}
@@ -270,28 +344,65 @@ const NamespaceManagement: React.FC = () => {
               </button>
             </div>
           ) : (
-            namespaces.map(namespace => (
-              <div key={namespace.slug} className="namespace-card">
+            visibleNamespaces.map(namespace => (
+              <div 
+                key={namespace.slug} 
+                className={`namespace-card ${namespace.is_deleted ? 'deleted' : ''}`}
+              >
+                {namespace.is_deleted && (
+                  <div className="deleted-badge">Deleted</div>
+                )}
                 <div className="namespace-info">
                   <h3>{namespace.name}</h3>
                   <p className="namespace-slug">Slug: {namespace.slug}</p>
                   {namespace.description && (
                     <p className="namespace-description">{namespace.description}</p>
                   )}
+                  {namespace.deleted_at ? (
+                    <p className="namespace-date deleted-date">
+                      Deleted: {new Date(namespace.deleted_at).toLocaleDateString()}
+                    </p>
+                  ) : namespace.created_at ? (
+                    <p className="namespace-date">
+                      Created: {new Date(namespace.created_at).toLocaleDateString()}
+                    </p>
+                  ) : null}
                 </div>
                 <div className="namespace-actions">
-                  <button 
-                    className="btn btn-sm btn-secondary"
-                    onClick={() => openEditModal(namespace)}
-                  >
-                    Edit
-                  </button>
-                  <button 
-                    className="btn btn-sm btn-danger"
-                    onClick={() => handleDeleteNamespace(namespace)}
-                  >
-                    Delete
-                  </button>
+                  {namespace.is_deleted ? (
+                    <>
+                      <button 
+                        className="btn btn-sm btn-success"
+                        onClick={() => handleRestoreNamespace(namespace)}
+                      >
+                        Restore
+                      </button>
+                      <button 
+                        className="btn-icon btn-icon-danger"
+                        onClick={() => handleDeleteNamespace(namespace)}
+                        title="Permanently delete namespace"
+                      >
+                        🗑️
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <button 
+                        className="btn-icon"
+                        onClick={() => openEditModal(namespace)}
+                        title="Edit namespace"
+                      >
+                        ✏️
+                      </button>
+                      <button 
+                        className="btn-icon btn-icon-danger"
+                        onClick={() => handleDeleteNamespace(namespace)}
+                        title="Delete namespace"
+                      >
+                        🗑️
+                      </button>
+                    </>
+                  )}
                 </div>
               </div>
             ))
@@ -425,6 +536,70 @@ const NamespaceManagement: React.FC = () => {
                 disabled={saving || !formData.name || !formData.slug}
               >
                 {saving ? 'Saving...' : 'Save Changes'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteModal && deletingNamespace && (
+        <div className="modal-overlay" onClick={() => {
+          setShowDeleteModal(false)
+          setDeletingNamespace(null)
+          setDeleteType('soft')
+        }}>
+          <div className="modal-content delete-modal" onClick={e => e.stopPropagation()}>
+            <h3>⚠️ Delete Namespace</h3>
+            
+            <div className="delete-warning">
+              <p>Are you sure you want to delete <strong>{deletingNamespace.name}</strong>?</p>
+              
+              <div className="delete-options">
+                <label className="delete-option">
+                  <input
+                    type="radio"
+                    value="soft"
+                    checked={deleteType === 'soft'}
+                    onChange={() => setDeleteType('soft')}
+                  />
+                  <div>
+                    <strong>Soft Delete (Recommended)</strong>
+                    <p>Mark as deleted but preserve all surveys and data for recovery</p>
+                  </div>
+                </label>
+                
+                <label className="delete-option">
+                  <input
+                    type="radio"
+                    value="hard"
+                    checked={deleteType === 'hard'}
+                    onChange={() => setDeleteType('hard')}
+                  />
+                  <div>
+                    <strong>Hard Delete</strong>
+                    <p className="danger-text">⚠️ Permanently delete namespace and ALL associated surveys, lookups, and data. This cannot be undone!</p>
+                  </div>
+                </label>
+              </div>
+            </div>
+            
+            <div className="modal-actions">
+              <button 
+                className="btn btn-secondary"
+                onClick={() => {
+                  setShowDeleteModal(false)
+                  setDeletingNamespace(null)
+                  setDeleteType('soft')
+                }}
+              >
+                Cancel
+              </button>
+              <button 
+                className="btn btn-danger"
+                onClick={confirmDeleteNamespace}
+              >
+                {deleteType === 'hard' ? '⚠️ Permanently Delete' : 'Delete'}
               </button>
             </div>
           </div>

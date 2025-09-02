@@ -4,8 +4,13 @@ import './CustomerManagement.css'
 
 interface Customer {
   id: string
+  customer_id?: string
   name: string
   hex_id: string
+  email?: string
+  is_active?: boolean
+  is_deleted?: boolean
+  deleted_at?: string
   created_at?: string
   updated_at?: string
 }
@@ -15,9 +20,16 @@ const CustomerManagement: React.FC = () => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [showCreateModal, setShowCreateModal] = useState(false)
-  const [newCustomerName, setNewCustomerName] = useState('')
   const [creating, setCreating] = useState(false)
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null)
+  const [deletingCustomer, setDeletingCustomer] = useState<Customer | null>(null)
+  const [deleteType, setDeleteType] = useState<'soft' | 'hard'>('soft')
+  const [showDeleted, setShowDeleted] = useState(false)
+  const [formData, setFormData] = useState({
+    customer_id: '',
+    name: '',
+    email: ''
+  })
 
   useEffect(() => {
     fetchCustomers()
@@ -27,7 +39,8 @@ const CustomerManagement: React.FC = () => {
     try {
       setLoading(true)
       setError(null)
-      const response = await fetch('/api/v1/operations/customers')
+      // Include deleted customers in the response
+      const response = await fetch('/api/v1/operations/customers?include_deleted=true')
       
       if (response.ok) {
         const data = await response.json()
@@ -53,29 +66,58 @@ const CustomerManagement: React.FC = () => {
   }
 
   const handleCreateCustomer = async () => {
-    if (!newCustomerName.trim()) return
+    if (!formData.customer_id.trim() || !formData.name.trim() || !formData.email.trim()) {
+      setError('All fields are required')
+      return
+    }
 
     try {
       setCreating(true)
       setError(null)
+      
+      const requestBody = {
+        customer_id: formData.customer_id.trim(),
+        name: formData.name.trim(),
+        email: formData.email.trim()
+      }
+      
+      console.log('Sending customer data:', requestBody)
       
       const response = await fetch('/api/v1/operations/customers', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          name: newCustomerName.trim()
-        })
+        body: JSON.stringify(requestBody)
       })
 
       if (response.ok) {
         const newCustomer = await response.json()
         setCustomers([...customers, newCustomer])
-        setNewCustomerName('')
+        setFormData({ customer_id: '', name: '', email: '' })
         setShowCreateModal(false)
       } else {
-        throw new Error('Failed to create customer')
+        // Try to get error details from response
+        const errorText = await response.text()
+        console.error('Server response:', errorText)
+        try {
+          const errorJson = JSON.parse(errorText)
+          if (errorJson.detail) {
+            if (typeof errorJson.detail === 'string') {
+              setError(errorJson.detail)
+            } else if (Array.isArray(errorJson.detail)) {
+              // Handle validation errors
+              const messages = errorJson.detail.map((err: any) => 
+                `${err.loc ? err.loc.join(' > ') : 'Field'}: ${err.msg}`
+              ).join(', ')
+              setError(`Validation failed: ${messages}`)
+            }
+          } else {
+            setError('Failed to create customer')
+          }
+        } catch {
+          setError('Failed to create customer')
+        }
       }
     } catch (err) {
       console.error('Error creating customer:', err)
@@ -85,25 +127,57 @@ const CustomerManagement: React.FC = () => {
     }
   }
 
-  const handleDeleteCustomer = async (customer: Customer) => {
-    if (!confirm(`Are you sure you want to delete "${customer.name}"? This action cannot be undone.`)) {
-      return
-    }
+  const confirmDeleteCustomer = async () => {
+    if (!deletingCustomer) return
 
     try {
       setError(null)
-      const response = await fetch(`/api/v1/operations/customers/${customer.hex_id}`, {
+      const url = deleteType === 'hard' 
+        ? `/api/v1/operations/customers/${deletingCustomer.hex_id}?hard_delete=true`
+        : `/api/v1/operations/customers/${deletingCustomer.hex_id}`
+        
+      const response = await fetch(url, {
         method: 'DELETE'
       })
 
       if (response.ok) {
-        setCustomers(customers.filter(c => c.hex_id !== customer.hex_id))
+        const result = await response.json()
+        // Show how many namespaces were affected if available
+        if (result.namespaces_affected !== undefined) {
+          console.log(`Deleted customer and ${result.namespaces_affected} namespace(s)`)
+        }
+        
+        // Refresh the customer list to get updated state from backend
+        await fetchCustomers()
+        
+        setDeletingCustomer(null)
+        setDeleteType('soft')
       } else {
         throw new Error('Failed to delete customer')
       }
     } catch (err) {
       console.error('Error deleting customer:', err)
       setError('Failed to delete customer. Please try again.')
+      setDeletingCustomer(null)
+    }
+  }
+
+  const handleRestoreCustomer = async (customer: Customer) => {
+    try {
+      setError(null)
+      const response = await fetch(`/api/v1/operations/customers/${customer.hex_id}/restore`, {
+        method: 'POST'
+      })
+
+      if (response.ok) {
+        // Refresh the customer list to get updated state from backend
+        await fetchCustomers()
+      } else {
+        throw new Error('Failed to restore customer')
+      }
+    } catch (err) {
+      console.error('Error restoring customer:', err)
+      setError('Failed to restore customer. Please try again.')
     }
   }
 
@@ -112,10 +186,20 @@ const CustomerManagement: React.FC = () => {
       const response = await fetch(`/api/v1/operations/customers/${customer.hex_id}`)
       if (response.ok) {
         const data = await response.json()
-        setSelectedCustomer(data)
+        // Ensure the data has the expected structure
+        setSelectedCustomer({
+          ...customer,
+          ...data,
+          hex_id: data.hex_id || customer.hex_id,
+          name: data.name || customer.name
+        })
+      } else {
+        // If API call fails, use the customer data we already have
+        setSelectedCustomer(customer)
       }
     } catch (err) {
       console.error('Error fetching customer details:', err)
+      // Use the customer data we already have
       setSelectedCustomer(customer)
     }
   }
@@ -124,16 +208,35 @@ const CustomerManagement: React.FC = () => {
     return <LoadingSpinner />
   }
 
+  // Filter customers based on showDeleted toggle
+  const visibleCustomers = showDeleted 
+    ? customers 
+    : customers.filter(c => !c.is_deleted)
+  
+  const deletedCount = customers.filter(c => c.is_deleted).length
+
   return (
     <div className="customer-management">
       <div className="management-header">
         <h2>Customer Management</h2>
-        <button 
-          className="btn btn-primary"
-          onClick={() => setShowCreateModal(true)}
-        >
-          + New Customer
-        </button>
+        <div className="header-actions">
+          {deletedCount > 0 && (
+            <label className="toggle-deleted">
+              <input 
+                type="checkbox"
+                checked={showDeleted}
+                onChange={(e) => setShowDeleted(e.target.checked)}
+              />
+              Show deleted ({deletedCount})
+            </label>
+          )}
+          <button 
+            className="btn btn-primary"
+            onClick={() => setShowCreateModal(true)}
+          >
+            + New Customer
+          </button>
+        </div>
       </div>
 
       {error && (
@@ -143,9 +246,20 @@ const CustomerManagement: React.FC = () => {
       )}
 
       <div className="customers-grid">
-        {customers.length === 0 ? (
+        {visibleCustomers.length === 0 ? (
           <div className="empty-state">
-            <p>No customers found</p>
+            <p>{showDeleted ? 'No customers found' : 'No active customers found'}</p>
+            {!showDeleted && deletedCount > 0 && (
+              <p className="hint">
+                {deletedCount} deleted customer(s) hidden. 
+                <button 
+                  className="link-button"
+                  onClick={() => setShowDeleted(true)}
+                >
+                  Show deleted
+                </button>
+              </p>
+            )}
             <button 
               className="btn btn-primary"
               onClick={() => setShowCreateModal(true)}
@@ -154,30 +268,65 @@ const CustomerManagement: React.FC = () => {
             </button>
           </div>
         ) : (
-          customers.map(customer => (
-            <div key={customer.hex_id} className="customer-card">
+          visibleCustomers.map(customer => (
+            <div 
+              key={customer.hex_id} 
+              className={`customer-card ${customer.is_deleted ? 'deleted' : ''}`}
+            >
+              {customer.is_deleted && (
+                <div className="deleted-badge">Deleted</div>
+              )}
               <div className="customer-info">
                 <h3>{customer.name}</h3>
                 <p className="customer-hex">ID: {customer.hex_id}</p>
-                {customer.created_at && (
+                {customer.deleted_at ? (
+                  <p className="customer-date deleted-date">
+                    Deleted: {new Date(customer.deleted_at).toLocaleDateString()}
+                  </p>
+                ) : customer.created_at ? (
                   <p className="customer-date">
                     Created: {new Date(customer.created_at).toLocaleDateString()}
                   </p>
-                )}
+                ) : null}
               </div>
               <div className="customer-actions">
-                <button 
-                  className="btn btn-sm btn-secondary"
-                  onClick={() => handleViewCustomer(customer)}
-                >
-                  View
-                </button>
-                <button 
-                  className="btn btn-sm btn-danger"
-                  onClick={() => handleDeleteCustomer(customer)}
-                >
-                  Delete
-                </button>
+                {customer.is_deleted ? (
+                  <>
+                    <button 
+                      className="btn btn-sm btn-success"
+                      onClick={() => handleRestoreCustomer(customer)}
+                    >
+                      Restore
+                    </button>
+                    <button 
+                      className="btn-icon btn-icon-danger"
+                      onClick={() => {
+                        setDeletingCustomer(customer)
+                        setDeleteType('hard')
+                      }}
+                      title="Permanently delete customer"
+                    >
+                      🗑️
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button 
+                      className="btn-icon"
+                      onClick={() => handleViewCustomer(customer)}
+                      title="View details"
+                    >
+                      👓
+                    </button>
+                    <button 
+                      className="btn-icon btn-icon-danger"
+                      onClick={() => setDeletingCustomer(customer)}
+                      title="Delete customer"
+                    >
+                      🗑️
+                    </button>
+                  </>
+                )}
               </div>
             </div>
           ))
@@ -186,25 +335,65 @@ const CustomerManagement: React.FC = () => {
 
       {/* Create Customer Modal */}
       {showCreateModal && (
-        <div className="modal-overlay" onClick={() => setShowCreateModal(false)}>
+        <div className="modal-overlay" onClick={() => {
+          setShowCreateModal(false)
+          setFormData({ customer_id: '', name: '', email: '' })
+          setError(null)
+        }}>
           <div className="modal-content" onClick={e => e.stopPropagation()}>
             <h3>Create New Customer</h3>
+            
+            {error && (
+              <div className="modal-error">
+                {error}
+              </div>
+            )}
+            
             <div className="form-group">
-              <label htmlFor="customerName">Customer Name</label>
+              <label htmlFor="customerId">Customer ID *</label>
+              <input
+                id="customerId"
+                type="text"
+                className="form-control"
+                value={formData.customer_id}
+                onChange={(e) => setFormData({ ...formData, customer_id: e.target.value })}
+                placeholder="e.g., restaurant-chain-001"
+                autoFocus
+              />
+            </div>
+            
+            <div className="form-group">
+              <label htmlFor="customerName">Customer Name *</label>
               <input
                 id="customerName"
                 type="text"
                 className="form-control"
-                value={newCustomerName}
-                onChange={(e) => setNewCustomerName(e.target.value)}
-                placeholder="Enter customer name"
-                autoFocus
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                placeholder="e.g., Demo Restaurant Chain"
               />
             </div>
+            
+            <div className="form-group">
+              <label htmlFor="customerEmail">Email *</label>
+              <input
+                id="customerEmail"
+                type="email"
+                className="form-control"
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                placeholder="e.g., admin@restaurant.com"
+              />
+            </div>
+            
             <div className="modal-actions">
               <button 
                 className="btn btn-secondary"
-                onClick={() => setShowCreateModal(false)}
+                onClick={() => {
+                  setShowCreateModal(false)
+                  setFormData({ customer_id: '', name: '', email: '' })
+                  setError(null)
+                }}
                 disabled={creating}
               >
                 Cancel
@@ -212,9 +401,71 @@ const CustomerManagement: React.FC = () => {
               <button 
                 className="btn btn-primary"
                 onClick={handleCreateCustomer}
-                disabled={creating || !newCustomerName.trim()}
+                disabled={creating || !formData.customer_id.trim() || !formData.name.trim() || !formData.email.trim()}
               >
                 {creating ? 'Creating...' : 'Create'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {deletingCustomer && (
+        <div className="modal-overlay" onClick={() => {
+          setDeletingCustomer(null)
+          setDeleteType('soft')
+        }}>
+          <div className="modal-content delete-modal" onClick={e => e.stopPropagation()}>
+            <h3>⚠️ Delete Customer</h3>
+            
+            <div className="delete-warning">
+              <p>Are you sure you want to delete <strong>{deletingCustomer.name}</strong>?</p>
+              
+              <div className="delete-options">
+                <label className="delete-option">
+                  <input
+                    type="radio"
+                    value="soft"
+                    checked={deleteType === 'soft'}
+                    onChange={(e) => setDeleteType('soft')}
+                  />
+                  <div>
+                    <strong>Soft Delete (Recommended)</strong>
+                    <p>Mark as deleted but preserve data for recovery</p>
+                  </div>
+                </label>
+                
+                <label className="delete-option">
+                  <input
+                    type="radio"
+                    value="hard"
+                    checked={deleteType === 'hard'}
+                    onChange={(e) => setDeleteType('hard')}
+                  />
+                  <div>
+                    <strong>Hard Delete</strong>
+                    <p className="danger-text">⚠️ Permanently delete customer and ALL associated namespaces, surveys, and data. This cannot be undone!</p>
+                  </div>
+                </label>
+              </div>
+            </div>
+            
+            <div className="modal-actions">
+              <button 
+                className="btn btn-secondary"
+                onClick={() => {
+                  setDeletingCustomer(null)
+                  setDeleteType('soft')
+                }}
+              >
+                Cancel
+              </button>
+              <button 
+                className="btn btn-danger"
+                onClick={confirmDeleteCustomer}
+              >
+                {deleteType === 'hard' ? '⚠️ Permanently Delete' : 'Delete'}
               </button>
             </div>
           </div>
@@ -230,9 +481,24 @@ const CustomerManagement: React.FC = () => {
               <div className="detail-row">
                 <strong>Name:</strong> {selectedCustomer.name}
               </div>
+              {selectedCustomer.customer_id && (
+                <div className="detail-row">
+                  <strong>Customer ID:</strong> {selectedCustomer.customer_id}
+                </div>
+              )}
               <div className="detail-row">
                 <strong>Hex ID:</strong> <code>{selectedCustomer.hex_id}</code>
               </div>
+              {selectedCustomer.email && (
+                <div className="detail-row">
+                  <strong>Email:</strong> {selectedCustomer.email}
+                </div>
+              )}
+              {selectedCustomer.is_active !== undefined && (
+                <div className="detail-row">
+                  <strong>Status:</strong> {selectedCustomer.is_active ? 'Active' : 'Inactive'}
+                </div>
+              )}
               {selectedCustomer.created_at && (
                 <div className="detail-row">
                   <strong>Created:</strong> {new Date(selectedCustomer.created_at).toLocaleString()}

@@ -1,0 +1,489 @@
+import React, { useState, useEffect } from 'react'
+import LoadingSpinner from '../common/LoadingSpinner'
+import './ResponseManagement.css'
+
+interface Customer {
+  id: string
+  name: string
+  hex_id: string
+}
+
+interface Namespace {
+  id: string
+  name: string
+  slug: string
+}
+
+interface Survey {
+  survey_id: string
+  name: string
+  version?: string
+  response_count?: number
+}
+
+interface SurveyResponse {
+  id: string
+  response_id: string
+  survey_data: Record<string, any>
+  submitted_at: string
+  respondent_id?: string
+  metadata?: Record<string, any>
+}
+
+const ResponseManagement: React.FC = () => {
+  const [customers, setCustomers] = useState<Customer[]>([])
+  const [namespaces, setNamespaces] = useState<Namespace[]>([])
+  const [surveys, setSurveys] = useState<Survey[]>([])
+  const [responses, setResponses] = useState<SurveyResponse[]>([])
+  
+  const [selectedCustomer, setSelectedCustomer] = useState<string>('')
+  const [selectedNamespace, setSelectedNamespace] = useState<string>('')
+  const [selectedSurvey, setSelectedSurvey] = useState<string>('')
+  
+  const [surveyDefinition, setSurveyDefinition] = useState<any>(null)
+  const [totalResponses, setTotalResponses] = useState(0)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [pageSize, setPageSize] = useState(10)
+  
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    fetchCustomers()
+  }, [])
+
+  useEffect(() => {
+    if (selectedCustomer) {
+      fetchNamespaces(selectedCustomer)
+      setSelectedNamespace('')
+      setSelectedSurvey('')
+      setSurveys([])
+      setResponses([])
+    } else {
+      setNamespaces([])
+      setSurveys([])
+      setResponses([])
+    }
+  }, [selectedCustomer])
+
+  useEffect(() => {
+    if (selectedCustomer && selectedNamespace) {
+      fetchSurveys(selectedCustomer, selectedNamespace)
+      setSelectedSurvey('')
+      setResponses([])
+    } else {
+      setSurveys([])
+      setResponses([])
+    }
+  }, [selectedCustomer, selectedNamespace])
+
+  useEffect(() => {
+    if (selectedCustomer && selectedNamespace && selectedSurvey) {
+      fetchResponses()
+      fetchSurveyDefinition()
+    }
+  }, [selectedCustomer, selectedNamespace, selectedSurvey, currentPage, pageSize])
+
+  const fetchCustomers = async () => {
+    try {
+      const response = await fetch('/api/v1/operations/customers')
+      if (response.ok) {
+        const data = await response.json()
+        const customersList = data.customers || []
+        setCustomers(customersList)
+        // Auto-select the first customer if available
+        if (customersList.length > 0 && !selectedCustomer) {
+          setSelectedCustomer(customersList[0].hex_id)
+        }
+      }
+    } catch (err) {
+      console.error('Error fetching customers:', err)
+      // Demo data
+      const demoCustomers = [
+        {
+          id: '1',
+          name: 'Demo Restaurant Chain',
+          hex_id: '30f8f53cf8034393b00665f664a60ddb'
+        }
+      ]
+      setCustomers(demoCustomers)
+      // Auto-select the demo customer
+      if (!selectedCustomer) {
+        setSelectedCustomer(demoCustomers[0].hex_id)
+      }
+    }
+  }
+
+  const fetchNamespaces = async (customerHex: string) => {
+    try {
+      const response = await fetch(`/api/v1/operations/customers/${customerHex}/namespaces`)
+      if (response.ok) {
+        const data = await response.json()
+        setNamespaces(data.namespaces || [])
+      }
+    } catch (err) {
+      console.error('Error fetching namespaces:', err)
+      // Demo data
+      setNamespaces([
+        {
+          id: '1',
+          name: 'Restaurant Survey',
+          slug: 'restaurant-survey'
+        }
+      ])
+    }
+  }
+
+  const fetchSurveys = async (customerHex: string, namespaceSlug: string) => {
+    try {
+      const response = await fetch(
+        `/api/v1/operations/customers/${customerHex}/namespaces/${namespaceSlug}/surveys`
+      )
+      
+      if (response.ok) {
+        const data = await response.json()
+        setSurveys(data.surveys || [])
+      }
+    } catch (err) {
+      console.error('Error fetching surveys:', err)
+      // Demo data
+      setSurveys([
+        {
+          survey_id: 'restaurant-feedback',
+          name: 'Restaurant Feedback Survey',
+          version: '1.0',
+          response_count: 42
+        }
+      ])
+    }
+  }
+
+  const fetchSurveyDefinition = async () => {
+    try {
+      const response = await fetch(
+        `/${selectedCustomer}/${selectedNamespace}/survey?survey_name=${selectedSurvey}`
+      )
+      
+      if (response.ok) {
+        const surveyData = await response.json()
+        setSurveyDefinition(surveyData)
+      }
+    } catch (err) {
+      console.error('Error fetching survey definition:', err)
+    }
+  }
+
+  const fetchResponses = async () => {
+    try {
+      setLoading(true)
+      setError(null)
+      
+      const url = `/api/v1/operations/customers/${selectedCustomer}/namespaces/${selectedNamespace}/responses?page=${currentPage}&size=${pageSize}&survey_name=${selectedSurvey}`
+      const response = await fetch(url)
+      
+      if (response.ok) {
+        const data = await response.json()
+        console.log('Responses fetched:', data)
+        
+        const responsesList = data.responses || []
+        const transformedResponses = responsesList.map((resp: any) => ({
+          id: resp.response_id,
+          response_id: resp.response_id,
+          survey_data: resp.response_data?.survey_data || resp.response_data || {},
+          submitted_at: resp.submitted_at || resp.created_at,
+          respondent_id: resp.respondent_id,
+          metadata: resp.metadata
+        }))
+        
+        setResponses(transformedResponses)
+        setTotalResponses(data.total || 0)
+      } else {
+        throw new Error('Failed to fetch responses')
+      }
+    } catch (err) {
+      console.error('Error fetching responses:', err)
+      setError('Failed to load responses')
+      // Demo data
+      setResponses([
+        {
+          id: 'demo-1',
+          response_id: 'demo-response-1',
+          survey_data: {
+            favorite_meal: 'Dinner',
+            satisfaction: 'Very satisfied',
+            recommend: 'Yes'
+          },
+          submitted_at: new Date().toISOString()
+        }
+      ])
+      setTotalResponses(1)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const getFieldNames = (): string[] => {
+    const fieldSet = new Set<string>()
+    
+    // If we have a survey definition, use its question names in order
+    if (surveyDefinition && surveyDefinition.pages) {
+      surveyDefinition.pages.forEach((page: any) => {
+        if (page.elements) {
+          page.elements.forEach((element: any) => {
+            if (element.name) {
+              fieldSet.add(element.name)
+            }
+          })
+        }
+      })
+    }
+    
+    // Also add any fields from actual responses
+    responses.forEach(response => {
+      if (response.survey_data) {
+        Object.keys(response.survey_data).forEach(key => {
+          fieldSet.add(key)
+        })
+      }
+    })
+    
+    return Array.from(fieldSet)
+  }
+
+  const getFieldTitle = (fieldName: string): string => {
+    // Try to get the title from survey definition
+    if (surveyDefinition && surveyDefinition.pages) {
+      for (const page of surveyDefinition.pages) {
+        if (page.elements) {
+          for (const element of page.elements) {
+            if (element.name === fieldName) {
+              return element.title || fieldName
+            }
+          }
+        }
+      }
+    }
+    
+    // Fallback to making the field name more readable
+    return fieldName
+      .replace(/_/g, ' ')
+      .replace(/\b\w/g, l => l.toUpperCase())
+  }
+
+  const formatFieldValue = (value: any): string => {
+    if (value === null || value === undefined) {
+      return '-'
+    }
+    
+    if (typeof value === 'boolean') {
+      return value ? 'Yes' : 'No'
+    }
+    
+    if (Array.isArray(value)) {
+      return value.join(', ')
+    }
+    
+    if (typeof value === 'object') {
+      return JSON.stringify(value)
+    }
+    
+    return String(value)
+  }
+
+  const exportToCSV = () => {
+    if (responses.length === 0) return
+    
+    const fieldNames = getFieldNames()
+    const headers = ['Response ID', 'Submitted At', ...fieldNames.map(name => getFieldTitle(name))]
+    const rows = responses.map(response => [
+      response.response_id || response.id,
+      new Date(response.submitted_at).toLocaleString(),
+      ...fieldNames.map(name => formatFieldValue(response.survey_data?.[name]))
+    ])
+    
+    const csvContent = [
+      headers.join(','),
+      ...rows.map(row => row.map(cell => {
+        const value = String(cell || '')
+        return value.includes(',') || value.includes('"') || value.includes('\n') 
+          ? `"${value.replace(/"/g, '""')}"` 
+          : value
+      }).join(','))
+    ].join('\n')
+    
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+    const link = document.createElement('a')
+    const url = URL.createObjectURL(blob)
+    
+    const survey = surveys.find(s => s.survey_id === selectedSurvey)
+    const surveyName = survey?.name || selectedSurvey
+    const timestamp = new Date().toISOString().split('T')[0]
+    link.setAttribute('href', url)
+    link.setAttribute('download', `${surveyName}_responses_${timestamp}.csv`)
+    link.style.visibility = 'hidden'
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  }
+
+  const totalPages = Math.ceil(totalResponses / pageSize)
+  const fieldNames = getFieldNames()
+
+  return (
+    <div className="response-management">
+      <div className="management-header">
+        <h2>View Responses</h2>
+        <div className="header-actions">
+          <select 
+            className="select-control"
+            value={selectedCustomer}
+            onChange={(e) => setSelectedCustomer(e.target.value)}
+          >
+            <option value="">Select customer...</option>
+            {customers.map(customer => (
+              <option key={customer.hex_id} value={customer.hex_id}>
+                {customer.name}
+              </option>
+            ))}
+          </select>
+          <select 
+            className="select-control"
+            value={selectedNamespace}
+            onChange={(e) => setSelectedNamespace(e.target.value)}
+            disabled={!selectedCustomer}
+          >
+            <option value="">Select namespace...</option>
+            {namespaces.map(namespace => (
+              <option key={namespace.slug} value={namespace.slug}>
+                {namespace.name}
+              </option>
+            ))}
+          </select>
+          <select 
+            className="select-control"
+            value={selectedSurvey}
+            onChange={(e) => setSelectedSurvey(e.target.value)}
+            disabled={!selectedNamespace}
+          >
+            <option value="">Select survey...</option>
+            {surveys.map(survey => (
+              <option key={survey.survey_id} value={survey.survey_id}>
+                {survey.name}
+              </option>
+            ))}
+          </select>
+          {selectedSurvey && responses.length > 0 && (
+            <button 
+              className="btn btn-primary"
+              onClick={exportToCSV}
+            >
+              📥 Export CSV
+            </button>
+          )}
+        </div>
+      </div>
+
+      {error && (
+        <div className="error-message">
+          {error}
+        </div>
+      )}
+
+      {!selectedCustomer || !selectedNamespace || !selectedSurvey ? (
+        <div className="empty-state">
+          <p>Please select a customer, namespace, and survey to view responses</p>
+        </div>
+      ) : loading ? (
+        <LoadingSpinner />
+      ) : responses.length > 0 ? (
+        <>
+          <div className="responses-summary">
+            <div className="summary-card">
+              <h3>Total Responses</h3>
+              <p className="summary-value">{totalResponses}</p>
+            </div>
+            <div className="summary-card">
+              <h3>Page Size</h3>
+              <select
+                value={pageSize}
+                onChange={(e) => {
+                  setPageSize(Number(e.target.value))
+                  setCurrentPage(1)
+                }}
+                className="page-size-select"
+              >
+                <option value={10}>10</option>
+                <option value={25}>25</option>
+                <option value={50}>50</option>
+                <option value={100}>100</option>
+              </select>
+            </div>
+            <div className="summary-card">
+              <h3>Current Page</h3>
+              <p className="summary-value">{currentPage} of {totalPages}</p>
+            </div>
+          </div>
+
+          <div className="table-wrapper">
+            <table className="responses-table">
+              <thead>
+                <tr>
+                  <th>Response ID</th>
+                  <th>Submitted At</th>
+                  {fieldNames.map(fieldName => (
+                    <th key={fieldName}>{getFieldTitle(fieldName)}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {responses.map((response) => (
+                  <tr key={response.id || response.response_id}>
+                    <td className="response-id">
+                      {response.response_id?.slice(-8) || response.id?.slice(-8)}
+                    </td>
+                    <td className="submitted-at">
+                      {new Date(response.submitted_at).toLocaleString()}
+                    </td>
+                    {fieldNames.map(fieldName => (
+                      <td key={fieldName} className="response-data">
+                        {formatFieldValue(response.survey_data?.[fieldName])}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {totalPages > 1 && (
+            <div className="pagination">
+              <button
+                onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                disabled={currentPage === 1}
+                className="btn btn-secondary"
+              >
+                ← Previous
+              </button>
+              <span className="pagination-info">
+                Page {currentPage} of {totalPages}
+              </span>
+              <button
+                onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                disabled={currentPage === totalPages}
+                className="btn btn-secondary"
+              >
+                Next →
+              </button>
+            </div>
+          )}
+        </>
+      ) : (
+        <div className="empty-state">
+          <p>No responses found for this survey</p>
+        </div>
+      )}
+    </div>
+  )
+}
+
+export default ResponseManagement

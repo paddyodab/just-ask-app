@@ -17,11 +17,12 @@ interface Namespace {
 }
 
 interface Survey {
+  survey_id: string
   name: string
-  title?: string
-  description?: string
+  version?: string
+  response_count?: number
   created_at?: string
-  status?: string
+  updated_at?: string
 }
 
 const SurveySelectorPage: React.FC = () => {
@@ -34,7 +35,6 @@ const SurveySelectorPage: React.FC = () => {
   
   const [selectedCustomer, setSelectedCustomer] = useState<string>('')
   const [selectedNamespace, setSelectedNamespace] = useState<string>('')
-  const [selectedSurvey, setSelectedSurvey] = useState<string>('')
   
   // Loading states
   const [loadingCustomers, setLoadingCustomers] = useState(true)
@@ -54,7 +54,9 @@ const SurveySelectorPage: React.FC = () => {
     if (selectedCustomer) {
       fetchNamespaces(selectedCustomer)
       setSelectedNamespace('')
-      setSelectedSurvey('')
+      setSurveys([])
+    } else {
+      setNamespaces([])
       setSurveys([])
     }
   }, [selectedCustomer])
@@ -63,7 +65,8 @@ const SurveySelectorPage: React.FC = () => {
   useEffect(() => {
     if (selectedCustomer && selectedNamespace) {
       fetchSurveys(selectedCustomer, selectedNamespace)
-      setSelectedSurvey('')
+    } else {
+      setSurveys([])
     }
   }, [selectedCustomer, selectedNamespace])
 
@@ -86,27 +89,41 @@ const SurveySelectorPage: React.FC = () => {
           hex: customer.hex_id || customer.hex
         }))
         setCustomers(transformedCustomers)
+        // Auto-select the first customer if available
+        if (transformedCustomers.length > 0 && !selectedCustomer) {
+          setSelectedCustomer(transformedCustomers[0].hex)
+        }
       } else {
         console.warn('Failed to fetch customers, using fallback')
         // Fallback to demo customer for now
-        setCustomers([
+        const demoCustomers = [
           {
             id: '1',
             name: 'Demo Restaurant Chain',
             hex: '30f8f53cf8034393b00665f664a60ddb'
           }
-        ])
+        ]
+        setCustomers(demoCustomers)
+        // Auto-select the demo customer
+        if (!selectedCustomer) {
+          setSelectedCustomer(demoCustomers[0].hex)
+        }
       }
     } catch (err) {
       console.error('Error fetching customers:', err)
       // Use demo data as fallback
-      setCustomers([
+      const demoCustomers = [
         {
           id: '1',
           name: 'Demo Restaurant Chain',
           hex: '30f8f53cf8034393b00665f664a60ddb'
         }
-      ])
+      ]
+      setCustomers(demoCustomers)
+      // Auto-select the demo customer
+      if (!selectedCustomer) {
+        setSelectedCustomer(demoCustomers[0].hex)
+      }
     } finally {
       setLoadingCustomers(false)
     }
@@ -174,48 +191,31 @@ const SurveySelectorPage: React.FC = () => {
         
         // Transform the response to our format - the API returns { namespace, surveys: [...] }
         const surveysList = data.surveys || data
-        
-        if (Array.isArray(surveysList) && surveysList.length > 0) {
-          const transformedSurveys = surveysList.map((survey: any) => ({
-            name: survey.survey_id,  // Use survey_id as the identifier
-            title: survey.name || 'Untitled Survey',
-            description: `Version ${survey.version || '1.0'} - ${survey.response_count || 0} responses`,
-            status: survey.updated_at ? 'updated' : 'published',
-            created_at: survey.created_at
-          }))
-          setSurveys(transformedSurveys)
-        } else {
-          // If no surveys found, show at least the default option
-          setSurveys([
-            {
-              name: 'default',
-              title: 'Default Survey',
-              description: 'Standard survey configuration',
-              status: 'published'
-            }
-          ])
-        }
+        setSurveys(surveysList)
       } else {
         console.warn('Failed to fetch surveys, using fallback')
-        // Fallback to default survey
+        // Fallback to demo survey
         setSurveys([
           {
-            name: 'default',
-            title: 'Default Survey',
-            description: 'Standard survey configuration',
-            status: 'published'
+            survey_id: 'restaurant-feedback',
+            name: 'Restaurant Feedback Survey',
+            version: '1.0',
+            response_count: 42,
+            created_at: new Date().toISOString()
           }
         ])
       }
     } catch (err) {
       console.error('Error fetching surveys:', err)
+      setError('Failed to load surveys')
       // Use demo data as fallback
       setSurveys([
         {
-          name: 'default',
-          title: 'Default Survey',
-          description: 'Standard survey configuration',
-          status: 'published'
+          survey_id: 'restaurant-feedback',
+          name: 'Restaurant Feedback Survey',
+          version: '1.0',
+          response_count: 42,
+          created_at: new Date().toISOString()
         }
       ])
     } finally {
@@ -223,25 +223,51 @@ const SurveySelectorPage: React.FC = () => {
     }
   }
 
-  const handleLaunchSurvey = () => {
-    if (selectedCustomer && selectedNamespace && selectedSurvey) {
+  const handleLaunchSurvey = (surveyId: string) => {
+    if (selectedCustomer && selectedNamespace && surveyId) {
       // Navigate to survey page with parameters
       const params = new URLSearchParams({
         customer: selectedCustomer,
         namespace: selectedNamespace,
-        survey: selectedSurvey
+        survey: surveyId
       })
       navigate(`/survey?${params.toString()}`)
     }
   }
 
-  const canLaunch = selectedCustomer && selectedNamespace && selectedSurvey
-
   return (
     <div className="survey-selector-page">
       <div className="selector-container">
-        <h1>Survey Launcher</h1>
-        <p className="description">Select a customer, namespace, and survey to launch</p>
+        <div className="selector-header">
+          <h2>Survey Launcher</h2>
+          <div className="header-actions">
+            <select 
+              className="select-control"
+              value={selectedCustomer}
+              onChange={(e) => setSelectedCustomer(e.target.value)}
+            >
+              <option value="">Select customer...</option>
+              {customers.map(customer => (
+                <option key={customer.hex} value={customer.hex}>
+                  {customer.name}
+                </option>
+              ))}
+            </select>
+            <select 
+              className="select-control"
+              value={selectedNamespace}
+              onChange={(e) => setSelectedNamespace(e.target.value)}
+              disabled={!selectedCustomer}
+            >
+              <option value="">Select namespace...</option>
+              {namespaces.map(namespace => (
+                <option key={namespace.slug} value={namespace.slug}>
+                  {namespace.name}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
 
         {error && (
           <div className="error-message">
@@ -249,96 +275,52 @@ const SurveySelectorPage: React.FC = () => {
           </div>
         )}
 
-        <div className="selector-section">
-          {/* Customer Selection */}
-          <div className="form-group">
-            <label htmlFor="customer">Customer</label>
-            {loadingCustomers ? (
-              <LoadingSpinner />
-            ) : (
-              <select
-                id="customer"
-                value={selectedCustomer}
-                onChange={(e) => setSelectedCustomer(e.target.value)}
-                className="form-control"
-              >
-                <option value="">Select a customer...</option>
-                {customers.map((customer) => (
-                  <option key={customer.id} value={customer.hex}>
-                    {customer.name}
-                  </option>
-                ))}
-              </select>
-            )}
+        {!selectedCustomer || !selectedNamespace ? (
+          <div className="empty-state">
+            <p>Please select a customer and namespace to view available surveys</p>
           </div>
-
-          {/* Namespace Selection */}
-          {selectedCustomer && (
-            <div className="form-group">
-              <label htmlFor="namespace">Namespace</label>
-              {loadingNamespaces ? (
-                <LoadingSpinner />
-              ) : (
-                <select
-                  id="namespace"
-                  value={selectedNamespace}
-                  onChange={(e) => setSelectedNamespace(e.target.value)}
-                  className="form-control"
-                >
-                  <option value="">Select a namespace...</option>
-                  {namespaces.map((namespace) => (
-                    <option key={namespace.id} value={namespace.slug}>
-                      {namespace.name}
-                    </option>
-                  ))}
-                </select>
-              )}
-            </div>
-          )}
-
-          {/* Survey Selection */}
-          {selectedNamespace && (
-            <div className="form-group">
-              <label htmlFor="survey">Survey</label>
-              {loadingSurveys ? (
-                <LoadingSpinner />
-              ) : (
-                <select
-                  id="survey"
-                  value={selectedSurvey}
-                  onChange={(e) => setSelectedSurvey(e.target.value)}
-                  className="form-control"
-                >
-                  <option value="">Select a survey...</option>
-                  {surveys.map((survey) => (
-                    <option key={survey.name} value={survey.name}>
-                      {survey.title || survey.name}
-                    </option>
-                  ))}
-                </select>
-              )}
-            </div>
-          )}
-        </div>
-
-        {/* Launch Button */}
-        <div className="form-actions">
-          <button
-            onClick={handleLaunchSurvey}
-            disabled={!canLaunch}
-            className="btn btn-primary"
-          >
-            Launch Survey
-          </button>
-        </div>
-
-        {/* Preview URL */}
-        {canLaunch && (
-          <div className="preview-section">
-            <h3>Survey URL:</h3>
-            <code className="survey-url">
-              {window.location.origin}/survey?customer={selectedCustomer}&namespace={selectedNamespace}&survey={selectedSurvey}
-            </code>
+        ) : loadingSurveys ? (
+          <LoadingSpinner />
+        ) : (
+          <div className="surveys-grid">
+            {surveys.length === 0 ? (
+              <div className="empty-state">
+                <p>No surveys found for this namespace</p>
+                <p className="hint">Contact your administrator to add surveys</p>
+              </div>
+            ) : (
+              surveys.map(survey => (
+                <div key={survey.survey_id} className="survey-card">
+                  <div className="survey-header">
+                    <h3>{survey.name}</h3>
+                    {survey.version && (
+                      <span className="survey-version">v{survey.version}</span>
+                    )}
+                  </div>
+                  <div className="survey-info">
+                    <p className="survey-id">ID: {survey.survey_id}</p>
+                    {survey.response_count !== undefined && (
+                      <p className="survey-responses">
+                        <strong>{survey.response_count}</strong> responses collected
+                      </p>
+                    )}
+                    {survey.created_at && (
+                      <p className="survey-date">
+                        Created: {new Date(survey.created_at).toLocaleDateString()}
+                      </p>
+                    )}
+                  </div>
+                  <div className="survey-actions">
+                    <button 
+                      className="btn btn-primary btn-full"
+                      onClick={() => handleLaunchSurvey(survey.survey_id)}
+                    >
+                      Take Survey →
+                    </button>
+                  </div>
+                </div>
+              ))
+            )}
           </div>
         )}
       </div>

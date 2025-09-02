@@ -99,6 +99,38 @@
 .lookup-actions {
   display: flex;
   gap: 0.5rem;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+/* Icon Button Styles */
+.btn-icon {
+  background: transparent;
+  border: none;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 1.2rem;
+}
+
+.btn-icon:hover {
+  background: rgba(0, 0, 0, 0.05);
+  transform: scale(1.1);
+}
+
+.btn-icon-danger {
+  color: #dc3545;
+}
+
+.btn-icon-danger:hover {
+  background: rgba(220, 53, 69, 0.1);
+  color: #c82333;
 }
 
 /* Modal specific styles */
@@ -209,6 +241,90 @@ input[type="file"] {
   overflow-x: auto;
 }
 
+/* Data View Modal */
+.data-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 1rem 0;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.data-info {
+  margin: 0;
+  color: #666;
+}
+
+.data-info strong {
+  color: #333;
+}
+
+.data-table-wrapper {
+  max-height: 400px;
+  overflow-y: auto;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  margin: 1rem 0;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table thead {
+  background: #f8f9fa;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.data-table th {
+  padding: 0.75rem;
+  text-align: left;
+  font-weight: 600;
+  color: #333;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.data-table tbody tr {
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.data-table tbody tr:hover {
+  background: #f8f9fa;
+}
+
+.data-table td {
+  padding: 0.75rem;
+  color: #666;
+  text-align: left;
+}
+
+.data-table .key-cell {
+  font-family: monospace;
+  font-size: 0.9rem;
+  color: #667eea;
+  background: rgba(102, 126, 234, 0.05);
+}
+
+.data-table .key-header {
+  background: rgba(102, 126, 234, 0.1);
+}
+
+.data-table {
+  min-width: 600px;
+}
+
+.data-table th,
+.data-table td {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 300px;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .header-actions {
@@ -230,5 +346,15 @@ input[type="file"] {
   
   .sample-buttons {
     flex-direction: column;
+  }
+  
+  .data-modal-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+  
+  .data-table-wrapper {
+    overflow-x: auto;
   }
 }

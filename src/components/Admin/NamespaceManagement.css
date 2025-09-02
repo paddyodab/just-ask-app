@@ -37,11 +37,57 @@
   padding: 1.5rem;
   border: 1px solid #e0e0e0;
   transition: all 0.2s;
+  position: relative;
 }
 
 .namespace-card:hover {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   transform: translateY(-2px);
+}
+
+.namespace-card.deleted {
+  background: #fff5f5;
+  border-color: #ffcccc;
+  opacity: 0.85;
+}
+
+.namespace-card.deleted:hover {
+  opacity: 1;
+  box-shadow: 0 4px 12px rgba(255, 0, 0, 0.1);
+}
+
+.deleted-badge {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: #dc3545;
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.toggle-deleted {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: #f8f9fa;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #666;
+  transition: background 0.2s;
+}
+
+.toggle-deleted:hover {
+  background: #e9ecef;
+}
+
+.toggle-deleted input[type="checkbox"] {
+  cursor: pointer;
 }
 
 .namespace-info h3 {
@@ -66,6 +112,38 @@
   display: flex;
   gap: 0.5rem;
   margin-top: 1rem;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+/* Icon Button Styles */
+.btn-icon {
+  background: transparent;
+  border: none;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 1.2rem;
+}
+
+.btn-icon:hover {
+  background: rgba(0, 0, 0, 0.05);
+  transform: scale(1.1);
+}
+
+.btn-icon-danger {
+  color: #dc3545;
+}
+
+.btn-icon-danger:hover {
+  background: rgba(220, 53, 69, 0.1);
+  color: #c82333;
 }
 
 .form-group small {

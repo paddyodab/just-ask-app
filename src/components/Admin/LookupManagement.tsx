@@ -31,6 +31,10 @@ const LookupManagement: React.FC = () => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [showUploadModal, setShowUploadModal] = useState(false)
+  const [showDataModal, setShowDataModal] = useState(false)
+  const [viewingLookup, setViewingLookup] = useState<Lookup | null>(null)
+  const [lookupData, setLookupData] = useState<any[]>([])
+  const [loadingData, setLoadingData] = useState(false)
   const [uploadData, setUploadData] = useState({
     lookupName: '',
     lookupType: 'key_value' as 'list' | 'key_value',
@@ -66,18 +70,28 @@ const LookupManagement: React.FC = () => {
       const response = await fetch('/api/v1/operations/customers')
       if (response.ok) {
         const data = await response.json()
-        setCustomers(data.customers || [])
+        const customersList = data.customers || []
+        setCustomers(customersList)
+        // Auto-select the first customer if available
+        if (customersList.length > 0 && !selectedCustomer) {
+          setSelectedCustomer(customersList[0].hex_id)
+        }
       }
     } catch (err) {
       console.error('Error fetching customers:', err)
       // Demo data
-      setCustomers([
+      const demoCustomers = [
         {
           id: '1',
           name: 'Demo Restaurant Chain',
           hex_id: '30f8f53cf8034393b00665f664a60ddb'
         }
-      ])
+      ]
+      setCustomers(demoCustomers)
+      // Auto-select the demo customer
+      if (!selectedCustomer) {
+        setSelectedCustomer(demoCustomers[0].hex_id)
+      }
     }
   }
 
@@ -171,6 +185,101 @@ const LookupManagement: React.FC = () => {
     } finally {
       setUploading(false)
     }
+  }
+
+  const handleViewLookupData = async (lookup: Lookup) => {
+    setViewingLookup(lookup)
+    setShowDataModal(true)
+    setLoadingData(true)
+    
+    try {
+      const response = await fetch(
+        `/${selectedCustomer}/${selectedNamespace}/lookups/${lookup.name}?page=1&size=1000&reverse=false`
+      )
+      
+      if (response.ok) {
+        const data = await response.json()
+        // Handle both array and object responses
+        if (Array.isArray(data)) {
+          setLookupData(data)
+        } else if (data.items) {
+          setLookupData(data.items)
+        } else {
+          setLookupData([])
+        }
+      } else {
+        throw new Error('Failed to fetch lookup data')
+      }
+    } catch (err) {
+      console.error('Error fetching lookup data:', err)
+      // Demo data with all fields
+      setLookupData([
+        { 
+          key: 'beach', 
+          value: 'Beach Resorts', 
+          text: 'Beach Resorts',
+          description: 'Relaxing beach destinations',
+          category: 'leisure',
+          popularity: 95,
+          created_at: '2025-01-15T10:00:00Z'
+        },
+        { 
+          key: 'mountain', 
+          value: 'Mountain Retreats', 
+          text: 'Mountain Retreats',
+          description: 'Mountain hiking and skiing',
+          category: 'adventure',
+          popularity: 78,
+          created_at: '2025-01-15T10:00:00Z'
+        },
+        { 
+          key: 'city', 
+          value: 'City Tours', 
+          text: 'City Tours',
+          description: 'Urban exploration and culture',
+          category: 'culture',
+          popularity: 82,
+          created_at: '2025-01-15T10:00:00Z'
+        }
+      ])
+    } finally {
+      setLoadingData(false)
+    }
+  }
+
+  const exportLookupData = () => {
+    if (!viewingLookup || lookupData.length === 0) return
+    
+    // Get all unique keys from all items
+    const allKeys = new Set<string>()
+    lookupData.forEach(item => {
+      Object.keys(item).forEach(key => allKeys.add(key))
+    })
+    
+    const headers = Array.from(allKeys)
+    
+    // Build CSV content with all fields
+    let csvContent = headers.map(h => `"${h}"`).join(',') + '\n'
+    csvContent += lookupData.map(item => 
+      headers.map(header => {
+        const value = item[header]
+        if (value === null || value === undefined) return ''
+        const strValue = String(value)
+        // Escape quotes and wrap in quotes if contains comma, quote, or newline
+        if (strValue.includes(',') || strValue.includes('"') || strValue.includes('\n')) {
+          return `"${strValue.replace(/"/g, '""')}"`
+        }
+        return strValue
+      }).join(',')
+    ).join('\n')
+    
+    const blob = new Blob([csvContent], { type: 'text/csv' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `${viewingLookup.name}_data.csv`
+    a.click()
+    URL.revokeObjectURL(url)
   }
 
   const handleDeleteLookup = async (lookup: Lookup) => {
@@ -312,10 +421,18 @@ const LookupManagement: React.FC = () => {
                 </div>
                 <div className="lookup-actions">
                   <button 
-                    className="btn btn-sm btn-danger"
-                    onClick={() => handleDeleteLookup(lookup)}
+                    className="btn-icon"
+                    onClick={() => handleViewLookupData(lookup)}
+                    title="View lookup data"
                   >
-                    Delete
+                    👓
+                  </button>
+                  <button 
+                    className="btn-icon btn-icon-danger"
+                    onClick={() => handleDeleteLookup(lookup)}
+                    title="Delete lookup"
+                  >
+                    🗑️
                   </button>
                 </div>
               </div>
@@ -436,6 +553,90 @@ Option 2`}</pre>
                 disabled={uploading || !uploadData.lookupName || !uploadData.csvFile}
               >
                 {uploading ? 'Uploading...' : 'Upload'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* View Data Modal */}
+      {showDataModal && viewingLookup && (
+        <div className="modal-overlay" onClick={() => setShowDataModal(false)}>
+          <div className="modal-content modal-large" onClick={e => e.stopPropagation()}>
+            <h3>Lookup Data: {viewingLookup.name}</h3>
+            
+            <div className="data-modal-header">
+              <p className="data-info">
+                Type: <strong>{viewingLookup.type === 'key_value' ? 'Key-Value' : 'List'}</strong>
+                {' • '}
+                Total items: <strong>{lookupData.length}</strong>
+              </p>
+              <button 
+                className="btn btn-sm btn-primary"
+                onClick={exportLookupData}
+                disabled={loadingData || lookupData.length === 0}
+              >
+                📥 Export CSV
+              </button>
+            </div>
+
+            {loadingData ? (
+              <LoadingSpinner />
+            ) : lookupData.length === 0 ? (
+              <div className="empty-state">
+                <p>No data found for this lookup</p>
+              </div>
+            ) : (
+              <div className="data-table-wrapper">
+                <table className="data-table">
+                  <thead>
+                    <tr>
+                      {(() => {
+                        // Get all unique keys from all items to create headers
+                        const allKeys = new Set<string>()
+                        lookupData.forEach(item => {
+                          Object.keys(item).forEach(key => allKeys.add(key))
+                        })
+                        return Array.from(allKeys).map(key => (
+                          <th key={key} className={key === 'key' ? 'key-header' : ''}>
+                            {key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, ' ')}
+                          </th>
+                        ))
+                      })()}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {lookupData.map((item, index) => (
+                      <tr key={index}>
+                        {(() => {
+                          // Get headers again to ensure consistent column order
+                          const allKeys = new Set<string>()
+                          lookupData.forEach(item => {
+                            Object.keys(item).forEach(key => allKeys.add(key))
+                          })
+                          return Array.from(allKeys).map(key => (
+                            <td key={key} className={key === 'key' ? 'key-cell' : ''}>
+                              {item[key] !== null && item[key] !== undefined ? String(item[key]) : ''}
+                            </td>
+                          ))
+                        })()}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+
+            <div className="modal-actions">
+              <button 
+                className="btn btn-primary"
+                onClick={() => {
+                  setShowDataModal(false)
+                  setViewingLookup(null)
+                  setLookupData([])
+                }}
+              >
+                Close
               </button>
             </div>
           </div>

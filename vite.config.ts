@@ -10,6 +10,7 @@ export default defineConfig({
       '/api': {
         target: 'http://localhost:8001',
         changeOrigin: true,
+        secure: false,
       },
       // Proxy for the new URL structure with customer hex
       '/30f8f53cf8034393b00665f664a60ddb': {

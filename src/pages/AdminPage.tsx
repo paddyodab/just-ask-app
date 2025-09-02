@@ -4,6 +4,7 @@ import CustomerManagement from '../components/Admin/CustomerManagement'
 import NamespaceManagement from '../components/Admin/NamespaceManagement'
 import LookupManagement from '../components/Admin/LookupManagement'
 import SurveyManagement from '../components/Admin/SurveyManagement'
+import ResponseManagement from '../components/Admin/ResponseManagement'
 import './AdminPage.css'
 
 const AdminPage: React.FC = () => {
@@ -47,6 +48,13 @@ const AdminPage: React.FC = () => {
             <span className="nav-icon">📝</span>
             Surveys
           </Link>
+          <Link 
+            to="/admin/responses" 
+            className={`admin-nav-link ${currentPath.includes('/admin/responses') ? 'active' : ''}`}
+          >
+            <span className="nav-icon">📊</span>
+            View Responses
+          </Link>
         </nav>
 
         <div className="admin-content">
@@ -56,6 +64,7 @@ const AdminPage: React.FC = () => {
             <Route path="/namespaces" element={<NamespaceManagement />} />
             <Route path="/lookups" element={<LookupManagement />} />
             <Route path="/surveys" element={<SurveyManagement />} />
+            <Route path="/responses" element={<ResponseManagement />} />
           </Routes>
         </div>
       </div>

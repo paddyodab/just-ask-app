@@ -14,6 +14,33 @@
   color: #333;
 }
 
+.header-actions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.toggle-deleted {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: #f8f9fa;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #666;
+  transition: background 0.2s;
+}
+
+.toggle-deleted:hover {
+  background: #e9ecef;
+}
+
+.toggle-deleted input[type="checkbox"] {
+  cursor: pointer;
+}
+
 .customers-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -26,11 +53,36 @@
   padding: 1.5rem;
   border: 1px solid #e0e0e0;
   transition: all 0.2s;
+  position: relative;
 }
 
 .customer-card:hover {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   transform: translateY(-2px);
+}
+
+.customer-card.deleted {
+  background: #fff5f5;
+  border-color: #ffcccc;
+  opacity: 0.85;
+}
+
+.customer-card.deleted:hover {
+  opacity: 1;
+  box-shadow: 0 4px 12px rgba(255, 0, 0, 0.1);
+}
+
+.deleted-badge {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: #dc3545;
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
 }
 
 .customer-info h3 {
@@ -52,10 +104,17 @@
   margin: 0.5rem 0;
 }
 
+.deleted-date {
+  color: #dc3545;
+  font-weight: 500;
+}
+
 .customer-actions {
   display: flex;
   gap: 0.5rem;
   margin-top: 1rem;
+  justify-content: flex-end;
+  align-items: center;
 }
 
 .empty-state {
@@ -68,6 +127,12 @@
 .empty-state p {
   margin-bottom: 1.5rem;
   font-size: 1.1rem;
+}
+
+.empty-state .hint {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 1rem;
 }
 
 /* Modal Styles */
@@ -91,11 +156,13 @@
   width: 90%;
   max-width: 500px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  color: #333;
 }
 
 .modal-content h3 {
   margin: 0 0 1.5rem 0;
   color: #333;
+  text-align: left;
 }
 
 .form-group {
@@ -128,7 +195,7 @@
 .modal-actions {
   display: flex;
   gap: 1rem;
-  justify-content: flex-end;
+  justify-content: flex-start;
   margin-top: 1.5rem;
 }
 
@@ -139,6 +206,8 @@
 .detail-row {
   padding: 0.75rem 0;
   border-bottom: 1px solid #e0e0e0;
+  color: #333;
+  text-align: left;
 }
 
 .detail-row:last-child {
@@ -149,6 +218,7 @@
   display: inline-block;
   width: 100px;
   color: #666;
+  text-align: left;
 }
 
 .detail-row code {
@@ -196,6 +266,30 @@
   background: #c82333;
 }
 
+.btn-success {
+  background: #28a745;
+  color: white;
+}
+
+.btn-success:hover:not(:disabled) {
+  background: #218838;
+}
+
+.link-button {
+  background: none;
+  border: none;
+  color: #667eea;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 0.25rem;
+  font-size: inherit;
+}
+
+.link-button:hover {
+  color: #764ba2;
+}
+
 .btn-sm {
   padding: 0.25rem 0.75rem;
   font-size: 0.875rem;
@@ -206,6 +300,36 @@
   cursor: not-allowed;
 }
 
+/* Icon Button Styles */
+.btn-icon {
+  background: transparent;
+  border: none;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 1.2rem;
+}
+
+.btn-icon:hover {
+  background: rgba(0, 0, 0, 0.05);
+  transform: scale(1.1);
+}
+
+.btn-icon-danger {
+  color: #dc3545;
+}
+
+.btn-icon-danger:hover {
+  background: rgba(220, 53, 69, 0.1);
+  color: #c82333;
+}
+
 .error-message {
   background: #fee;
   color: #c00;
@@ -213,6 +337,77 @@
   border-radius: 6px;
   margin-bottom: 1rem;
   border: 1px solid #fcc;
+}
+
+.modal-error {
+  background: #fee;
+  color: #c00;
+  padding: 0.75rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  border: 1px solid #fcc;
+  font-size: 0.9rem;
+}
+
+/* Delete Modal Styles */
+.delete-modal h3 {
+  color: #d32f2f;
+}
+
+.delete-warning {
+  margin: 1.5rem 0;
+}
+
+.delete-warning > p {
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+  color: #333;
+}
+
+.delete-options {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.delete-option {
+  display: flex;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.delete-option:hover {
+  border-color: #ddd;
+}
+
+.delete-option input[type="radio"] {
+  margin-top: 0.25rem;
+}
+
+.delete-option input[type="radio"]:checked + div {
+  font-weight: 600;
+}
+
+.delete-option div strong {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: #333;
+}
+
+.delete-option div p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.danger-text {
+  color: #d32f2f !important;
+  font-weight: 500;
 }
 
 /* Responsive */

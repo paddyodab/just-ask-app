@@ -13,7 +13,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     <div className="layout">
       <header className="header">
         <div className="header-content">
-          <h1 className="logo">Just Ask</h1>
+          <h1 className="logo">Just Ask!</h1>
           <nav className="nav">
             <Link 
               to="/" 
@@ -28,12 +28,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               Take Survey
             </Link>
             <Link 
-              to="/responses" 
-              className={`nav-link ${location.pathname === '/responses' ? 'active' : ''}`}
-            >
-              View Responses
-            </Link>
-            <Link 
               to="/admin" 
               className={`nav-link ${location.pathname.startsWith('/admin') ? 'active' : ''}`}
             >
@@ -46,7 +40,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         {children}
       </main>
       <footer className="footer">
-        <p>&copy; 2025 Just Ask Survey Platform</p>
+        <p>&copy; 2025 Just Ask! Survey Platform</p>
       </footer>
     </div>
   )
