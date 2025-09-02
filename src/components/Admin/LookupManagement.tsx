@@ -673,8 +673,8 @@ Option 2`}</pre>
           setShowUrlModal(false)
           setUrlLookup(null)
         }}>
-          <div className="modal-content" onClick={e => e.stopPropagation()}>
-            <h3>📡 API URL for "{urlLookup.name}"</h3>
+          <div className="modal-content url-modal" onClick={e => e.stopPropagation()}>
+            <h3 style={{ textAlign: 'left' }}>📡 API URL for "{urlLookup.name}"</h3>
             
             <div className="url-info">
               <p>Use this URL in your survey JSON for dynamic dropdowns:</p>

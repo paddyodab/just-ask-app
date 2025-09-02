@@ -151,6 +151,12 @@
 /* URL Modal Styles */
 .url-info {
   margin: 1rem 0;
+  text-align: left;
+}
+
+.url-info > p {
+  text-align: left;
+  margin-bottom: 1rem;
 }
 
 .url-box {
@@ -171,6 +177,7 @@
   background: transparent;
   color: #0066cc;
   font-weight: 600;
+  text-align: left;
 }
 
 .copy-button {
@@ -189,12 +196,14 @@
 
 .usage-example {
   margin: 1.5rem 0;
+  text-align: left;
 }
 
 .usage-example h4 {
   margin: 0 0 0.5rem 0;
   color: #333;
   font-size: 0.95rem;
+  text-align: left;
 }
 
 .code-example {
@@ -207,27 +216,33 @@
   overflow-x: auto;
   line-height: 1.4;
   margin: 0;
+  text-align: left;
+  white-space: pre;
 }
 
 .url-notes {
   margin: 1.5rem 0;
+  text-align: left;
 }
 
 .url-notes h4 {
   margin: 0 0 0.75rem 0;
   color: #333;
   font-size: 0.95rem;
+  text-align: left;
 }
 
 .url-notes ul {
   margin: 0;
   padding-left: 1.25rem;
+  text-align: left;
 }
 
 .url-notes li {
   margin-bottom: 0.5rem;
   font-size: 0.9rem;
   line-height: 1.4;
+  text-align: left;
 }
 
 /* Modal specific styles */
