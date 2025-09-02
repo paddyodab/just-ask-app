@@ -41,6 +41,8 @@ const LookupManagement: React.FC = () => {
     csvFile: null as File | null
   })
   const [uploading, setUploading] = useState(false)
+  const [showUrlModal, setShowUrlModal] = useState(false)
+  const [urlLookup, setUrlLookup] = useState<Lookup | null>(null)
 
   useEffect(() => {
     fetchCustomers()
@@ -313,6 +315,19 @@ const LookupManagement: React.FC = () => {
     }
   }
 
+  const handleShowUrl = (lookup: Lookup) => {
+    setUrlLookup(lookup)
+    setShowUrlModal(true)
+  }
+
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text).then(() => {
+      // Could add a toast notification here if you want
+    }).catch(err => {
+      console.error('Failed to copy: ', err)
+    })
+  }
+
   const downloadSampleCSV = (type: 'list' | 'key_value') => {
     let content = ''
     let filename = ''
@@ -403,9 +418,18 @@ const LookupManagement: React.FC = () => {
               <div key={lookup.name} className="lookup-card">
                 <div className="lookup-header">
                   <h3>{lookup.name}</h3>
-                  <span className={`lookup-type ${lookup.type}`}>
-                    {lookup.type === 'key_value' ? 'Key-Value' : 'List'}
-                  </span>
+                  <div className="lookup-header-right">
+                    <button 
+                      className="btn-icon btn-icon-info"
+                      onClick={() => handleShowUrl(lookup)}
+                      title="Show API URL for surveys"
+                    >
+                      ℹ️
+                    </button>
+                    <span className={`lookup-type ${lookup.type}`}>
+                      {lookup.type === 'key_value' ? 'Key-Value' : 'List'}
+                    </span>
+                  </div>
                 </div>
                 <div className="lookup-info">
                   {lookup.count !== undefined && (
@@ -634,6 +658,75 @@ Option 2`}</pre>
                   setShowDataModal(false)
                   setViewingLookup(null)
                   setLookupData([])
+                }}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* API URL Modal */}
+      {showUrlModal && urlLookup && (
+        <div className="modal-overlay" onClick={() => {
+          setShowUrlModal(false)
+          setUrlLookup(null)
+        }}>
+          <div className="modal-content" onClick={e => e.stopPropagation()}>
+            <h3>📡 API URL for "{urlLookup.name}"</h3>
+            
+            <div className="url-info">
+              <p>Use this URL in your survey JSON for dynamic dropdowns:</p>
+              
+              <div className="url-box">
+                <code className="api-url">
+                  /{selectedCustomer}/{selectedNamespace}/lookup/{urlLookup.name}
+                </code>
+                <button 
+                  className="copy-button"
+                  onClick={() => copyToClipboard(`/${selectedCustomer}/${selectedNamespace}/lookup/${urlLookup.name}`)}
+                  title="Copy URL"
+                >
+                  📋
+                </button>
+              </div>
+
+              <div className="usage-example">
+                <h4>Survey JSON Example:</h4>
+                <pre className="code-example">{`{
+  "type": "dropdown",
+  "name": "selection",
+  "title": "Choose an option:",
+  "choicesOrder": "asc",
+  "choices": {
+    "url": "/${selectedCustomer}/${selectedNamespace}/lookup/${urlLookup.name}",
+    "valueName": "${urlLookup.type === 'key_value' ? 'key' : 'value'}",
+    "titleName": "value"
+  }
+}`}</pre>
+              </div>
+
+              <div className="url-notes">
+                <h4>Notes:</h4>
+                <ul>
+                  <li><strong>Type:</strong> {urlLookup.type === 'key_value' ? 'Key-Value pairs' : 'Simple list'}</li>
+                  <li><strong>Items:</strong> {urlLookup.count || 0} options</li>
+                  {urlLookup.type === 'key_value' ? (
+                    <li><strong>Usage:</strong> Use "key" for values, "value" for display text</li>
+                  ) : (
+                    <li><strong>Usage:</strong> Both value and display text come from "value" field</li>
+                  )}
+                </ul>
+              </div>
+            </div>
+
+            <div className="modal-actions">
+              <button 
+                className="btn btn-primary"
+                onClick={() => {
+                  setShowUrlModal(false)
+                  setUrlLookup(null)
                 }}
               >
                 Close

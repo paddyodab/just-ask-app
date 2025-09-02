@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Model } from 'survey-core'
 import { Survey } from 'survey-react-ui'
 import 'survey-core/defaultV2.css'
+import './survey-theme.css'
 import { getAuthToken, getTenantId } from '../../utils/auth'
 
 interface SurveyRendererProps {
