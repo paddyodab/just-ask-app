@@ -47,6 +47,10 @@ const ResponseManagement: React.FC = () => {
   
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  
+  // Modal state for viewing individual response
+  const [showDetailModal, setShowDetailModal] = useState(false)
+  const [selectedResponse, setSelectedResponse] = useState<SurveyResponse | null>(null)
 
   useEffect(() => {
     fetchCustomers()
@@ -290,6 +294,11 @@ const ResponseManagement: React.FC = () => {
     return String(value)
   }
 
+  const handleRowClick = (response: SurveyResponse) => {
+    setSelectedResponse(response)
+    setShowDetailModal(true)
+  }
+
   const exportToCSV = () => {
     if (responses.length === 0) return
     
@@ -437,7 +446,11 @@ const ResponseManagement: React.FC = () => {
               </thead>
               <tbody>
                 {responses.map((response) => (
-                  <tr key={response.id || response.response_id}>
+                  <tr 
+                    key={response.id || response.response_id}
+                    onClick={() => handleRowClick(response)}
+                    className="clickable-row"
+                  >
                     <td className="response-id">
                       {response.response_id?.slice(-8) || response.id?.slice(-8)}
                     </td>
@@ -480,6 +493,64 @@ const ResponseManagement: React.FC = () => {
       ) : (
         <div className="empty-state">
           <p>No responses found for this survey</p>
+        </div>
+      )}
+
+      {/* Response Detail Modal */}
+      {showDetailModal && selectedResponse && (
+        <div className="modal-overlay" onClick={() => setShowDetailModal(false)}>
+          <div className="modal-content modal-large" onClick={e => e.stopPropagation()}>
+            <h3>Response Details</h3>
+            
+            <div className="response-detail-header">
+              <div className="detail-info">
+                <strong>Response ID:</strong> {selectedResponse.response_id || selectedResponse.id}
+              </div>
+              <div className="detail-info">
+                <strong>Submitted:</strong> {new Date(selectedResponse.submitted_at).toLocaleString()}
+              </div>
+              {selectedResponse.respondent_id && (
+                <div className="detail-info">
+                  <strong>Respondent ID:</strong> {selectedResponse.respondent_id}
+                </div>
+              )}
+            </div>
+
+            <div className="response-detail-body">
+              <h4>Survey Responses</h4>
+              <div className="response-fields">
+                {Object.entries(selectedResponse.survey_data || {}).map(([key, value]) => (
+                  <div key={key} className="response-field">
+                    <div className="field-label">{getFieldTitle(key)}</div>
+                    <div className="field-value">{formatFieldValue(value)}</div>
+                  </div>
+                ))}
+              </div>
+
+              {selectedResponse.metadata && Object.keys(selectedResponse.metadata).length > 0 && (
+                <>
+                  <h4>Metadata</h4>
+                  <div className="response-fields">
+                    {Object.entries(selectedResponse.metadata).map(([key, value]) => (
+                      <div key={key} className="response-field">
+                        <div className="field-label">{key}</div>
+                        <div className="field-value">{formatFieldValue(value)}</div>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
+
+            <div className="modal-actions">
+              <button 
+                className="btn btn-primary"
+                onClick={() => setShowDetailModal(false)}
+              >
+                Close
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>

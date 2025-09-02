@@ -101,19 +101,6 @@ const SurveyPage: React.FC = () => {
     }
   }
 
-  const handleValueChanged = (sender: Model, options: any) => {
-    // Log value changes for debugging cascading dropdowns
-    console.log('Value changed:', options.name, '=', options.value)
-    
-    // Clear dependent fields when parent changes
-    if (options.name === 'favorite_cuisine') {
-      sender.setValue('visited_restaurants', null)
-      sender.setValue('favorite_restaurant', null)
-      sender.setValue('favorite_dishes', null)
-    } else if (options.name === 'favorite_restaurant') {
-      sender.setValue('favorite_dishes', null)
-    }
-  }
 
   const handleRestartSurvey = () => {
     setSurveyComplete(false)
@@ -196,7 +183,6 @@ const SurveyPage: React.FC = () => {
         <SurveyRenderer
           surveyJson={surveyJson}
           onComplete={handleSurveyComplete}
-          onValueChanged={handleValueChanged}
         />
       </div>
     </div>
