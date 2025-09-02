@@ -1,0 +1,186 @@
+/**
+ * Example Company Brand CSS for SurveyJS
+ * This file can be uploaded as an asset and referenced in the survey JSON
+ */
+
+/* Override SurveyJS CSS Variables */
+.survey-container {
+  --sjs-primary-backcolor: #005eb8;
+  --sjs-primary-backcolor-light: #3d8fd4;
+  --sjs-primary-backcolor-dark: #003d7a;
+  --sjs-primary-forecolor: #ffffff;
+  
+  --sjs-secondary-backcolor: #f0f8ff;
+  --sjs-secondary-backcolor-light: #ffffff;
+  --sjs-secondary-forecolor: #333333;
+  
+  --sjs-general-backcolor: #ffffff;
+  --sjs-general-backcolor-dim: #f8f9fa;
+  --sjs-general-backcolor-dim-light: #fcfcfc;
+  --sjs-general-backcolor-dim-dark: #f0f0f0;
+  --sjs-general-forecolor: #333333;
+  --sjs-general-forecolor-light: #909090;
+  
+  --sjs-border-default: #d4d4d4;
+  --sjs-border-light: #eaeaea;
+  
+  --sjs-corner-radius: 8px;
+  --sjs-corner-radius-small: 4px;
+  
+  --sjs-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --sjs-font-size: 16px;
+  
+  --sjs-shadow-small: 0 2px 4px rgba(0, 0, 0, 0.05);
+  --sjs-shadow-medium: 0 4px 8px rgba(0, 0, 0, 0.1);
+  --sjs-shadow-large: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Custom header styling */
+.sd-title {
+  font-family: var(--sjs-font-family);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--sjs-primary-backcolor);
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.sd-description {
+  font-size: 1.1rem;
+  color: var(--sjs-general-forecolor-light);
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+/* Custom logo positioning */
+.sd-logo {
+  display: block;
+  margin: 0 auto 2rem;
+  max-width: 200px;
+  height: auto;
+}
+
+.sd-logo--right {
+  float: right;
+  margin: 0 0 1rem 2rem;
+}
+
+.sd-logo--left {
+  float: left;
+  margin: 0 2rem 1rem 0;
+}
+
+/* Custom button styling */
+.sd-btn--action {
+  background: linear-gradient(135deg, var(--sjs-primary-backcolor) 0%, var(--sjs-primary-backcolor-dark) 100%);
+  border: none;
+  color: var(--sjs-primary-forecolor);
+  padding: 12px 24px;
+  font-weight: 600;
+  border-radius: var(--sjs-corner-radius);
+  transition: all 0.3s ease;
+  box-shadow: var(--sjs-shadow-small);
+}
+
+.sd-btn--action:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--sjs-shadow-medium);
+}
+
+/* Custom progress bar */
+.sd-progress__bar {
+  background: linear-gradient(90deg, var(--sjs-primary-backcolor-light) 0%, var(--sjs-primary-backcolor) 100%);
+  border-radius: var(--sjs-corner-radius-small);
+}
+
+/* Custom question styling */
+.sd-question__title {
+  font-weight: 600;
+  color: var(--sjs-general-forecolor);
+  margin-bottom: 0.75rem;
+}
+
+.sd-question--required .sd-question__title::after {
+  content: ' *';
+  color: #e74c3c;
+  font-weight: bold;
+}
+
+/* Custom input styling */
+.sd-input,
+.sd-dropdown {
+  border: 2px solid var(--sjs-border-default);
+  border-radius: var(--sjs-corner-radius-small);
+  padding: 10px 12px;
+  font-size: var(--sjs-font-size);
+  transition: all 0.2s ease;
+}
+
+.sd-input:focus,
+.sd-dropdown:focus {
+  border-color: var(--sjs-primary-backcolor);
+  box-shadow: 0 0 0 3px rgba(0, 94, 184, 0.1);
+  outline: none;
+}
+
+/* Custom radio/checkbox styling */
+.sd-item__control:checked + .sd-item__decorator {
+  background-color: var(--sjs-primary-backcolor);
+  border-color: var(--sjs-primary-backcolor);
+}
+
+/* Custom error messages */
+.sd-question__erbox {
+  background-color: #fee;
+  border-left: 4px solid #e74c3c;
+  color: #c00;
+  padding: 8px 12px;
+  border-radius: var(--sjs-corner-radius-small);
+  margin-top: 8px;
+}
+
+/* Animation for question appearance */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.sd-question {
+  animation: fadeInUp 0.3s ease-out;
+}
+
+/* Custom completed page */
+.sd-completedpage {
+  text-align: center;
+  padding: 3rem;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  border-radius: var(--sjs-corner-radius);
+}
+
+.sd-completedpage__header {
+  font-size: 2.5rem;
+  color: var(--sjs-primary-backcolor);
+  margin-bottom: 1rem;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+  .sd-title {
+    font-size: 1.5rem;
+  }
+  
+  .sd-btn--action {
+    width: 100%;
+    padding: 14px;
+  }
+  
+  .sd-logo {
+    max-width: 150px;
+  }
+}

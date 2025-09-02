@@ -292,39 +292,47 @@ const CustomerManagement: React.FC = () => {
               <div className="customer-actions">
                 {customer.is_deleted ? (
                   <>
-                    <button 
-                      className="btn btn-sm btn-success"
-                      onClick={() => handleRestoreCustomer(customer)}
-                    >
-                      Restore
-                    </button>
-                    <button 
-                      className="btn-icon btn-icon-danger"
-                      onClick={() => {
-                        setDeletingCustomer(customer)
-                        setDeleteType('hard')
-                      }}
-                      title="Permanently delete customer"
-                    >
-                      🗑️
-                    </button>
+                    <div className="customer-actions-left">
+                      <button 
+                        className="btn btn-sm btn-success"
+                        onClick={() => handleRestoreCustomer(customer)}
+                      >
+                        Restore
+                      </button>
+                    </div>
+                    <div className="customer-actions-right">
+                      <button 
+                        className="btn-icon btn-icon-danger"
+                        onClick={() => {
+                          setDeletingCustomer(customer)
+                          setDeleteType('hard')
+                        }}
+                        title="Permanently delete customer"
+                      >
+                        🗑️
+                      </button>
+                    </div>
                   </>
                 ) : (
                   <>
-                    <button 
-                      className="btn-icon"
-                      onClick={() => handleViewCustomer(customer)}
-                      title="View details"
-                    >
-                      👓
-                    </button>
-                    <button 
-                      className="btn-icon btn-icon-danger"
-                      onClick={() => setDeletingCustomer(customer)}
-                      title="Delete customer"
-                    >
-                      🗑️
-                    </button>
+                    <div className="customer-actions-left">
+                      <button 
+                        className="btn-icon"
+                        onClick={() => handleViewCustomer(customer)}
+                        title="View details"
+                      >
+                        👓
+                      </button>
+                    </div>
+                    <div className="customer-actions-right">
+                      <button 
+                        className="btn-icon btn-icon-danger"
+                        onClick={() => setDeletingCustomer(customer)}
+                        title="Delete customer"
+                      >
+                        🗑️
+                      </button>
+                    </div>
                   </>
                 )}
               </div>

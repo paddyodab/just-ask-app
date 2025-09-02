@@ -406,30 +406,52 @@ const ResponseManagement: React.FC = () => {
         <LoadingSpinner />
       ) : responses.length > 0 ? (
         <>
-          <div className="responses-summary">
-            <div className="summary-card">
-              <h3>Total Responses</h3>
-              <p className="summary-value">{totalResponses}</p>
+          <div className="responses-controls">
+            <div className="controls-left">
+              <span className="control-item">
+                <strong>{totalResponses}</strong> total responses
+              </span>
+              <span className="control-divider">|</span>
+              <span className="control-item">
+                Show
+                <select
+                  value={pageSize}
+                  onChange={(e) => {
+                    setPageSize(Number(e.target.value))
+                    setCurrentPage(1)
+                  }}
+                  className="inline-select"
+                >
+                  <option value={10}>10</option>
+                  <option value={25}>25</option>
+                  <option value={50}>50</option>
+                  <option value={100}>100</option>
+                </select>
+                per page
+              </span>
             </div>
-            <div className="summary-card">
-              <h3>Page Size</h3>
-              <select
-                value={pageSize}
-                onChange={(e) => {
-                  setPageSize(Number(e.target.value))
-                  setCurrentPage(1)
-                }}
-                className="page-size-select"
-              >
-                <option value={10}>10</option>
-                <option value={25}>25</option>
-                <option value={50}>50</option>
-                <option value={100}>100</option>
-              </select>
-            </div>
-            <div className="summary-card">
-              <h3>Current Page</h3>
-              <p className="summary-value">{currentPage} of {totalPages}</p>
+            <div className="controls-right">
+              {totalPages > 1 && (
+                <div className="inline-pagination">
+                  <button
+                    onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                    disabled={currentPage === 1}
+                    className="btn-pagination"
+                  >
+                    ←
+                  </button>
+                  <span className="page-info">
+                    Page {currentPage} of {totalPages}
+                  </span>
+                  <button
+                    onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                    disabled={currentPage === totalPages}
+                    className="btn-pagination"
+                  >
+                    →
+                  </button>
+                </div>
+              )}
             </div>
           </div>
 
@@ -467,28 +489,6 @@ const ResponseManagement: React.FC = () => {
               </tbody>
             </table>
           </div>
-
-          {totalPages > 1 && (
-            <div className="pagination">
-              <button
-                onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
-                disabled={currentPage === 1}
-                className="btn btn-secondary"
-              >
-                ← Previous
-              </button>
-              <span className="pagination-info">
-                Page {currentPage} of {totalPages}
-              </span>
-              <button
-                onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
-                disabled={currentPage === totalPages}
-                className="btn btn-secondary"
-              >
-                Next →
-              </button>
-            </div>
-          )}
         </>
       ) : (
         <div className="empty-state">
@@ -502,16 +502,19 @@ const ResponseManagement: React.FC = () => {
           <div className="modal-content modal-large" onClick={e => e.stopPropagation()}>
             <h3>Response Details</h3>
             
-            <div className="response-detail-header">
-              <div className="detail-info">
-                <strong>Response ID:</strong> {selectedResponse.response_id || selectedResponse.id}
+            <div className="response-detail-metadata">
+              <div className="metadata-row">
+                <span className="metadata-label">Response ID:</span>
+                <span className="metadata-value">{selectedResponse.response_id || selectedResponse.id}</span>
               </div>
-              <div className="detail-info">
-                <strong>Submitted:</strong> {new Date(selectedResponse.submitted_at).toLocaleString()}
+              <div className="metadata-row">
+                <span className="metadata-label">Submitted:</span>
+                <span className="metadata-value">{new Date(selectedResponse.submitted_at).toLocaleString()}</span>
               </div>
               {selectedResponse.respondent_id && (
-                <div className="detail-info">
-                  <strong>Respondent ID:</strong> {selectedResponse.respondent_id}
+                <div className="metadata-row">
+                  <span className="metadata-label">Respondent ID:</span>
+                  <span className="metadata-value">{selectedResponse.respondent_id}</span>
                 </div>
               )}
             </div>

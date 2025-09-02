@@ -565,65 +565,72 @@ const SurveyManagement: React.FC = () => {
                 <div className="survey-actions">
                   {survey.is_deleted ? (
                     <>
-                      <button 
-                        className="btn btn-sm btn-success"
-                        onClick={() => handleRestoreSurvey(survey)}
-                      >
-                        Restore
-                      </button>
-                      <button 
-                        className="btn-icon btn-icon-danger"
-                        onClick={() => {
-                          setDeletingSurvey(survey)
-                          setShowDeleteModal(true)
-                          setDeleteType('hard')
-                        }}
-                        title="Permanently delete survey"
-                      >
-                        🗑️
-                      </button>
+                      <div className="survey-actions-left">
+                        <button 
+                          className="btn btn-sm btn-success"
+                          onClick={() => handleRestoreSurvey(survey)}
+                        >
+                          Restore
+                        </button>
+                      </div>
+                      <div className="survey-actions-right">
+                        <button 
+                          className="btn-icon btn-icon-danger"
+                          onClick={() => {
+                            setDeletingSurvey(survey)
+                            setShowDeleteModal(true)
+                            setDeleteType('hard')
+                          }}
+                          title="Permanently delete survey"
+                        >
+                          🗑️
+                        </button>
+                      </div>
                     </>
                   ) : (
                     <>
-                      <button 
-                        className="btn-icon"
-                        onClick={() => handleViewSurvey(survey)}
-                        title="View survey JSON"
-                      >
-                        { /* Code icon */ }
-                        💻
-                      </button>
-                      <button 
-                        className="btn-icon"
-                        onClick={() => window.open(`/survey?customer=${selectedCustomer}&namespace=${selectedNamespace}&survey=${survey.survey_id}`, '_blank')}
-                        title="Preview survey"
-                      >
-                        👓
-                      </button>
-                      {survey.response_count && survey.response_count > 0 ? (
-                        <button 
-                          className="btn-icon btn-icon-sparkle"
-                          onClick={() => handleCreateNewVersion(survey)}
-                          title="Create new version"
-                        >
-                          ✨
-                        </button>
-                      ) : (
+                      <div className="survey-actions-left">
                         <button 
                           className="btn-icon"
-                          onClick={() => handleEditSurvey(survey)}
-                          title="Edit survey"
+                          onClick={() => handleViewSurvey(survey)}
+                          title="View survey definition"
                         >
-                          ✏️
+                          📖
                         </button>
-                      )}
-                      <button 
-                        className="btn-icon btn-icon-danger"
-                        onClick={() => handleDeleteSurvey(survey)}
-                        title="Delete survey"
-                      >
-                        🗑️
-                      </button>
+                        <button 
+                          className="btn-icon"
+                          onClick={() => window.open(`/survey?customer=${selectedCustomer}&namespace=${selectedNamespace}&survey=${survey.survey_id}`, '_blank')}
+                          title="Preview survey"
+                        >
+                          👓
+                        </button>
+                        {survey.response_count && survey.response_count > 0 ? (
+                          <button 
+                            className="btn-icon btn-icon-sparkle"
+                            onClick={() => handleCreateNewVersion(survey)}
+                            title="Create new version"
+                          >
+                            ✨
+                          </button>
+                        ) : (
+                          <button 
+                            className="btn-icon"
+                            onClick={() => handleEditSurvey(survey)}
+                            title="Edit survey"
+                          >
+                            ✏️
+                          </button>
+                        )}
+                      </div>
+                      <div className="survey-actions-right">
+                        <button 
+                          className="btn-icon btn-icon-danger"
+                          onClick={() => handleDeleteSurvey(survey)}
+                          title="Delete survey"
+                        >
+                          🗑️
+                        </button>
+                      </div>
                     </>
                   )}
                 </div>

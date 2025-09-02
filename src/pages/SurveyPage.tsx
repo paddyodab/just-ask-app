@@ -183,6 +183,8 @@ const SurveyPage: React.FC = () => {
         <SurveyRenderer
           surveyJson={surveyJson}
           onComplete={handleSurveyComplete}
+          tenantId={customerHex || undefined}
+          namespace={namespace || undefined}
         />
       </div>
     </div>

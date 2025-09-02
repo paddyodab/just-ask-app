@@ -3,6 +3,7 @@ import { Routes, Route, Link, useLocation, Navigate } from 'react-router-dom'
 import CustomerManagement from '../components/Admin/CustomerManagement'
 import NamespaceManagement from '../components/Admin/NamespaceManagement'
 import LookupManagement from '../components/Admin/LookupManagement'
+import AssetManagement from '../components/Admin/AssetManagement'
 import SurveyManagement from '../components/Admin/SurveyManagement'
 import ResponseManagement from '../components/Admin/ResponseManagement'
 import './AdminPage.css'
@@ -16,7 +17,7 @@ const AdminPage: React.FC = () => {
       <div className="admin-container">
         <div className="admin-header">
           <h1>Admin Dashboard</h1>
-          <p className="admin-description">Manage customers, namespaces, lookups, and surveys</p>
+          <p className="admin-description">Manage customers, namespaces, lookups, assets, surveys, and responses</p>
         </div>
 
         <nav className="admin-nav">
@@ -42,6 +43,13 @@ const AdminPage: React.FC = () => {
             Lookup Data
           </Link>
           <Link 
+            to="/admin/assets" 
+            className={`admin-nav-link ${currentPath.includes('/admin/assets') ? 'active' : ''}`}
+          >
+            <span className="nav-icon">🎨</span>
+            Assets
+          </Link>
+          <Link 
             to="/admin/surveys" 
             className={`admin-nav-link ${currentPath.includes('/admin/surveys') ? 'active' : ''}`}
           >
@@ -63,6 +71,7 @@ const AdminPage: React.FC = () => {
             <Route path="/customers" element={<CustomerManagement />} />
             <Route path="/namespaces" element={<NamespaceManagement />} />
             <Route path="/lookups" element={<LookupManagement />} />
+            <Route path="/assets" element={<AssetManagement />} />
             <Route path="/surveys" element={<SurveyManagement />} />
             <Route path="/responses" element={<ResponseManagement />} />
           </Routes>

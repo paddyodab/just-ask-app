@@ -170,8 +170,21 @@
 
 .survey-actions {
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1rem;
+  border-top: 1px solid #e0e0e0;
+}
+
+.survey-actions-left {
+  display: flex;
   gap: 0.5rem;
-  justify-content: flex-end;
+  align-items: center;
+}
+
+.survey-actions-right {
+  display: flex;
+  gap: 0.5rem;
   align-items: center;
 }
 

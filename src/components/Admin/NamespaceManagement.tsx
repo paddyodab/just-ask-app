@@ -371,36 +371,44 @@ const NamespaceManagement: React.FC = () => {
                 <div className="namespace-actions">
                   {namespace.is_deleted ? (
                     <>
-                      <button 
-                        className="btn btn-sm btn-success"
-                        onClick={() => handleRestoreNamespace(namespace)}
-                      >
-                        Restore
-                      </button>
-                      <button 
-                        className="btn-icon btn-icon-danger"
-                        onClick={() => handleDeleteNamespace(namespace)}
-                        title="Permanently delete namespace"
-                      >
-                        🗑️
-                      </button>
+                      <div className="namespace-actions-left">
+                        <button 
+                          className="btn btn-sm btn-success"
+                          onClick={() => handleRestoreNamespace(namespace)}
+                        >
+                          Restore
+                        </button>
+                      </div>
+                      <div className="namespace-actions-right">
+                        <button 
+                          className="btn-icon btn-icon-danger"
+                          onClick={() => handleDeleteNamespace(namespace)}
+                          title="Permanently delete namespace"
+                        >
+                          🗑️
+                        </button>
+                      </div>
                     </>
                   ) : (
                     <>
-                      <button 
-                        className="btn-icon"
-                        onClick={() => openEditModal(namespace)}
-                        title="Edit namespace"
-                      >
-                        ✏️
-                      </button>
-                      <button 
-                        className="btn-icon btn-icon-danger"
-                        onClick={() => handleDeleteNamespace(namespace)}
-                        title="Delete namespace"
-                      >
-                        🗑️
-                      </button>
+                      <div className="namespace-actions-left">
+                        <button 
+                          className="btn-icon"
+                          onClick={() => openEditModal(namespace)}
+                          title="Edit namespace"
+                        >
+                          ✏️
+                        </button>
+                      </div>
+                      <div className="namespace-actions-right">
+                        <button 
+                          className="btn-icon btn-icon-danger"
+                          onClick={() => handleDeleteNamespace(namespace)}
+                          title="Delete namespace"
+                        >
+                          🗑️
+                        </button>
+                      </div>
                     </>
                   )}
                 </div>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Convert Logo to PNG</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            padding: 40px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+        .preview {
+            background: white;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .preview-dark {
+            background: #1e293b;
+        }
+        button {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+        #canvas {
+            display: none;
+        }
+        .instructions {
+            background: #f0f9ff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 30px;
+        }
+        .instructions h3 {
+            margin-top: 0;
+            color: #1e40af;
+        }
+        .instructions ol {
+            color: #475569;
+            line-height: 1.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Logo Converter - SVG to PNG</h1>
+        
+        <h2>Preview on White Background:</h2>
+        <div class="preview">
+            <img id="svgLogo" src="logo.svg" alt="Company Logo" width="200">
+        </div>
+        
+        <h2>Preview on Dark Background:</h2>
+        <div class="preview preview-dark">
+            <img src="logo.svg" alt="Company Logo" width="200">
+        </div>
+        
+        <h2>Download Options:</h2>
+        <button onclick="downloadPNG(200, 60)">Download PNG (200x60)</button>
+        <button onclick="downloadPNG(400, 120)">Download PNG @2x (400x120)</button>
+        <button onclick="downloadPNG(600, 180)">Download PNG @3x (600x180)</button>
+        <button onclick="downloadPNG(100, 30)">Download Small PNG (100x30)</button>
+        
+        <canvas id="canvas"></canvas>
+        
+        <div class="instructions">
+            <h3>📝 Instructions for Use:</h3>
+            <ol>
+                <li><strong>Open this HTML file in a web browser</strong> (Chrome, Firefox, Safari, etc.)</li>
+                <li><strong>Click any download button</strong> to save the logo as a PNG at that size</li>
+                <li><strong>Upload the files to your backend:</strong>
+                    <ul>
+                        <li>brand.css - The styling file</li>
+                        <li>logo.png - The converted logo image</li>
+                    </ul>
+                </li>
+                <li><strong>Reference in your survey JSON:</strong>
+                    <pre style="background: #f1f5f9; padding: 15px; border-radius: 6px; overflow-x: auto;">
+{
+  "title": "Customer Survey",
+  "logo": "/{tenant_id}/{namespace}/assets/logo.png",
+  "assets": {
+    "stylesheets": [
+      "/{tenant_id}/{namespace}/assets/brand.css"
+    ],
+    "theme": "company-brand",
+    "primaryColor": "#6366f1",
+    "secondaryColor": "#f0f9ff"
+  },
+  "pages": [...]
+}</pre>
+                </li>
+            </ol>
+        </div>
+    </div>
+    
+    <script>
+        function downloadPNG(width, height) {
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Set canvas size
+            canvas.width = width;
+            canvas.height = height;
+            
+            // Create image
+            const img = new Image();
+            img.onload = function() {
+                // Clear canvas
+                ctx.clearRect(0, 0, width, height);
+                
+                // Optional: Add white background
+                // Uncomment these lines if you want a white background
+                // ctx.fillStyle = 'white';
+                // ctx.fillRect(0, 0, width, height);
+                
+                // Draw the SVG
+                ctx.drawImage(img, 0, 0, width, height);
+                
+                // Download
+                canvas.toBlob(function(blob) {
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `logo-${width}x${height}.png`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                }, 'image/png');
+            };
+            
+            // Load SVG
+            img.src = 'logo.svg';
+        }
+        
+        // Alternative method using online converter
+        function openOnlineConverter() {
+            window.open('https://svgtopng.com/', '_blank');
+        }
+    </script>
+</body>
+</html>

@@ -419,13 +419,6 @@ const LookupManagement: React.FC = () => {
                 <div className="lookup-header">
                   <h3>{lookup.name}</h3>
                   <div className="lookup-header-right">
-                    <button 
-                      className="btn-icon btn-icon-info"
-                      onClick={() => handleShowUrl(lookup)}
-                      title="Show API URL for surveys"
-                    >
-                      ℹ️
-                    </button>
                     <span className={`lookup-type ${lookup.type}`}>
                       {lookup.type === 'key_value' ? 'Key-Value' : 'List'}
                     </span>
@@ -444,20 +437,31 @@ const LookupManagement: React.FC = () => {
                   )}
                 </div>
                 <div className="lookup-actions">
-                  <button 
-                    className="btn-icon"
-                    onClick={() => handleViewLookupData(lookup)}
-                    title="View lookup data"
-                  >
-                    👓
-                  </button>
-                  <button 
-                    className="btn-icon btn-icon-danger"
-                    onClick={() => handleDeleteLookup(lookup)}
-                    title="Delete lookup"
-                  >
-                    🗑️
-                  </button>
+                  <div className="lookup-actions-left">
+                    <button 
+                      className="btn-icon"
+                      onClick={() => handleViewLookupData(lookup)}
+                      title="View lookup data"
+                    >
+                      👓
+                    </button>
+                    <button 
+                      className="btn-icon btn-icon-info"
+                      onClick={() => handleShowUrl(lookup)}
+                      title="Show API URL for surveys"
+                    >
+                      ℹ️
+                    </button>
+                  </div>
+                  <div className="lookup-actions-right">
+                    <button 
+                      className="btn-icon btn-icon-danger"
+                      onClick={() => handleDeleteLookup(lookup)}
+                      title="Delete lookup"
+                    >
+                      🗑️
+                    </button>
+                  </div>
                 </div>
               </div>
             ))

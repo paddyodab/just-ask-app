@@ -111,9 +111,22 @@
 
 .customer-actions {
   display: flex;
-  gap: 0.5rem;
+  justify-content: space-between;
+  align-items: center;
   margin-top: 1rem;
-  justify-content: flex-end;
+  padding-top: 1rem;
+  border-top: 1px solid #e0e0e0;
+}
+
+.customer-actions-left {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.customer-actions-right {
+  display: flex;
+  gap: 0.5rem;
   align-items: center;
 }
 
