@@ -51,7 +51,6 @@ const AssetManagement: React.FC = () => {
   useEffect(() => {
     if (selectedCustomer) {
       fetchNamespaces(selectedCustomer)
-      setSelectedNamespace('')
       setAssets([])
     } else {
       setNamespaces([])
@@ -66,6 +65,24 @@ const AssetManagement: React.FC = () => {
       setAssets([])
     }
   }, [selectedCustomer, selectedNamespace])
+
+  // ESC key handler for closing Asset Preview modal
+  useEffect(() => {
+    const handleEscKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && showPreviewModal) {
+        setShowPreviewModal(false)
+        setPreviewAsset(null)
+        setPreviewContent('')
+      }
+    }
+
+    if (showPreviewModal) {
+      document.addEventListener('keydown', handleEscKey)
+      return () => {
+        document.removeEventListener('keydown', handleEscKey)
+      }
+    }
+  }, [showPreviewModal])
 
   const fetchCustomers = async () => {
     try {
@@ -101,18 +118,26 @@ const AssetManagement: React.FC = () => {
       const response = await fetch(`/api/v1/operations/customers/${customerHex}/namespaces`)
       if (response.ok) {
         const data = await response.json()
-        setNamespaces(data.namespaces || [])
+        const namespacesList = data.namespaces || []
+        setNamespaces(namespacesList)
+        // Auto-select the first namespace if available
+        if (namespacesList.length > 0) {
+          setSelectedNamespace(namespacesList[0].slug)
+        }
       }
     } catch (err) {
       console.error('Error fetching namespaces:', err)
       // Demo data
-      setNamespaces([
+      const demoNamespaces = [
         {
           id: '1',
           name: 'Restaurant Survey',
           slug: 'restaurant-survey'
         }
-      ])
+      ]
+      setNamespaces(demoNamespaces)
+      // Auto-select the first namespace
+      setSelectedNamespace(demoNamespaces[0].slug)
     }
   }
 
@@ -357,7 +382,12 @@ const AssetManagement: React.FC = () => {
             </div>
           ) : (
             assets.map(asset => (
-              <div key={asset.name} className="asset-card">
+              <div 
+                key={asset.name} 
+                className="asset-card"
+                onClick={() => handlePreviewAsset(asset)}
+                style={{ cursor: 'pointer' }}
+              >
                 <div className="asset-icon">
                   {getFileIcon(asset.content_type || asset.type)}
                 </div>
@@ -377,14 +407,20 @@ const AssetManagement: React.FC = () => {
                   <div className="asset-actions-left">
                     <button 
                       className="btn-icon"
-                      onClick={() => handlePreviewAsset(asset)}
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        handlePreviewAsset(asset)
+                      }}
                       title="Preview asset"
                     >
                       👓
                     </button>
                     <button 
                       className="btn-icon"
-                      onClick={() => copyAssetUrl(asset.url)}
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        copyAssetUrl(asset.url)
+                      }}
                       title="Copy URL"
                     >
                       📋
@@ -401,7 +437,10 @@ const AssetManagement: React.FC = () => {
                   <div className="asset-actions-right">
                     <button 
                       className="btn-icon btn-icon-danger"
-                      onClick={() => handleDeleteAsset(asset)}
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        handleDeleteAsset(asset)
+                      }}
                       title="Delete asset"
                     >
                       🗑️

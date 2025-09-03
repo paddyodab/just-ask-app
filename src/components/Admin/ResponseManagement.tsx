@@ -59,7 +59,6 @@ const ResponseManagement: React.FC = () => {
   useEffect(() => {
     if (selectedCustomer) {
       fetchNamespaces(selectedCustomer)
-      setSelectedNamespace('')
       setSelectedSurvey('')
       setSurveys([])
       setResponses([])
@@ -73,7 +72,6 @@ const ResponseManagement: React.FC = () => {
   useEffect(() => {
     if (selectedCustomer && selectedNamespace) {
       fetchSurveys(selectedCustomer, selectedNamespace)
-      setSelectedSurvey('')
       setResponses([])
     } else {
       setSurveys([])
@@ -87,6 +85,23 @@ const ResponseManagement: React.FC = () => {
       fetchSurveyDefinition()
     }
   }, [selectedCustomer, selectedNamespace, selectedSurvey, currentPage, pageSize])
+
+  // ESC key handler for closing modal
+  useEffect(() => {
+    const handleEscKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && showDetailModal) {
+        setShowDetailModal(false)
+        setSelectedResponse(null)
+      }
+    }
+
+    if (showDetailModal) {
+      document.addEventListener('keydown', handleEscKey)
+      return () => {
+        document.removeEventListener('keydown', handleEscKey)
+      }
+    }
+  }, [showDetailModal])
 
   const fetchCustomers = async () => {
     try {
@@ -123,18 +138,26 @@ const ResponseManagement: React.FC = () => {
       const response = await fetch(`/api/v1/operations/customers/${customerHex}/namespaces`)
       if (response.ok) {
         const data = await response.json()
-        setNamespaces(data.namespaces || [])
+        const namespacesList = data.namespaces || []
+        setNamespaces(namespacesList)
+        // Auto-select the first namespace if available
+        if (namespacesList.length > 0) {
+          setSelectedNamespace(namespacesList[0].slug)
+        }
       }
     } catch (err) {
       console.error('Error fetching namespaces:', err)
       // Demo data
-      setNamespaces([
+      const demoNamespaces = [
         {
           id: '1',
           name: 'Restaurant Survey',
           slug: 'restaurant-survey'
         }
-      ])
+      ]
+      setNamespaces(demoNamespaces)
+      // Auto-select the first namespace
+      setSelectedNamespace(demoNamespaces[0].slug)
     }
   }
 
@@ -146,19 +169,27 @@ const ResponseManagement: React.FC = () => {
       
       if (response.ok) {
         const data = await response.json()
-        setSurveys(data.surveys || [])
+        const surveysList = data.surveys || []
+        setSurveys(surveysList)
+        // Auto-select the first survey if available
+        if (surveysList.length > 0) {
+          setSelectedSurvey(surveysList[0].survey_id)
+        }
       }
     } catch (err) {
       console.error('Error fetching surveys:', err)
       // Demo data
-      setSurveys([
+      const demoSurveys = [
         {
           survey_id: 'restaurant-feedback',
           name: 'Restaurant Feedback Survey',
           version: '1.0',
           response_count: 42
         }
-      ])
+      ]
+      setSurveys(demoSurveys)
+      // Auto-select the first survey
+      setSelectedSurvey(demoSurveys[0].survey_id)
     }
   }
 

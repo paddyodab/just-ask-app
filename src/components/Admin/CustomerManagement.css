@@ -205,6 +205,32 @@
   box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
 }
 
+.form-group small {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.85rem;
+  color: #666;
+  font-style: italic;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.checkbox-label input[type="checkbox"] {
+  cursor: pointer;
+  width: 18px;
+  height: 18px;
+}
+
+.checkbox-label span {
+  user-select: none;
+}
+
 .modal-actions {
   display: flex;
   gap: 1rem;

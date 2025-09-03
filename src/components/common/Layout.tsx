@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import './Layout.css'
 
 interface LayoutProps {
@@ -8,12 +8,19 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const location = useLocation()
+  const navigate = useNavigate()
 
   return (
     <div className="layout">
       <header className="header">
         <div className="header-content">
-          <h1 className="logo">Just Ask!</h1>
+          <h1 
+            className="logo" 
+            onClick={() => navigate('/')}
+            style={{ cursor: 'pointer' }}
+          >
+            Just Ask!
+          </h1>
           <nav className="nav">
             <Link 
               to="/" 

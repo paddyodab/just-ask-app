@@ -59,7 +59,6 @@ const SurveyManagement: React.FC = () => {
   useEffect(() => {
     if (selectedCustomer) {
       fetchNamespaces(selectedCustomer)
-      setSelectedNamespace('')
       setSurveys([])
     } else {
       setNamespaces([])
@@ -74,6 +73,23 @@ const SurveyManagement: React.FC = () => {
       setSurveys([])
     }
   }, [selectedCustomer, selectedNamespace])
+
+  // ESC key handler for closing Survey Definition modal
+  useEffect(() => {
+    const handleEscKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && showViewModal) {
+        setShowViewModal(false)
+        setViewingSurvey(null)
+      }
+    }
+
+    if (showViewModal) {
+      document.addEventListener('keydown', handleEscKey)
+      return () => {
+        document.removeEventListener('keydown', handleEscKey)
+      }
+    }
+  }, [showViewModal])
 
   const fetchCustomers = async () => {
     try {
@@ -110,18 +126,26 @@ const SurveyManagement: React.FC = () => {
       const response = await fetch(`/api/v1/operations/customers/${customerHex}/namespaces`)
       if (response.ok) {
         const data = await response.json()
-        setNamespaces(data.namespaces || [])
+        const namespacesList = data.namespaces || []
+        setNamespaces(namespacesList)
+        // Auto-select the first namespace if available
+        if (namespacesList.length > 0) {
+          setSelectedNamespace(namespacesList[0].slug)
+        }
       }
     } catch (err) {
       console.error('Error fetching namespaces:', err)
       // Demo data
-      setNamespaces([
+      const demoNamespaces = [
         {
           id: '1',
           name: 'Restaurant Survey',
           slug: 'restaurant-survey'
         }
-      ])
+      ]
+      setNamespaces(demoNamespaces)
+      // Auto-select the first namespace
+      setSelectedNamespace(demoNamespaces[0].slug)
     }
   }
 
@@ -582,6 +606,8 @@ const SurveyManagement: React.FC = () => {
               <div 
                 key={survey.survey_id} 
                 className={`survey-card ${survey.is_deleted ? 'deleted' : ''}`}
+                onClick={() => handleViewSurvey(survey)}
+                style={{ cursor: 'pointer' }}
               >
                 {survey.is_deleted && (
                   <div className="deleted-badge">Deleted</div>
@@ -615,7 +641,10 @@ const SurveyManagement: React.FC = () => {
                       <div className="survey-actions-left">
                         <button 
                           className="btn btn-sm btn-success"
-                          onClick={() => handleRestoreSurvey(survey)}
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            handleRestoreSurvey(survey)
+                          }}
                         >
                           Restore
                         </button>
@@ -623,7 +652,8 @@ const SurveyManagement: React.FC = () => {
                       <div className="survey-actions-right">
                         <button 
                           className="btn-icon btn-icon-danger"
-                          onClick={() => {
+                          onClick={(e) => {
+                            e.stopPropagation()
                             setDeletingSurvey(survey)
                             setShowDeleteModal(true)
                             setDeleteType('hard')
@@ -639,14 +669,20 @@ const SurveyManagement: React.FC = () => {
                       <div className="survey-actions-left">
                         <button 
                           className="btn-icon"
-                          onClick={() => handleViewSurvey(survey)}
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            handleViewSurvey(survey)
+                          }}
                           title="View survey definition"
                         >
                           📖
                         </button>
                         <button 
                           className="btn-icon"
-                          onClick={() => window.open(`/survey?customer=${selectedCustomer}&namespace=${selectedNamespace}&survey=${survey.survey_id}`, '_blank')}
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            window.open(`/survey?customer=${selectedCustomer}&namespace=${selectedNamespace}&survey=${survey.survey_id}`, '_blank')
+                          }}
                           title="Preview survey"
                         >
                           👓
@@ -654,7 +690,10 @@ const SurveyManagement: React.FC = () => {
                         {survey.response_count && survey.response_count > 0 ? (
                           <button 
                             className="btn-icon btn-icon-sparkle"
-                            onClick={() => handleCreateNewVersion(survey)}
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              handleCreateNewVersion(survey)
+                            }}
                             title="Create new version"
                           >
                             ✨
@@ -662,7 +701,10 @@ const SurveyManagement: React.FC = () => {
                         ) : (
                           <button 
                             className="btn-icon"
-                            onClick={() => handleEditSurvey(survey)}
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              handleEditSurvey(survey)
+                            }}
                             title="Edit survey"
                           >
                             ✏️
@@ -672,7 +714,10 @@ const SurveyManagement: React.FC = () => {
                       <div className="survey-actions-right">
                         <button 
                           className="btn-icon btn-icon-danger"
-                          onClick={() => handleDeleteSurvey(survey)}
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            handleDeleteSurvey(survey)
+                          }}
                           title="Delete survey"
                         >
                           🗑️

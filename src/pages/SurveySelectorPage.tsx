@@ -53,7 +53,6 @@ const SurveySelectorPage: React.FC = () => {
   useEffect(() => {
     if (selectedCustomer) {
       fetchNamespaces(selectedCustomer)
-      setSelectedNamespace('')
       setSurveys([])
     } else {
       setNamespaces([])
@@ -149,29 +148,39 @@ const SurveySelectorPage: React.FC = () => {
           description: ns.description
         }))
         setNamespaces(transformedNamespaces)
+        // Auto-select the first namespace if available
+        if (transformedNamespaces.length > 0) {
+          setSelectedNamespace(transformedNamespaces[0].slug)
+        }
       } else {
         console.warn('Failed to fetch namespaces, using fallback')
         // Fallback to demo namespace
-        setNamespaces([
+        const demoNamespaces = [
           {
             id: '1',
             name: 'Restaurant Survey',
             slug: 'restaurant-survey',
             description: 'Customer dining preferences and feedback'
           }
-        ])
+        ]
+        setNamespaces(demoNamespaces)
+        // Auto-select the first namespace
+        setSelectedNamespace(demoNamespaces[0].slug)
       }
     } catch (err) {
       console.error('Error fetching namespaces:', err)
       // Use demo data as fallback
-      setNamespaces([
+      const demoNamespaces = [
         {
           id: '1',
           name: 'Restaurant Survey',
           slug: 'restaurant-survey',
           description: 'Customer dining preferences and feedback'
         }
-      ])
+      ]
+      setNamespaces(demoNamespaces)
+      // Auto-select the first namespace
+      setSelectedNamespace(demoNamespaces[0].slug)
     } finally {
       setLoadingNamespaces(false)
     }

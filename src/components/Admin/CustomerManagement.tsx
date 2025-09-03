@@ -22,6 +22,7 @@ const CustomerManagement: React.FC = () => {
   const [showCreateModal, setShowCreateModal] = useState(false)
   const [creating, setCreating] = useState(false)
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null)
+  const [editingCustomer, setEditingCustomer] = useState<Customer | null>(null)
   const [deletingCustomer, setDeletingCustomer] = useState<Customer | null>(null)
   const [deleteType, setDeleteType] = useState<'soft' | 'hard'>('soft')
   const [showDeleted, setShowDeleted] = useState(false)
@@ -30,6 +31,13 @@ const CustomerManagement: React.FC = () => {
     name: '',
     email: ''
   })
+  const [editFormData, setEditFormData] = useState({
+    customer_id: '',
+    name: '',
+    email: '',
+    is_active: true
+  })
+  const [updating, setUpdating] = useState(false)
 
   useEffect(() => {
     fetchCustomers()
@@ -204,6 +212,84 @@ const CustomerManagement: React.FC = () => {
     }
   }
 
+  const handleEditCustomer = (customer: Customer) => {
+    setEditingCustomer(customer)
+    setEditFormData({
+      customer_id: customer.customer_id || '',
+      name: customer.name,
+      email: customer.email || '',
+      is_active: customer.is_active !== false
+    })
+  }
+
+  const handleUpdateCustomer = async () => {
+    if (!editingCustomer) return
+    
+    if (!editFormData.name.trim() || !editFormData.email.trim()) {
+      setError('Name and email are required')
+      return
+    }
+
+    try {
+      setUpdating(true)
+      setError(null)
+      
+      const requestBody = {
+        customer_id: editFormData.customer_id.trim() || editingCustomer.customer_id || editingCustomer.hex_id,
+        name: editFormData.name.trim(),
+        email: editFormData.email.trim(),
+        is_active: editFormData.is_active
+      }
+      
+      console.log('Updating customer:', requestBody)
+      
+      const response = await fetch(`/api/v1/operations/customers/${editingCustomer.hex_id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody)
+      })
+
+      if (response.ok) {
+        const updatedCustomer = await response.json()
+        // Update the customer in the list
+        setCustomers(customers.map(c => 
+          c.hex_id === editingCustomer.hex_id ? { ...c, ...updatedCustomer } : c
+        ))
+        setEditingCustomer(null)
+        setEditFormData({ customer_id: '', name: '', email: '', is_active: true })
+      } else {
+        // Try to get error details from response
+        const errorText = await response.text()
+        console.error('Server response:', errorText)
+        try {
+          const errorJson = JSON.parse(errorText)
+          if (errorJson.detail) {
+            if (typeof errorJson.detail === 'string') {
+              setError(errorJson.detail)
+            } else if (Array.isArray(errorJson.detail)) {
+              // Handle validation errors
+              const messages = errorJson.detail.map((err: any) => 
+                `${err.loc ? err.loc.join(' > ') : 'Field'}: ${err.msg}`
+              ).join(', ')
+              setError(`Validation failed: ${messages}`)
+            }
+          } else {
+            setError('Failed to update customer')
+          }
+        } catch {
+          setError('Failed to update customer')
+        }
+      }
+    } catch (err) {
+      console.error('Error updating customer:', err)
+      setError('Failed to update customer. Please try again.')
+    } finally {
+      setUpdating(false)
+    }
+  }
+
   if (loading) {
     return <LoadingSpinner />
   }
@@ -272,6 +358,8 @@ const CustomerManagement: React.FC = () => {
             <div 
               key={customer.hex_id} 
               className={`customer-card ${customer.is_deleted ? 'deleted' : ''}`}
+              onClick={() => handleViewCustomer(customer)}
+              style={{ cursor: 'pointer' }}
             >
               {customer.is_deleted && (
                 <div className="deleted-badge">Deleted</div>
@@ -295,7 +383,10 @@ const CustomerManagement: React.FC = () => {
                     <div className="customer-actions-left">
                       <button 
                         className="btn btn-sm btn-success"
-                        onClick={() => handleRestoreCustomer(customer)}
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          handleRestoreCustomer(customer)
+                        }}
                       >
                         Restore
                       </button>
@@ -303,7 +394,8 @@ const CustomerManagement: React.FC = () => {
                     <div className="customer-actions-right">
                       <button 
                         className="btn-icon btn-icon-danger"
-                        onClick={() => {
+                        onClick={(e) => {
+                          e.stopPropagation()
                           setDeletingCustomer(customer)
                           setDeleteType('hard')
                         }}
@@ -318,16 +410,32 @@ const CustomerManagement: React.FC = () => {
                     <div className="customer-actions-left">
                       <button 
                         className="btn-icon"
-                        onClick={() => handleViewCustomer(customer)}
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          handleViewCustomer(customer)
+                        }}
                         title="View details"
                       >
                         👓
+                      </button>
+                      <button 
+                        className="btn-icon"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          handleEditCustomer(customer)
+                        }}
+                        title="Edit customer"
+                      >
+                        ✏️
                       </button>
                     </div>
                     <div className="customer-actions-right">
                       <button 
                         className="btn-icon btn-icon-danger"
-                        onClick={() => setDeletingCustomer(customer)}
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          setDeletingCustomer(customer)
+                        }}
                         title="Delete customer"
                       >
                         🗑️
@@ -474,6 +582,96 @@ const CustomerManagement: React.FC = () => {
                 onClick={confirmDeleteCustomer}
               >
                 {deleteType === 'hard' ? '⚠️ Permanently Delete' : 'Delete'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Customer Modal */}
+      {editingCustomer && (
+        <div className="modal-overlay" onClick={() => {
+          setEditingCustomer(null)
+          setEditFormData({ customer_id: '', name: '', email: '', is_active: true })
+          setError(null)
+        }}>
+          <div className="modal-content" onClick={e => e.stopPropagation()}>
+            <h3>Edit Customer</h3>
+            
+            {error && (
+              <div className="modal-error">
+                {error}
+              </div>
+            )}
+            
+            <div className="form-group">
+              <label htmlFor="editCustomerId">Customer ID</label>
+              <input
+                id="editCustomerId"
+                type="text"
+                className="form-control"
+                value={editFormData.customer_id}
+                onChange={(e) => setEditFormData({ ...editFormData, customer_id: e.target.value })}
+                placeholder="e.g., CUST-002"
+              />
+              <small>Optional - defaults to hex ID if not provided</small>
+            </div>
+            
+            <div className="form-group">
+              <label htmlFor="editCustomerName">Customer Name *</label>
+              <input
+                id="editCustomerName"
+                type="text"
+                className="form-control"
+                value={editFormData.name}
+                onChange={(e) => setEditFormData({ ...editFormData, name: e.target.value })}
+                placeholder="e.g., Acme Corp International"
+                autoFocus
+              />
+            </div>
+            
+            <div className="form-group">
+              <label htmlFor="editCustomerEmail">Email *</label>
+              <input
+                id="editCustomerEmail"
+                type="email"
+                className="form-control"
+                value={editFormData.email}
+                onChange={(e) => setEditFormData({ ...editFormData, email: e.target.value })}
+                placeholder="e.g., support@acme.com"
+              />
+            </div>
+            
+            <div className="form-group">
+              <label className="checkbox-label">
+                <input
+                  type="checkbox"
+                  checked={editFormData.is_active}
+                  onChange={(e) => setEditFormData({ ...editFormData, is_active: e.target.checked })}
+                />
+                <span>Active</span>
+              </label>
+              <small>Inactive customers cannot be used for new surveys</small>
+            </div>
+            
+            <div className="modal-actions">
+              <button 
+                className="btn btn-secondary"
+                onClick={() => {
+                  setEditingCustomer(null)
+                  setEditFormData({ customer_id: '', name: '', email: '', is_active: true })
+                  setError(null)
+                }}
+                disabled={updating}
+              >
+                Cancel
+              </button>
+              <button 
+                className="btn btn-primary"
+                onClick={handleUpdateCustomer}
+                disabled={updating || !editFormData.name.trim() || !editFormData.email.trim()}
+              >
+                {updating ? 'Updating...' : 'Update'}
               </button>
             </div>
           </div>

@@ -56,7 +56,6 @@ const LookupManagement: React.FC = () => {
   useEffect(() => {
     if (selectedCustomer) {
       fetchNamespaces(selectedCustomer)
-      setSelectedNamespace('')
       setLookups([])
     } else {
       setNamespaces([])
@@ -71,6 +70,24 @@ const LookupManagement: React.FC = () => {
       setLookups([])
     }
   }, [selectedCustomer, selectedNamespace])
+
+  // ESC key handler for closing Lookup Data modal
+  useEffect(() => {
+    const handleEscKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && showDataModal) {
+        setShowDataModal(false)
+        setViewingLookup(null)
+        setLookupData([])
+      }
+    }
+
+    if (showDataModal) {
+      document.addEventListener('keydown', handleEscKey)
+      return () => {
+        document.removeEventListener('keydown', handleEscKey)
+      }
+    }
+  }, [showDataModal])
 
   const fetchCustomers = async () => {
     try {
@@ -107,18 +124,26 @@ const LookupManagement: React.FC = () => {
       const response = await fetch(`/api/v1/operations/customers/${customerHex}/namespaces`)
       if (response.ok) {
         const data = await response.json()
-        setNamespaces(data.namespaces || [])
+        const namespacesList = data.namespaces || []
+        setNamespaces(namespacesList)
+        // Auto-select the first namespace if available
+        if (namespacesList.length > 0) {
+          setSelectedNamespace(namespacesList[0].slug)
+        }
       }
     } catch (err) {
       console.error('Error fetching namespaces:', err)
       // Demo data
-      setNamespaces([
+      const demoNamespaces = [
         {
           id: '1',
           name: 'Restaurant Survey',
           slug: 'restaurant-survey'
         }
-      ])
+      ]
+      setNamespaces(demoNamespaces)
+      // Auto-select the first namespace
+      setSelectedNamespace(demoNamespaces[0].slug)
     }
   }
 
@@ -426,7 +451,12 @@ const LookupManagement: React.FC = () => {
             </div>
           ) : (
             lookups.map(lookup => (
-              <div key={lookup.name} className="lookup-card">
+              <div 
+                key={lookup.name} 
+                className="lookup-card"
+                onClick={() => handleViewLookupData(lookup)}
+                style={{ cursor: 'pointer' }}
+              >
                 <div className="lookup-header">
                   <h3>{lookup.name}</h3>
                   <div className="lookup-header-right">
@@ -451,14 +481,20 @@ const LookupManagement: React.FC = () => {
                   <div className="lookup-actions-left">
                     <button 
                       className="btn-icon"
-                      onClick={() => handleViewLookupData(lookup)}
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        handleViewLookupData(lookup)
+                      }}
                       title="View lookup data"
                     >
                       👓
                     </button>
                     <button 
                       className="btn-icon btn-icon-info"
-                      onClick={() => handleShowUrl(lookup)}
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        handleShowUrl(lookup)
+                      }}
                       title="Show API URL for surveys"
                     >
                       ℹ️
@@ -467,7 +503,10 @@ const LookupManagement: React.FC = () => {
                   <div className="lookup-actions-right">
                     <button 
                       className="btn-icon btn-icon-danger"
-                      onClick={() => handleDeleteLookup(lookup)}
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        handleDeleteLookup(lookup)
+                      }}
                       title="Delete lookup"
                     >
                       🗑️
