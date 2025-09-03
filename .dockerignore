@@ -14,3 +14,8 @@ README.md
 .conversations
 coverage
 .nyc_output
+
+two-teams-lunch-data/
+employee-pulse-data/
+restaurant-survey-simple.json
+restaurant-survey.json
