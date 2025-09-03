@@ -1,0 +1,355 @@
+{
+  "title": "Green Gardens Team Beta Lunch Coordination",
+  "description": "Welcome to our eco-friendly lunch coordination! Our team coordinator will gather everyone's meal preferences to ensure a delicious and sustainable catering experience for Team Beta.",
+  "logo": "/5dd99985080f40e6b87b4a4d233f0891/team-beta-catering/assets/team-beta-logo.svg",
+  "logoPosition": "top",
+  "logoWidth": "200px",
+  "assets": {
+    "stylesheets": [
+      "/5dd99985080f40e6b87b4a4d233f0891/team-beta-catering/assets/team-beta-theme.css"
+    ]
+  },
+  "pages": [
+    {
+      "name": "team_details",
+      "title": "Team Coordination Details",
+      "description": "Let's organize our Green Gardens team lunch perfectly",
+      "elements": [
+        {
+          "type": "text",
+          "name": "coordinator_name",
+          "title": "Team Coordinator",
+          "description": "Name of the person organizing this lunch order",
+          "isRequired": true,
+          "placeholder": "Enter coordinator's full name"
+        },
+        {
+          "type": "text",
+          "name": "team_name",
+          "title": "Team/Division Name",
+          "description": "Your team or division within Green Gardens",
+          "isRequired": true,
+          "defaultValue": "Green Gardens Team Beta",
+          "placeholder": "e.g., Sustainability Division, Operations Team"
+        },
+        {
+          "type": "text",
+          "name": "event_date",
+          "title": "Lunch Event Date",
+          "description": "When is this catered lunch taking place?",
+          "isRequired": true,
+          "inputType": "date"
+        },
+        {
+          "type": "text",
+          "name": "delivery_location",
+          "title": "Delivery Address/Location",
+          "description": "Exact location for food delivery",
+          "isRequired": true,
+          "placeholder": "Building name, floor, conference room, etc."
+        }
+      ]
+    },
+    {
+      "name": "attendance",
+      "title": "Team Attendance & Dietary Needs",
+      "description": "Help us prepare the right amount of delicious food",
+      "elements": [
+        {
+          "type": "text",
+          "name": "total_attendees",
+          "title": "Total Team Members Attending",
+          "description": "How many people from your team will be eating?",
+          "isRequired": true,
+          "inputType": "number",
+          "min": 1,
+          "max": 100,
+          "placeholder": "Number of attendees"
+        },
+        {
+          "type": "text",
+          "name": "dietary_restrictions_count",
+          "title": "Special Dietary Requirements",
+          "description": "Number of people with dietary restrictions or preferences",
+          "inputType": "number",
+          "min": 0,
+          "placeholder": "0 if no special requirements"
+        },
+        {
+          "type": "comment",
+          "name": "dietary_restrictions_details",
+          "title": "Dietary Details & Allergies",
+          "description": "Please specify dietary restrictions, allergies, or preferences (vegetarian, vegan, gluten-free, etc.)",
+          "placeholder": "e.g., 3 vegetarians, 1 person with nut allergy, 2 gluten-free requests",
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "name": "main_courses",
+      "title": "Sandwich & Main Course Selection",
+      "description": "Select the perfect sandwiches for your Green Gardens team",
+      "elements": [
+        {
+          "type": "matrixdropdown",
+          "name": "sandwich_quantities",
+          "title": "Sandwich Order Quantities",
+          "description": "Enter how many of each sandwich your team members would like",
+          "isRequired": true,
+          "columns": [
+            {
+              "name": "quantity",
+              "title": "Qty",
+              "cellType": "text",
+              "inputType": "number",
+              "min": 0,
+              "defaultValue": 0
+            }
+          ],
+          "rows": [
+            {
+              "value": "turkey",
+              "text": "Turkey & Swiss Sandwich"
+            },
+            {
+              "value": "ham",
+              "text": "Ham & Cheddar Sandwich"
+            },
+            {
+              "value": "roast-beef",
+              "text": "Roast Beef & Provolone"
+            },
+            {
+              "value": "italian",
+              "text": "Italian Sub Special"
+            },
+            {
+              "value": "tuna",
+              "text": "Fresh Tuna Salad"
+            },
+            {
+              "value": "chicken-salad",
+              "text": "Homemade Chicken Salad"
+            },
+            {
+              "value": "veggie",
+              "text": "Garden Veggie (Avocado & Sprouts)"
+            },
+            {
+              "value": "blt",
+              "text": "Classic BLT"
+            },
+            {
+              "value": "club",
+              "text": "Triple Club Sandwich"
+            },
+            {
+              "value": "grilled-chicken",
+              "text": "Grilled Chicken Caesar"
+            }
+          ]
+        },
+        {
+          "type": "dropdown",
+          "name": "preferred_bread",
+          "title": "Team's Preferred Bread Choice",
+          "description": "What type of bread works best for most of your team?",
+          "isRequired": true,
+          "choicesByUrl": {
+            "url": "/5dd99985080f40e6b87b4a4d233f0891/team-beta-catering/lookups/bread-types",
+            "valueName": "key",
+            "titleName": "value"
+          }
+        }
+      ]
+    },
+    {
+      "name": "sides_drinks",
+      "title": "Sides & Refreshments",
+      "description": "Complete your team's meal with snacks and beverages",
+      "elements": [
+        {
+          "type": "matrixdropdown",
+          "name": "chips_quantities",
+          "title": "Snacks & Chips Selection",
+          "description": "Choose snacks for your team members",
+          "columns": [
+            {
+              "name": "quantity",
+              "title": "Qty",
+              "cellType": "text",
+              "inputType": "number",
+              "min": 0,
+              "defaultValue": 0
+            }
+          ],
+          "rows": [
+            {
+              "value": "classic",
+              "text": "Classic Potato Chips"
+            },
+            {
+              "value": "bbq",
+              "text": "BBQ Flavored Chips"
+            },
+            {
+              "value": "sour-cream",
+              "text": "Sour Cream & Onion"
+            },
+            {
+              "value": "salt-vinegar",
+              "text": "Salt & Vinegar"
+            },
+            {
+              "value": "baked",
+              "text": "Baked Chips (Healthier Option)"
+            },
+            {
+              "value": "pretzels",
+              "text": "Mini Pretzels"
+            }
+          ]
+        },
+        {
+          "type": "matrixdropdown",
+          "name": "beverage_quantities",
+          "title": "Beverage Coordination",
+          "description": "What drinks should we provide for the team?",
+          "isRequired": true,
+          "columns": [
+            {
+              "name": "quantity",
+              "title": "Qty",
+              "cellType": "text",
+              "inputType": "number",
+              "min": 0,
+              "defaultValue": 0
+            }
+          ],
+          "rows": [
+            {
+              "value": "water",
+              "text": "Bottled Water (Eco-friendly)"
+            },
+            {
+              "value": "coke",
+              "text": "Coca Cola"
+            },
+            {
+              "value": "pepsi",
+              "text": "Pepsi"
+            },
+            {
+              "value": "sprite",
+              "text": "Sprite/Lemon-Lime"
+            },
+            {
+              "value": "diet-coke",
+              "text": "Diet Cola"
+            },
+            {
+              "value": "lemonade",
+              "text": "Fresh Lemonade"
+            },
+            {
+              "value": "iced-tea",
+              "text": "Iced Tea"
+            },
+            {
+              "value": "coffee",
+              "text": "Coffee Service"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "desserts_finishing_touches",
+      "title": "Sweet Treats & Final Coordination",
+      "elements": [
+        {
+          "type": "matrixdropdown",
+          "name": "dessert_quantities",
+          "title": "Dessert Selection",
+          "description": "End the meal on a sweet note",
+          "columns": [
+            {
+              "name": "quantity",
+              "title": "Qty",
+              "cellType": "text",
+              "inputType": "number",
+              "min": 0,
+              "defaultValue": 0
+            }
+          ],
+          "rows": [
+            {
+              "value": "chocolate-brownie",
+              "text": "Rich Chocolate Brownie"
+            },
+            {
+              "value": "cookie",
+              "text": "Fresh Chocolate Chip Cookie"
+            },
+            {
+              "value": "fruit",
+              "text": "Seasonal Fresh Fruit Cup"
+            },
+            {
+              "value": "pie",
+              "text": "Apple Pie Slice"
+            },
+            {
+              "value": "cheesecake",
+              "text": "Classic Cheesecake"
+            }
+          ]
+        },
+        {
+          "type": "radiogroup",
+          "name": "condiment_packets",
+          "title": "Condiments & Extras",
+          "description": "Do you need individual condiment packets?",
+          "isRequired": true,
+          "choices": [
+            {
+              "value": "yes_variety",
+              "text": "Yes - Variety pack (mayo, mustard, dressings)"
+            },
+            {
+              "value": "yes_specific",
+              "text": "Yes - Only specific condiments"
+            },
+            {
+              "value": "no",
+              "text": "No extra condiments needed"
+            }
+          ]
+        },
+        {
+          "type": "comment",
+          "name": "special_requests",
+          "title": "Special Coordination Notes",
+          "description": "Any special setup requirements, timing needs, or additional requests for the caterer?",
+          "placeholder": "e.g., Please use biodegradable plates, setup in the main conference room, need extra napkins, arrival instructions, etc.",
+          "rows": 4
+        },
+        {
+          "type": "text",
+          "name": "contact_phone",
+          "title": "Coordinator Contact Number",
+          "description": "Best phone number for delivery coordination",
+          "isRequired": true,
+          "inputType": "tel",
+          "placeholder": "(555) 987-6543"
+        }
+      ]
+    }
+  ],
+  "showProgressBar": "top",
+  "progressBarType": "questions",
+  "showQuestionNumbers": "on",
+  "questionStartIndex": "1",
+  "completeText": "Submit Green Gardens Team Order",
+  "completedHtml": "<div style='text-align: center; padding: 2.5rem; background: linear-gradient(135deg, #059669, #047857); color: white; border-radius: 16px; box-shadow: 0 10px 30px rgba(5, 150, 105, 0.3);'><h2 style='margin-bottom: 1rem;'>🌿 Team Beta Order Successfully Submitted!</h2><p style='font-size: 1.3rem; margin: 1rem 0; font-style: italic;'>Thank you for coordinating Green Gardens Team Beta's sustainable lunch experience!</p><p style='line-height: 1.6;'>Your thoughtfully planned catering request is now being processed. Our eco-conscious caterer will reach out to confirm all details and coordinate the perfect delivery time for your team.</p><p style='font-weight: bold; margin-top: 2rem; padding: 1rem; background: rgba(255,255,255,0.2); border-radius: 8px;'>🆔 Order Reference: BETA-{submitId}</p><p style='margin-top: 1rem; font-size: 0.9rem; opacity: 0.9;'>🌱 Thank you for choosing sustainable catering options!</p></div>"
+}

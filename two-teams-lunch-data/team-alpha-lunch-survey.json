@@ -1,0 +1,343 @@
+{
+  "title": "Team Alpha Lunch Order - Corporate Catering Event",
+  "description": "Help us coordinate the perfect lunch for Team Alpha! Our coordinator will collect everyone's preferences to ensure we have exactly what each team member wants.",
+  "logo": "/5dd99985080f40e6b87b4a4d233f0891/team-alpha-catering/assets/team-alpha-logo.svg",
+  "logoPosition": "top",
+  "logoWidth": "200px",
+  "assets": {
+    "stylesheets": [
+      "/5dd99985080f40e6b87b4a4d233f0891/team-alpha-catering/assets/team-alpha-theme.css"
+    ]
+  },
+  "pages": [
+    {
+      "name": "team_info",
+      "title": "Team Information",
+      "description": "Let's start with some basic team details",
+      "elements": [
+        {
+          "type": "text",
+          "name": "coordinator_name",
+          "title": "Coordinator Name",
+          "description": "Name of the person filling out this survey",
+          "isRequired": true,
+          "placeholder": "Enter the coordinator's name"
+        },
+        {
+          "type": "text",
+          "name": "team_name",
+          "title": "Team/Department Name",
+          "description": "Official team or department name",
+          "isRequired": true,
+          "defaultValue": "Tech Innovators Team Alpha",
+          "placeholder": "e.g., Engineering Team, Marketing Department"
+        },
+        {
+          "type": "text",
+          "name": "event_date",
+          "title": "Event Date",
+          "description": "Date of the catered lunch event",
+          "isRequired": true,
+          "inputType": "date"
+        },
+        {
+          "type": "text",
+          "name": "delivery_location",
+          "title": "Delivery Location",
+          "description": "Where should the food be delivered?",
+          "isRequired": true,
+          "placeholder": "Building, floor, room number"
+        }
+      ]
+    },
+    {
+      "name": "headcount",
+      "title": "Team Headcount",
+      "description": "How many people will be eating?",
+      "elements": [
+        {
+          "type": "text",
+          "name": "total_attendees",
+          "title": "Total Number of Attendees",
+          "description": "Total people who will be eating lunch",
+          "isRequired": true,
+          "inputType": "number",
+          "min": 1,
+          "max": 100,
+          "placeholder": "Enter number of people"
+        },
+        {
+          "type": "text",
+          "name": "dietary_restrictions_count",
+          "title": "People with Dietary Restrictions",
+          "description": "How many people have special dietary needs?",
+          "inputType": "number",
+          "min": 0,
+          "placeholder": "Enter number (0 if none)"
+        },
+        {
+          "type": "comment",
+          "name": "dietary_restrictions_details",
+          "title": "Dietary Restrictions Details",
+          "description": "Please describe any dietary restrictions, allergies, or special needs",
+          "placeholder": "e.g., 2 vegetarians, 1 gluten-free, 1 nut allergy",
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "name": "sandwich_orders",
+      "title": "Sandwich Selection",
+      "description": "Choose sandwiches for your team members",
+      "elements": [
+        {
+          "type": "matrixdropdown",
+          "name": "sandwich_quantities",
+          "title": "How many of each sandwich type does your team want?",
+          "description": "Enter the quantity for each sandwich type your team members prefer",
+          "isRequired": true,
+          "columns": [
+            {
+              "name": "quantity",
+              "title": "Quantity",
+              "cellType": "text",
+              "inputType": "number",
+              "min": 0,
+              "defaultValue": 0
+            }
+          ],
+          "rows": [
+            {
+              "value": "turkey",
+              "text": "Turkey & Swiss"
+            },
+            {
+              "value": "ham",
+              "text": "Ham & Cheddar"
+            },
+            {
+              "value": "roast-beef",
+              "text": "Roast Beef & Provolone"
+            },
+            {
+              "value": "italian",
+              "text": "Italian Sub (Salami, Ham, Pepperoni)"
+            },
+            {
+              "value": "tuna",
+              "text": "Tuna Salad"
+            },
+            {
+              "value": "chicken-salad",
+              "text": "Chicken Salad"
+            },
+            {
+              "value": "veggie",
+              "text": "Veggie (Avocado, Cucumber, Sprouts)"
+            },
+            {
+              "value": "blt",
+              "text": "BLT (Bacon, Lettuce, Tomato)"
+            },
+            {
+              "value": "club",
+              "text": "Club Sandwich (Turkey, Ham, Bacon)"
+            },
+            {
+              "value": "grilled-chicken",
+              "text": "Grilled Chicken Caesar"
+            }
+          ]
+        },
+        {
+          "type": "dropdown",
+          "name": "preferred_bread",
+          "title": "Preferred Bread Type (for most sandwiches)",
+          "description": "What type of bread does your team generally prefer?",
+          "isRequired": true,
+          "choicesByUrl": {
+            "url": "/5dd99985080f40e6b87b4a4d233f0891/team-alpha-catering/lookups/bread-types",
+            "valueName": "key",
+            "titleName": "value"
+          }
+        }
+      ]
+    },
+    {
+      "name": "sides_beverages",
+      "title": "Sides & Beverages",
+      "description": "Complete the meal with sides and drinks",
+      "elements": [
+        {
+          "type": "matrixdropdown",
+          "name": "chips_quantities",
+          "title": "Chips & Snacks Selection",
+          "description": "How many of each type of chips/snacks?",
+          "columns": [
+            {
+              "name": "quantity",
+              "title": "Quantity",
+              "cellType": "text",
+              "inputType": "number",
+              "min": 0,
+              "defaultValue": 0
+            }
+          ],
+          "rows": [
+            {
+              "value": "classic",
+              "text": "Classic Potato Chips"
+            },
+            {
+              "value": "bbq",
+              "text": "BBQ Chips"
+            },
+            {
+              "value": "sour-cream",
+              "text": "Sour Cream & Onion"
+            },
+            {
+              "value": "baked",
+              "text": "Baked Potato Chips"
+            },
+            {
+              "value": "pretzels",
+              "text": "Mini Pretzels"
+            }
+          ]
+        },
+        {
+          "type": "matrixdropdown",
+          "name": "beverage_quantities",
+          "title": "Beverage Selection",
+          "description": "What drinks does your team want?",
+          "isRequired": true,
+          "columns": [
+            {
+              "name": "quantity",
+              "title": "Quantity",
+              "cellType": "text",
+              "inputType": "number",
+              "min": 0,
+              "defaultValue": 0
+            }
+          ],
+          "rows": [
+            {
+              "value": "water",
+              "text": "Bottled Water"
+            },
+            {
+              "value": "coke",
+              "text": "Coca Cola"
+            },
+            {
+              "value": "diet-coke",
+              "text": "Diet Coke"
+            },
+            {
+              "value": "sprite",
+              "text": "Sprite"
+            },
+            {
+              "value": "lemonade",
+              "text": "Fresh Lemonade"
+            },
+            {
+              "value": "iced-tea",
+              "text": "Iced Tea"
+            },
+            {
+              "value": "coffee",
+              "text": "Coffee"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "desserts_extras",
+      "title": "Desserts & Final Details",
+      "elements": [
+        {
+          "type": "matrixdropdown",
+          "name": "dessert_quantities",
+          "title": "Dessert Selection",
+          "description": "Sweet treats to finish the meal",
+          "columns": [
+            {
+              "name": "quantity",
+              "title": "Quantity",
+              "cellType": "text",
+              "inputType": "number",
+              "min": 0,
+              "defaultValue": 0
+            }
+          ],
+          "rows": [
+            {
+              "value": "chocolate-brownie",
+              "text": "Chocolate Brownie"
+            },
+            {
+              "value": "cookie",
+              "text": "Chocolate Chip Cookie"
+            },
+            {
+              "value": "fruit",
+              "text": "Fresh Fruit Cup"
+            },
+            {
+              "value": "cheesecake",
+              "text": "New York Cheesecake"
+            }
+          ]
+        },
+        {
+          "type": "radiogroup",
+          "name": "condiment_packets",
+          "title": "Condiment Packets Needed?",
+          "description": "Should we include individual condiment packets?",
+          "isRequired": true,
+          "choices": [
+            {
+              "value": "yes_variety",
+              "text": "Yes, variety pack (mayo, mustard, ranch)"
+            },
+            {
+              "value": "yes_specific",
+              "text": "Yes, but specific types only"
+            },
+            {
+              "value": "no",
+              "text": "No condiment packets needed"
+            }
+          ]
+        },
+        {
+          "type": "comment",
+          "name": "special_requests",
+          "title": "Special Requests or Instructions",
+          "description": "Any additional requests, setup instructions, or notes for the caterer?",
+          "placeholder": "e.g., Please arrive 15 minutes early for setup, need napkins and plates for 5 extra people, etc.",
+          "rows": 4
+        },
+        {
+          "type": "text",
+          "name": "contact_phone",
+          "title": "Contact Phone Number",
+          "description": "Phone number for delivery coordination",
+          "isRequired": true,
+          "inputType": "tel",
+          "placeholder": "(555) 123-4567"
+        }
+      ]
+    }
+  ],
+  "showProgressBar": "top",
+  "progressBarType": "questions",
+  "showQuestionNumbers": "on",
+  "questionStartIndex": "1",
+  "completeText": "Submit Team Alpha Lunch Order",
+  "completedHtml": "<div style='text-align: center; padding: 2rem; background: linear-gradient(135deg, #2563eb, #1d4ed8); color: white; border-radius: 12px;'><h2>🎉 Team Alpha Lunch Order Submitted!</h2><p style='font-size: 1.2rem; margin: 1rem 0;'>Thank you for coordinating your team's lunch order!</p><p>Your catering request has been received and will be processed shortly. The caterer will contact you at the provided phone number to confirm details and delivery time.</p><p style='font-weight: bold; margin-top: 1.5rem;'>Order ID: ALPHA-{submitId}</p></div>"
+}

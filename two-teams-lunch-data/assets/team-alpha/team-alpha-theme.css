@@ -1,0 +1,171 @@
+/* Tech Innovators Team Alpha - Modern Blue Theme */
+
+:root {
+  --alpha-primary: #2563eb;
+  --alpha-secondary: #1d4ed8;
+  --alpha-accent: #60a5fa;
+  --alpha-light: #eff6ff;
+  --alpha-dark: #1e40af;
+  --alpha-text: #1f2937;
+  --alpha-text-light: #6b7280;
+}
+
+/* Survey Container */
+.sv-root-modern {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, var(--alpha-light) 0%, #f8fafc 100%);
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(37, 99, 235, 0.1);
+  padding: 2rem;
+  margin: 1rem;
+}
+
+/* Survey Title */
+.sv-title {
+  color: var(--alpha-primary) !important;
+  font-size: 2rem !important;
+  font-weight: 700 !important;
+  text-align: center !important;
+  margin-bottom: 1rem !important;
+  text-shadow: 0 2px 4px rgba(37, 99, 235, 0.1);
+}
+
+.sv-description {
+  color: var(--alpha-text-light) !important;
+  text-align: center !important;
+  font-size: 1.1rem !important;
+  margin-bottom: 2rem !important;
+}
+
+/* Page Headers */
+.sv-page__title {
+  color: var(--alpha-secondary) !important;
+  font-size: 1.5rem !important;
+  font-weight: 600 !important;
+  border-bottom: 3px solid var(--alpha-accent) !important;
+  padding-bottom: 0.5rem !important;
+  margin-bottom: 1.5rem !important;
+}
+
+/* Questions */
+.sv-question__title {
+  color: var(--alpha-text) !important;
+  font-weight: 600 !important;
+  font-size: 1.1rem !important;
+}
+
+/* Input Fields */
+.sv-text, .sv-dropdown-popup, .sv-selectbase__input {
+  border: 2px solid var(--alpha-accent) !important;
+  border-radius: 8px !important;
+  padding: 0.75rem !important;
+  transition: all 0.3s ease !important;
+}
+
+.sv-text:focus, .sv-dropdown-popup:focus, .sv-selectbase__input:focus {
+  border-color: var(--alpha-primary) !important;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1) !important;
+  outline: none !important;
+}
+
+/* Buttons */
+.sv-btn {
+  background: linear-gradient(135deg, var(--alpha-primary), var(--alpha-secondary)) !important;
+  color: white !important;
+  border: none !important;
+  padding: 0.75rem 2rem !important;
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+  font-size: 1rem !important;
+  transition: all 0.3s ease !important;
+  cursor: pointer !important;
+}
+
+.sv-btn:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 25px rgba(37, 99, 235, 0.3) !important;
+}
+
+.sv-btn:disabled {
+  opacity: 0.6 !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+}
+
+/* Progress Bar */
+.sv-progress__bar {
+  background: linear-gradient(90deg, var(--alpha-primary), var(--alpha-accent)) !important;
+  height: 8px !important;
+  border-radius: 4px !important;
+}
+
+.sv-progress {
+  background: #e5e7eb !important;
+  border-radius: 4px !important;
+  margin: 1rem 0 !important;
+}
+
+/* Radio Buttons and Checkboxes */
+.sv-radio, .sv-checkbox {
+  accent-color: var(--alpha-primary) !important;
+}
+
+/* Dropdowns */
+.sv-dropdown__item--selected {
+  background: var(--alpha-light) !important;
+  color: var(--alpha-primary) !important;
+}
+
+/* Rating Stars */
+.sv-rating-item-star {
+  color: var(--alpha-accent) !important;
+}
+
+.sv-rating-item-star.sv-rating-item--selected {
+  color: var(--alpha-primary) !important;
+}
+
+/* Matrix Questions */
+.sv-matrix th {
+  background: var(--alpha-light) !important;
+  color: var(--alpha-primary) !important;
+  font-weight: 600 !important;
+}
+
+/* Panels */
+.sv-panel {
+  border: 2px solid var(--alpha-light) !important;
+  border-radius: 12px !important;
+  background: white !important;
+  padding: 1.5rem !important;
+  margin: 1rem 0 !important;
+}
+
+/* Navigation */
+.sv-nav {
+  background: white !important;
+  border-top: 1px solid var(--alpha-light) !important;
+  padding: 1rem !important;
+  border-radius: 0 0 12px 12px !important;
+}
+
+/* Custom Team Alpha Branding */
+.team-alpha-header {
+  background: linear-gradient(135deg, var(--alpha-primary), var(--alpha-secondary));
+  color: white;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.team-alpha-badge {
+  background: var(--alpha-primary);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  display: inline-block;
+  margin-bottom: 1rem;
+}
