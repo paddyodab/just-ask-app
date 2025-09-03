@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import LoadingSpinner from '../common/LoadingSpinner'
+import ConfirmationModal from '../common/ConfirmationModal'
 import './LookupManagement.css'
 
 interface Customer {
@@ -43,6 +44,10 @@ const LookupManagement: React.FC = () => {
   const [uploading, setUploading] = useState(false)
   const [showUrlModal, setShowUrlModal] = useState(false)
   const [urlLookup, setUrlLookup] = useState<Lookup | null>(null)
+  const [confirmModal, setConfirmModal] = useState({
+    isOpen: false,
+    lookup: null as Lookup | null
+  })
 
   useEffect(() => {
     fetchCustomers()
@@ -286,9 +291,12 @@ const LookupManagement: React.FC = () => {
   }
 
   const handleDeleteLookup = async (lookup: Lookup) => {
-    if (!confirm(`Delete lookup "${lookup.name}"? This will affect surveys using this data.`)) {
-      return
-    }
+    setConfirmModal({ isOpen: true, lookup })
+  }
+
+  const confirmDelete = async () => {
+    const lookup = confirmModal.lookup
+    if (!lookup) return
 
     try {
       setError(null)
@@ -307,6 +315,8 @@ const LookupManagement: React.FC = () => {
     } catch (err) {
       console.error('Error deleting lookup:', err)
       setError('Failed to delete lookup')
+    } finally {
+      setConfirmModal({ isOpen: false, lookup: null })
     }
   }
 
@@ -740,6 +750,19 @@ Option 2`}</pre>
           </div>
         </div>
       )}
+
+      {/* Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={confirmModal.isOpen}
+        title="Delete Lookup Data"
+        message={`Are you sure you want to delete the lookup "${confirmModal.lookup?.name}"? This will affect any surveys using this data.`}
+        confirmText="Delete"
+        cancelText="Cancel"
+        confirmButtonClass="btn-danger"
+        onConfirm={confirmDelete}
+        onCancel={() => setConfirmModal({ isOpen: false, lookup: null })}
+        icon="⚠️"
+      />
     </div>
   )
 }

@@ -1,0 +1,128 @@
+.confirmation-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.confirmation-modal {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  max-width: 450px;
+  width: 90%;
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.confirmation-modal-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 24px;
+  border-bottom: 1px solid #e1e8ed;
+}
+
+.confirmation-modal-icon {
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.confirmation-modal-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #1a1f36;
+  flex: 1;
+}
+
+.confirmation-modal-body {
+  padding: 20px 24px;
+}
+
+.confirmation-modal-body p {
+  margin: 0;
+  color: #4a5568;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.confirmation-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 16px 24px;
+  background: #f7fafc;
+  border-radius: 0 0 12px 12px;
+}
+
+.confirmation-modal-footer .btn {
+  padding: 8px 20px;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.confirmation-modal-footer .btn-secondary {
+  background: white;
+  color: #4a5568;
+  border: 1px solid #e1e8ed;
+}
+
+.confirmation-modal-footer .btn-secondary:hover {
+  background: #f7fafc;
+  border-color: #cbd5e0;
+}
+
+.confirmation-modal-footer .btn-danger {
+  background: #ff4757;
+  color: white;
+}
+
+.confirmation-modal-footer .btn-danger:hover {
+  background: #ff3838;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(255, 71, 87, 0.3);
+}
+
+.confirmation-modal-footer .btn-primary {
+  background: #6366f1;
+  color: white;
+}
+
+.confirmation-modal-footer .btn-primary:hover {
+  background: #5558e3;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+}

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import LoadingSpinner from '../common/LoadingSpinner'
+import ConfirmationModal from '../common/ConfirmationModal'
 import './AssetManagement.css'
 
 interface Customer {
@@ -38,6 +39,10 @@ const AssetManagement: React.FC = () => {
   const [previewContent, setPreviewContent] = useState<string>('')
   const [uploadFiles, setUploadFiles] = useState<FileList | null>(null)
   const [dragActive, setDragActive] = useState(false)
+  const [confirmModal, setConfirmModal] = useState({
+    isOpen: false,
+    asset: null as Asset | null
+  })
 
   useEffect(() => {
     fetchCustomers()
@@ -181,9 +186,12 @@ const AssetManagement: React.FC = () => {
   }
 
   const handleDeleteAsset = async (asset: Asset) => {
-    if (!confirm(`Delete asset "${asset.name}"? This action cannot be undone.`)) {
-      return
-    }
+    setConfirmModal({ isOpen: true, asset })
+  }
+
+  const confirmDelete = async () => {
+    const asset = confirmModal.asset
+    if (!asset) return
 
     try {
       setError(null)
@@ -202,6 +210,8 @@ const AssetManagement: React.FC = () => {
     } catch (err) {
       console.error('Error deleting asset:', err)
       setError('Failed to delete asset')
+    } finally {
+      setConfirmModal({ isOpen: false, asset: null })
     }
   }
 
@@ -562,6 +572,19 @@ previewAsset.content_type?.includes('image') ?
           </div>
         </div>
       )}
+
+      {/* Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={confirmModal.isOpen}
+        title="Delete Asset"
+        message={`Are you sure you want to delete the asset "${confirmModal.asset?.name}"? This action cannot be undone.`}
+        confirmText="Delete"
+        cancelText="Cancel"
+        confirmButtonClass="btn-danger"
+        onConfirm={confirmDelete}
+        onCancel={() => setConfirmModal({ isOpen: false, asset: null })}
+        icon="⚠️"
+      />
     </div>
   )
 }
