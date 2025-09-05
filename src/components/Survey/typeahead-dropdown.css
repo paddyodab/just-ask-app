@@ -1,0 +1,116 @@
+.typeahead-dropdown-container {
+  position: relative;
+  width: 100%;
+}
+
+.typeahead-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.typeahead-input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #d4d4d4;
+  border-radius: 4px;
+  font-size: 14px;
+  line-height: 1.5;
+  transition: border-color 0.15s ease-in-out;
+}
+
+.typeahead-input:focus {
+  outline: none;
+  border-color: #19b394;
+  box-shadow: 0 0 0 2px rgba(25, 179, 148, 0.1);
+}
+
+.typeahead-input:disabled {
+  background-color: #f5f5f5;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.typeahead-loading {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #666;
+  font-size: 12px;
+}
+
+.typeahead-results {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: white;
+  border: 1px solid #d4d4d4;
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+  max-height: 250px;
+  overflow-y: auto;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-top: -1px;
+}
+
+.typeahead-result-item {
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: background-color 0.15s;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.typeahead-result-item:last-child {
+  border-bottom: none;
+}
+
+.typeahead-result-item:hover {
+  background-color: #f8f8f8;
+}
+
+.typeahead-result-item.selected {
+  background-color: #e8f7f5;
+  font-weight: 500;
+}
+
+.typeahead-no-results,
+.typeahead-error {
+  padding: 12px;
+  text-align: center;
+  color: #666;
+  font-style: italic;
+}
+
+.typeahead-error {
+  color: #d32f2f;
+}
+
+/* Dark theme support */
+.sd-root-modern--dark .typeahead-input {
+  background-color: #2e2e2e;
+  border-color: #4a4a4a;
+  color: #fff;
+}
+
+.sd-root-modern--dark .typeahead-input:focus {
+  border-color: #19b394;
+}
+
+.sd-root-modern--dark .typeahead-results {
+  background-color: #2e2e2e;
+  border-color: #4a4a4a;
+}
+
+.sd-root-modern--dark .typeahead-result-item {
+  border-bottom-color: #3a3a3a;
+}
+
+.sd-root-modern--dark .typeahead-result-item:hover {
+  background-color: #3a3a3a;
+}
+
+.sd-root-modern--dark .typeahead-result-item.selected {
+  background-color: #1a5a4d;
+}

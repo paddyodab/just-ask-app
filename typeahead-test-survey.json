@@ -1,0 +1,65 @@
+{
+  "title": "Typeahead Test Survey",
+  "description": "Testing typeahead functionality for dropdown fields",
+  "pages": [
+    {
+      "name": "typeahead-test",
+      "title": "Test Typeahead Dropdowns",
+      "elements": [
+        {
+          "type": "dropdown",
+          "name": "country",
+          "title": "Select a country (with typeahead)",
+          "isRequired": true,
+          "placeholder": "Start typing country name...",
+          "enableTypeahead": true,
+          "typeaheadMinLength": 2,
+          "typeaheadDebounceMs": 300,
+          "choicesByUrl": {
+            "url": "/5dd99985080f40e6b87b4a4d233f0891/test-namespace/lookups/countries",
+            "valueName": "key",
+            "titleName": "value"
+          }
+        },
+        {
+          "type": "dropdown",
+          "name": "city",
+          "title": "Select a city (regular dropdown)",
+          "isRequired": false,
+          "placeholder": "Select a city...",
+          "enableTypeahead": false,
+          "choicesByUrl": {
+            "url": "/5dd99985080f40e6b87b4a4d233f0891/test-namespace/lookups/cities?parent_key={country}",
+            "valueName": "key",
+            "titleName": "value"
+          },
+          "visibleIf": "{country} notempty"
+        },
+        {
+          "type": "dropdown",
+          "name": "employee",
+          "title": "Select an employee (typeahead with 3 char minimum)",
+          "isRequired": false,
+          "placeholder": "Type at least 3 characters...",
+          "enableTypeahead": true,
+          "typeaheadMinLength": 3,
+          "typeaheadDebounceMs": 500,
+          "choicesByUrl": {
+            "url": "/5dd99985080f40e6b87b4a4d233f0891/test-namespace/lookups/employees",
+            "valueName": "key",
+            "titleName": "value"
+          }
+        },
+        {
+          "type": "comment",
+          "name": "notes",
+          "title": "Additional Notes",
+          "placeholder": "Enter any additional notes here..."
+        }
+      ]
+    }
+  ],
+  "showProgressBar": "top",
+  "progressBarType": "questions",
+  "completedHtml": "<h3>Thank you for testing the typeahead functionality!</h3><p>Your responses have been recorded.</p>"
+}
