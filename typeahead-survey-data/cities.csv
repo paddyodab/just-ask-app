@@ -1,0 +1,371 @@
+id,name,country_code,name_with_country,population
+NYC,New York,US,"New York, United States",8336817
+LAX,Los Angeles,US,"Los Angeles, United States",3979576
+CHI,Chicago,US,"Chicago, United States",2693976
+HOU,Houston,US,"Houston, United States",2320268
+PHX,Phoenix,US,"Phoenix, United States",1680992
+PHL,Philadelphia,US,"Philadelphia, United States",1584064
+SAT,San Antonio,US,"San Antonio, United States",1547253
+SAN,San Diego,US,"San Diego, United States",1423851
+DAL,Dallas,US,"Dallas, United States",1343573
+SJC,San Jose,US,"San Jose, United States",1021795
+AUS,Austin,US,"Austin, United States",978908
+JAX,Jacksonville,US,"Jacksonville, United States",911507
+SFO,San Francisco,US,"San Francisco, United States",881549
+IND,Indianapolis,US,"Indianapolis, United States",876384
+CLB,Columbus,US,"Columbus, United States",898553
+FTW,Fort Worth,US,"Fort Worth, United States",909585
+CLT,Charlotte,US,"Charlotte, United States",885708
+SEA,Seattle,US,"Seattle, United States",753675
+DEN,Denver,US,"Denver, United States",727211
+WAS,Washington DC,US,"Washington DC, United States",705749
+BOS,Boston,US,"Boston, United States",692600
+NSH,Nashville,US,"Nashville, United States",670820
+BAL,Baltimore,US,"Baltimore, United States",593490
+OKC,Oklahoma City,US,"Oklahoma City, United States",695000
+LVS,Las Vegas,US,"Las Vegas, United States",651319
+POR,Portland,US,"Portland, United States",654741
+DET,Detroit,US,"Detroit, United States",639111
+MEM,Memphis,US,"Memphis, United States",651073
+LOU,Louisville,US,"Louisville, United States",617638
+MIL,Milwaukee,US,"Milwaukee, United States",577222
+ABQ,Albuquerque,US,"Albuquerque, United States",560513
+TUC,Tucson,US,"Tucson, United States",548073
+FRE,Fresno,US,"Fresno, United States",542012
+SAC,Sacramento,US,"Sacramento, United States",513624
+MSY,New Orleans,US,"New Orleans, United States",390144
+KCY,Kansas City,US,"Kansas City, United States",495327
+MIA,Miami,US,"Miami, United States",467963
+ATL,Atlanta,US,"Atlanta, United States",506811
+TOR,Toronto,CA,"Toronto, Canada",2731571
+MTL,Montreal,CA,"Montreal, Canada",1704694
+VAN,Vancouver,CA,"Vancouver, Canada",631486
+CAL,Calgary,CA,"Calgary, Canada",1239220
+EDM,Edmonton,CA,"Edmonton, Canada",932546
+OTT,Ottawa,CA,"Ottawa, Canada",934243
+WIN,Winnipeg,CA,"Winnipeg, Canada",705244
+QUE,Quebec City,CA,"Quebec City, Canada",531902
+HAM,Hamilton,CA,"Hamilton, Canada",536917
+KIT,Kitchener,CA,"Kitchener, Canada",233222
+LON,London,GB,"London, United Kingdom",8982000
+BIR,Birmingham,GB,"Birmingham, United Kingdom",1141816
+MAN,Manchester,GB,"Manchester, United Kingdom",547627
+LEE,Leeds,GB,"Leeds, United Kingdom",793139
+GLW,Glasgow,GB,"Glasgow, United Kingdom",626410
+LIV,Liverpool,GB,"Liverpool, United Kingdom",494814
+NEW,Newcastle,GB,"Newcastle, United Kingdom",302820
+SHF,Sheffield,GB,"Sheffield, United Kingdom",584853
+BRI,Bristol,GB,"Bristol, United Kingdom",463377
+EDI,Edinburgh,GB,"Edinburgh, United Kingdom",524930
+LEI,Leicester,GB,"Leicester, United Kingdom",357394
+COV,Coventry,GB,"Coventry, United Kingdom",371521
+NOT,Nottingham,GB,"Nottingham, United Kingdom",332900
+BEL,Belfast,GB,"Belfast, United Kingdom",341877
+CAR,Cardiff,GB,"Cardiff, United Kingdom",366903
+PAR,Paris,FR,"Paris, France",2148327
+MAR,Marseille,FR,"Marseille, France",861635
+LYO,Lyon,FR,"Lyon, France",513275
+TOU,Toulouse,FR,"Toulouse, France",471941
+NIC,Nice,FR,"Nice, France",340017
+NAN,Nantes,FR,"Nantes, France",303382
+STR,Strasbourg,FR,"Strasbourg, France",277270
+MON,Montpellier,FR,"Montpellier, France",277639
+BOR,Bordeaux,FR,"Bordeaux, France",249712
+LIL,Lille,FR,"Lille, France",232787
+REN,Rennes,FR,"Rennes, France",215366
+REI,Reims,FR,"Reims, France",182592
+HAV,Le Havre,FR,"Le Havre, France",170147
+BER,Berlin,DE,"Berlin, Germany",3645000
+HAM2,Hamburg,DE,"Hamburg, Germany",1841179
+MUN,Munich,DE,"Munich, Germany",1471508
+COL,Cologne,DE,"Cologne, Germany",1085664
+FRA,Frankfurt,DE,"Frankfurt, Germany",753056
+STU,Stuttgart,DE,"Stuttgart, Germany",634830
+DUS,Dusseldorf,DE,"Dusseldorf, Germany",619294
+DOR,Dortmund,DE,"Dortmund, Germany",587010
+ESS,Essen,DE,"Essen, Germany",583109
+LEI2,Leipzig,DE,"Leipzig, Germany",587857
+BRE,Bremen,DE,"Bremen, Germany",569352
+DRE,Dresden,DE,"Dresden, Germany",554649
+HAN,Hannover,DE,"Hannover, Germany",538068
+NUR,Nuremberg,DE,"Nuremberg, Germany",518365
+ROM,Rome,IT,"Rome, Italy",2873000
+MIL2,Milan,IT,"Milan, Italy",1352000
+NAP,Naples,IT,"Naples, Italy",967069
+TUR,Turin,IT,"Turin, Italy",870456
+PAL,Palermo,IT,"Palermo, Italy",674435
+GEN,Genoa,IT,"Genoa, Italy",580097
+BOL,Bologna,IT,"Bologna, Italy",389261
+FLO,Florence,IT,"Florence, Italy",382258
+BAR2,Bari,IT,"Bari, Italy",320862
+CAT,Catania,IT,"Catania, Italy",311620
+VEN,Venice,IT,"Venice, Italy",261321
+VER,Verona,IT,"Verona, Italy",258108
+MAD,Madrid,ES,"Madrid, Spain",3223000
+BAR,Barcelona,ES,"Barcelona, Spain",1620000
+VAL,Valencia,ES,"Valencia, Spain",791413
+SEV,Seville,ES,"Seville, Spain",689434
+ZAR,Zaragoza,ES,"Zaragoza, Spain",666880
+MAL,Malaga,ES,"Malaga, Spain",571026
+MUR,Murcia,ES,"Murcia, Spain",447463
+PAM,Palma,ES,"Palma, Spain",409661
+BIL,Bilbao,ES,"Bilbao, Spain",345141
+ALI,Alicante,ES,"Alicante, Spain",334887
+COR,Cordoba,ES,"Cordoba, Spain",325708
+VAL2,Valladolid,ES,"Valladolid, Spain",298412
+VIG,Vigo,ES,"Vigo, Spain",295364
+GIJ,Gijon,ES,"Gijon, Spain",271780
+TOK,Tokyo,JP,"Tokyo, Japan",13960000
+YOK,Yokohama,JP,"Yokohama, Japan",3757630
+OSA,Osaka,JP,"Osaka, Japan",2691185
+NAG,Nagoya,JP,"Nagoya, Japan",2295638
+SAP,Sapporo,JP,"Sapporo, Japan",1952356
+FUK,Fukuoka,JP,"Fukuoka, Japan",1540923
+KOB,Kobe,JP,"Kobe, Japan",1537272
+KYO,Kyoto,JP,"Kyoto, Japan",1475183
+KAW,Kawasaki,JP,"Kawasaki, Japan",1475213
+SAI,Saitama,JP,"Saitama, Japan",1263979
+HIR,Hiroshima,JP,"Hiroshima, Japan",1194034
+SEN,Sendai,JP,"Sendai, Japan",1082159
+CHI2,Chiba,JP,"Chiba, Japan",971882
+KIT2,Kitakyushu,JP,"Kitakyushu, Japan",961286
+BEI,Beijing,CN,"Beijing, China",21540000
+SHA,Shanghai,CN,"Shanghai, China",24280000
+GUA,Guangzhou,CN,"Guangzhou, China",13500000
+SHE,Shenzhen,CN,"Shenzhen, China",12530000
+CHE,Chengdu,CN,"Chengdu, China",16330000
+TIA,Tianjin,CN,"Tianjin, China",13220000
+CHO,Chongqing,CN,"Chongqing, China",30750000
+WUH,Wuhan,CN,"Wuhan, China",11080000
+DON,Dongguan,CN,"Dongguan, China",8220000
+XIH,Xi'an,CN,"Xi'an, China",12000000
+NAN2,Nanjing,CN,"Nanjing, China",8270000
+HAN2,Hangzhou,CN,"Hangzhou, China",9180000
+FOZ,Foshan,CN,"Foshan, China",7200000
+SYD,Sydney,AU,"Sydney, Australia",5312000
+MEL,Melbourne,AU,"Melbourne, Australia",5078000
+BNE,Brisbane,AU,"Brisbane, Australia",2462000
+PER,Perth,AU,"Perth, Australia",2067000
+ADE,Adelaide,AU,"Adelaide, Australia",1359000
+CBR,Canberra,AU,"Canberra, Australia",453000
+HOB,Hobart,AU,"Hobart, Australia",236000
+DAR,Darwin,AU,"Darwin, Australia",147000
+GOL,Gold Coast,AU,"Gold Coast, Australia",640000
+NEW2,Newcastle,AU,"Newcastle, Australia",322000
+CAI,Cairns,AU,"Cairns, Australia",152000
+TOW,Townsville,AU,"Townsville, Australia",180000
+GEE,Geelong,AU,"Geelong, Australia",192000
+WOL,Wollongong,AU,"Wollongong, Australia",302000
+AUC,Auckland,NZ,"Auckland, New Zealand",1657000
+WEL,Wellington,NZ,"Wellington, New Zealand",418500
+CHR,Christchurch,NZ,"Christchurch, New Zealand",381800
+HAM3,Hamilton,NZ,"Hamilton, New Zealand",169300
+TAU,Tauranga,NZ,"Tauranga, New Zealand",137900
+DUN,Dunedin,NZ,"Dunedin, New Zealand",130000
+MEX,Mexico City,MX,"Mexico City, Mexico",8918653
+GUA2,Guadalajara,MX,"Guadalajara, Mexico",1495189
+MON2,Monterrey,MX,"Monterrey, Mexico",1135550
+PUE,Puebla,MX,"Puebla, Mexico",1434062
+TIJ,Tijuana,MX,"Tijuana, Mexico",1321004
+LEO,Leon,MX,"Leon, Mexico",1238962
+CIU,Ciudad Juarez,MX,"Ciudad Juarez, Mexico",1321004
+ZAP,Zapopan,MX,"Zapopan, Mexico",1142483
+SAO,Sao Paulo,BR,"Sao Paulo, Brazil",12330000
+RIO,Rio de Janeiro,BR,"Rio de Janeiro, Brazil",6748000
+BRA,Brasilia,BR,"Brasilia, Brazil",3015000
+SAL,Salvador,BR,"Salvador, Brazil",2887000
+FOR,Fortaleza,BR,"Fortaleza, Brazil",2687000
+BEL2,Belo Horizonte,BR,"Belo Horizonte, Brazil",2523000
+MAN2,Manaus,BR,"Manaus, Brazil",2220000
+CUR,Curitiba,BR,"Curitiba, Brazil",1949000
+REC,Recife,BR,"Recife, Brazil",1661000
+GOI,Goiania,BR,"Goiania, Brazil",1536000
+POR2,Porto Alegre,BR,"Porto Alegre, Brazil",1488000
+BEL3,Belem,BR,"Belem, Brazil",1499000
+GUA3,Guarulhos,BR,"Guarulhos, Brazil",1393000
+CAM,Campinas,BR,"Campinas, Brazil",1213000
+BUA,Buenos Aires,AR,"Buenos Aires, Argentina",2891000
+COR2,Cordoba,AR,"Cordoba, Argentina",1329604
+ROS,Rosario,AR,"Rosario, Argentina",1193605
+MEN,Mendoza,AR,"Mendoza, Argentina",115041
+LAP,La Plata,AR,"La Plata, Argentina",654324
+TUC2,Tucuman,AR,"Tucuman, Argentina",548866
+MAR2,Mar del Plata,AR,"Mar del Plata, Argentina",614350
+SAL2,Salta,AR,"Salta, Argentina",535303
+SAN2,Santiago,CL,"Santiago, Chile",5614000
+VAL3,Valparaiso,CL,"Valparaiso, Chile",295113
+CON,Concepcion,CL,"Concepcion, Chile",223574
+LAP2,La Serena,CL,"La Serena, Chile",221054
+ANT,Antofagasta,CL,"Antofagasta, Chile",361873
+TEM,Temuco,CL,"Temuco, Chile",282415
+LIM,Lima,PE,"Lima, Peru",9752000
+ARE,Arequipa,PE,"Arequipa, Peru",869351
+TRU,Trujillo,PE,"Trujillo, Peru",788236
+CHI3,Chiclayo,PE,"Chiclayo, Peru",600350
+PIU,Piura,PE,"Piura, Peru",436440
+IQU,Iquitos,PE,"Iquitos, Peru",437376
+CUS,Cusco,PE,"Cusco, Peru",428450
+BOG,Bogota,CO,"Bogota, Colombia",7413000
+MED,Medellin,CO,"Medellin, Colombia",2500000
+CAL2,Cali,CO,"Cali, Colombia",2227000
+BAR3,Barranquilla,CO,"Barranquilla, Colombia",1206000
+CAR2,Cartagena,CO,"Cartagena, Colombia",1001000
+CUC,Cucuta,CO,"Cucuta, Colombia",650000
+BUC,Bucaramanga,CO,"Bucaramanga, Colombia",581000
+CAR3,Caracas,VE,"Caracas, Venezuela",2082000
+MAR3,Maracaibo,VE,"Maracaibo, Venezuela",1653211
+VAL4,Valencia,VE,"Valencia, Venezuela",1385083
+BAR4,Barquisimeto,VE,"Barquisimeto, Venezuela",1245744
+MAR4,Maracay,VE,"Maracay, Venezuela",407109
+MOS,Moscow,RU,"Moscow, Russia",12678000
+STP,Saint Petersburg,RU,"Saint Petersburg, Russia",5398000
+NOV,Novosibirsk,RU,"Novosibirsk, Russia",1625000
+YEK,Yekaterinburg,RU,"Yekaterinburg, Russia",1494000
+NIZ,Nizhny Novgorod,RU,"Nizhny Novgorod, Russia",1252000
+KAZ,Kazan,RU,"Kazan, Russia",1257000
+CHE2,Chelyabinsk,RU,"Chelyabinsk, Russia",1200000
+OMK,Omsk,RU,"Omsk, Russia",1154000
+SAM,Samara,RU,"Samara, Russia",1156000
+ROS2,Rostov-on-Don,RU,"Rostov-on-Don, Russia",1137000
+UFA,Ufa,RU,"Ufa, Russia",1128000
+KRA,Krasnoyarsk,RU,"Krasnoyarsk, Russia",1095000
+PER2,Perm,RU,"Perm, Russia",1055000
+VOR,Voronezh,RU,"Voronezh, Russia",1058000
+DEL,New Delhi,IN,"New Delhi, India",32941000
+MUM,Mumbai,IN,"Mumbai, India",20961000
+KOL,Kolkata,IN,"Kolkata, India",15134000
+BAN,Bangalore,IN,"Bangalore, India",13193000
+CHE3,Chennai,IN,"Chennai, India",11324000
+HYD,Hyderabad,IN,"Hyderabad, India",10269000
+AHM,Ahmedabad,IN,"Ahmedabad, India",8345000
+PUN,Pune,IN,"Pune, India",6808000
+SUR,Surat,IN,"Surat, India",5935000
+JAI,Jaipur,IN,"Jaipur, India",3911000
+LUC,Lucknow,IN,"Lucknow, India",3597000
+KAN,Kanpur,IN,"Kanpur, India",3124000
+NAG2,Nagpur,IN,"Nagpur, India",2930000
+IND2,Indore,IN,"Indore, India",2589000
+COI,Coimbatore,IN,"Coimbatore, India",2395000
+KOC,Kochi,IN,"Kochi, India",2360000
+PAT,Patna,IN,"Patna, India",2272000
+BHO,Bhopal,IN,"Bhopal, India",2025000
+VAD,Vadodara,IN,"Vadodara, India",2126000
+LUD,Ludhiana,IN,"Ludhiana, India",1855000
+AGR,Agra,IN,"Agra, India",1927000
+NAS,Nashik,IN,"Nashik, India",1800000
+FAR,Faridabad,IN,"Faridabad, India",1675000
+MEE,Meerut,IN,"Meerut, India",1686000
+RAJ,Rajkot,IN,"Rajkot, India",1682000
+VAR,Varanasi,IN,"Varanasi, India",1587000
+SRI,Srinagar,IN,"Srinagar, India",1508000
+AUR,Aurangabad,IN,"Aurangabad, India",1417000
+DHN,Dhanbad,IN,"Dhanbad, India",1379000
+AMR,Amritsar,IN,"Amritsar, India",1360000
+ALL,Allahabad,IN,"Allahabad, India",1336000
+RAN,Ranchi,IN,"Ranchi, India",1307000
+GWL,Gwalior,IN,"Gwalior, India",1289000
+JAB,Jabalpur,IN,"Jabalpur, India",1268000
+HAR,Haridwar,IN,"Haridwar, India",1244000
+VIJ,Vijayawada,IN,"Vijayawada, India",1237000
+MAD2,Madurai,IN,"Madurai, India",1234000
+RAI,Raipur,IN,"Raipur, India",1224000
+JOD,Jodhpur,IN,"Jodhpur, India",1215000
+IST,Istanbul,TR,"Istanbul, Turkey",15462000
+ANK,Ankara,TR,"Ankara, Turkey",5663000
+IZM,Izmir,TR,"Izmir, Turkey",4368000
+BUR,Bursa,TR,"Bursa, Turkey",3057000
+ADA,Adana,TR,"Adana, Turkey",2238000
+GAZ,Gaziantep,TR,"Gaziantep, Turkey",2069000
+KON,Konya,TR,"Konya, Turkey",2267000
+ANT2,Antalya,TR,"Antalya, Turkey",2511000
+KAY,Kayseri,TR,"Kayseri, Turkey",1407000
+MER,Mersin,TR,"Mersin, Turkey",1840000
+DUB,Dubai,AE,"Dubai, United Arab Emirates",3331000
+ABU,Abu Dhabi,AE,"Abu Dhabi, United Arab Emirates",1483000
+SHA2,Sharjah,AE,"Sharjah, United Arab Emirates",1406000
+AJM,Ajman,AE,"Ajman, United Arab Emirates",504000
+RAS,Ras Al Khaimah,AE,"Ras Al Khaimah, United Arab Emirates",263000
+FUJ,Fujairah,AE,"Fujairah, United Arab Emirates",225000
+TEL,Tel Aviv,IL,"Tel Aviv, Israel",460000
+JER,Jerusalem,IL,"Jerusalem, Israel",936000
+HAI,Haifa,IL,"Haifa, Israel",285000
+RIS,Rishon LeZion,IL,"Rishon LeZion, Israel",254000
+PET,Petah Tikva,IL,"Petah Tikva, Israel",247000
+ASH,Ashdod,IL,"Ashdod, Israel",225000
+CAP,Cape Town,ZA,"Cape Town, South Africa",4618000
+JOH,Johannesburg,ZA,"Johannesburg, South Africa",5635000
+DUR,Durban,ZA,"Durban, South Africa",3871000
+PRE,Pretoria,ZA,"Pretoria, South Africa",2473000
+POR3,Port Elizabeth,ZA,"Port Elizabeth, South Africa",1153000
+BLO,Bloemfontein,ZA,"Bloemfontein, South Africa",556000
+EAS,East London,ZA,"East London, South Africa",478000
+LAG,Lagos,NG,"Lagos, Nigeria",14368000
+KAN2,Kano,NG,"Kano, Nigeria",3626000
+IBA,Ibadan,NG,"Ibadan, Nigeria",3565000
+ABU2,Abuja,NG,"Abuja, Nigeria",3095000
+POR4,Port Harcourt,NG,"Port Harcourt, Nigeria",2343000
+BEN,Benin City,NG,"Benin City, Nigeria",1496000
+MAI,Maiduguri,NG,"Maiduguri, Nigeria",1197000
+ZAR2,Zaria,NG,"Zaria, Nigeria",1018000
+ABA,Aba,NG,"Aba, Nigeria",1002000
+JOS,Jos,NG,"Jos, Nigeria",1015000
+CAI2,Cairo,EG,"Cairo, Egypt",20485000
+ALE,Alexandria,EG,"Alexandria, Egypt",5281000
+GIZ,Giza,EG,"Giza, Egypt",4240000
+SHU,Shubra El Kheima,EG,"Shubra El Kheima, Egypt",1165000
+POR5,Port Said,EG,"Port Said, Egypt",749000
+SUE,Suez,EG,"Suez, Egypt",744000
+LUX,Luxor,EG,"Luxor, Egypt",506000
+NAS2,Nassau,BS,"Nassau, Bahamas",274400
+KIN,Kingston,JM,"Kingston, Jamaica",1243000
+SAN3,Santo Domingo,DO,"Santo Domingo, Dominican Republic",2908000
+HAV2,Havana,CU,"Havana, Cuba",2135000
+POR6,Port-au-Prince,HT,"Port-au-Prince, Haiti",2844000
+SAN4,San Juan,PR,"San Juan, Puerto Rico",395326
+GUA4,Guatemala City,GT,"Guatemala City, Guatemala",2851000
+SAN5,San Salvador,SV,"San Salvador, El Salvador",2415000
+TEG,Tegucigalpa,HN,"Tegucigalpa, Honduras",1363000
+MAN3,Managua,NI,"Managua, Nicaragua",1507000
+SAN6,San Jose,CR,"San Jose, Costa Rica",2158000
+PAN,Panama City,PA,"Panama City, Panama",1673000
+KIN2,Kinshasa,CD,"Kinshasa, DR Congo",14342000
+LUA,Luanda,AO,"Luanda, Angola",8330000
+DAR2,Dar es Salaam,TZ,"Dar es Salaam, Tanzania",6702000
+NAI,Nairobi,KE,"Nairobi, Kenya",4922000
+ADD,Addis Ababa,ET,"Addis Ababa, Ethiopia",4794000
+ACC,Accra,GH,"Accra, Ghana",2514000
+DAK,Dakar,SN,"Dakar, Senegal",3140000
+ABI,Abidjan,CI,"Abidjan, Ivory Coast",4921000
+KAM,Kampala,UG,"Kampala, Uganda",3298000
+ALG,Algiers,DZ,"Algiers, Algeria",2768000
+CAS,Casablanca,MA,"Casablanca, Morocco",3359000
+TUN,Tunis,TN,"Tunis, Tunisia",2291000
+TRI,Tripoli,LY,"Tripoli, Libya",1165000
+KHA,Khartoum,SD,"Khartoum, Sudan",5274000
+MAP,Maputo,MZ,"Maputo, Mozambique",1102000
+LUS,Lusaka,ZM,"Lusaka, Zambia",2774000
+HAR2,Harare,ZW,"Harare, Zimbabwe",1606000
+KIG,Kigali,RW,"Kigali, Rwanda",1377000
+BAN2,Bangkok,TH,"Bangkok, Thailand",10539000
+JAK,Jakarta,ID,"Jakarta, Indonesia",10770000
+MAN4,Manila,PH,"Manila, Philippines",13923000
+HAN3,Hanoi,VN,"Hanoi, Vietnam",8053000
+HO,Ho Chi Minh City,VN,"Ho Chi Minh City, Vietnam",8993000
+KUA,Kuala Lumpur,MY,"Kuala Lumpur, Malaysia",7997000
+SIN,Singapore,SG,"Singapore, Singapore",5686000
+YAN,Yangon,MM,"Yangon, Myanmar",5320000
+PHN,Phnom Penh,KH,"Phnom Penh, Cambodia",2078000
+VIE,Vientiane,LA,"Vientiane, Laos",948000
+SEO,Seoul,KR,"Seoul, South Korea",9776000
+BUS,Busan,KR,"Busan, South Korea",3413000
+INC,Incheon,KR,"Incheon, South Korea",2954000
+DAE,Daegu,KR,"Daegu, South Korea",2438000
+DAE2,Daejeon,KR,"Daejeon, South Korea",1532000
+GWA,Gwangju,KR,"Gwangju, South Korea",1463000
+ULS,Ulsan,KR,"Ulsan, South Korea",1142000
+TAI,Taipei,TW,"Taipei, Taiwan",2704000
+KAO,Kaohsiung,TW,"Kaohsiung, Taiwan",2773000
+TAI2,Taichung,TW,"Taichung, Taiwan",2816000
+TAI3,Tainan,TW,"Tainan, Taiwan",1885000
+HON,Hong Kong,HK,"Hong Kong, Hong Kong",7482000
+MAC,Macau,MO,"Macau, Macau",682000

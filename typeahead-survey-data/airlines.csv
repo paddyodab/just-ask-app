@@ -1,0 +1,243 @@
+code,name,country,alliance
+AA,American Airlines,United States,Oneworld
+DL,Delta Air Lines,United States,SkyTeam
+UA,United Airlines,United States,Star Alliance
+WN,Southwest Airlines,United States,None
+B6,JetBlue Airways,United States,None
+AS,Alaska Airlines,United States,Oneworld
+NK,Spirit Airlines,United States,None
+F9,Frontier Airlines,United States,None
+G4,Allegiant Air,United States,None
+HA,Hawaiian Airlines,United States,None
+SY,Sun Country Airlines,United States,None
+AC,Air Canada,Canada,Star Alliance
+WS,WestJet,Canada,None
+TS,Air Transat,Canada,None
+PD,Porter Airlines,Canada,None
+BA,British Airways,United Kingdom,Oneworld
+VS,Virgin Atlantic,United Kingdom,None
+U2,easyJet,United Kingdom,None
+LS,Jet2,United Kingdom,None
+FR,Ryanair,Ireland,None
+EI,Aer Lingus,Ireland,None
+AF,Air France,France,SkyTeam
+XK,Air Corsica,France,None
+TO,Transavia France,France,None
+LH,Lufthansa,Germany,Star Alliance
+EW,Eurowings,Germany,None
+DE,Condor,Germany,None
+X3,TUIfly,Germany,None
+KL,KLM,Netherlands,SkyTeam
+HV,Transavia,Netherlands,None
+AZ,ITA Airways,Italy,SkyTeam
+IG,Air Italy,Italy,None
+AP,AlbaStar,Spain,None
+IB,Iberia,Spain,Oneworld
+VY,Vueling,Spain,None
+UX,Air Europa,Spain,SkyTeam
+NT,Binter Canarias,Spain,None
+TP,TAP Air Portugal,Portugal,Star Alliance
+NI,Portugalia,Portugal,None
+SK,SAS Scandinavian Airlines,Sweden,Star Alliance
+DY,Norwegian Air,Norway,None
+AY,Finnair,Finland,Oneworld
+LO,LOT Polish Airlines,Poland,Star Alliance
+OK,Czech Airlines,Czech Republic,SkyTeam
+OS,Austrian Airlines,Austria,Star Alliance
+LX,Swiss International Air Lines,Switzerland,Star Alliance
+SN,Brussels Airlines,Belgium,Star Alliance
+KM,Air Malta,Malta,None
+A3,Aegean Airlines,Greece,Star Alliance
+OA,Olympic Air,Greece,None
+TK,Turkish Airlines,Turkey,Star Alliance
+PC,Pegasus Airlines,Turkey,None
+SU,Aeroflot,Russia,SkyTeam
+S7,S7 Airlines,Russia,Oneworld
+UT,UTair,Russia,None
+PS,Ukraine International Airlines,Ukraine,None
+RO,TAROM,Romania,SkyTeam
+FB,Bulgaria Air,Bulgaria,None
+JU,Air Serbia,Serbia,None
+OU,Croatia Airlines,Croatia,Star Alliance
+JP,Adria Airways,Slovenia,Star Alliance
+EK,Emirates,United Arab Emirates,None
+EY,Etihad Airways,United Arab Emirates,None
+FZ,flydubai,United Arab Emirates,None
+QR,Qatar Airways,Qatar,Oneworld
+WY,Oman Air,Oman,None
+GF,Gulf Air,Bahrain,None
+SV,Saudia,Saudi Arabia,SkyTeam
+KU,Kuwait Airways,Kuwait,None
+MS,EgyptAir,Egypt,Star Alliance
+ME,Middle East Airlines,Lebanon,SkyTeam
+RJ,Royal Jordanian,Jordan,Oneworld
+LY,El Al,Israel,None
+ET,Ethiopian Airlines,Ethiopia,Star Alliance
+SA,South African Airways,South Africa,Star Alliance
+KQ,Kenya Airways,Kenya,SkyTeam
+RW,RwandAir,Rwanda,None
+WB,RwandAir,Rwanda,None
+AT,Royal Air Maroc,Morocco,Oneworld
+TU,Tunisair,Tunisia,None
+AH,Air Algerie,Algeria,None
+LN,Libyan Airlines,Libya,None
+SD,Sudan Airways,Sudan,None
+AI,Air India,India,Star Alliance
+UK,Vistara,India,None
+6E,IndiGo,India,None
+SG,SpiceJet,India,None
+G8,Go First,India,None
+IX,Air India Express,India,None
+I5,AirAsia India,India,None
+PK,Pakistan International Airlines,Pakistan,None
+BG,Biman Bangladesh Airlines,Bangladesh,None
+UL,SriLankan Airlines,Sri Lanka,Oneworld
+MH,Malaysia Airlines,Malaysia,Oneworld
+AK,AirAsia,Malaysia,None
+D7,AirAsia X,Malaysia,None
+OD,Malindo Air,Malaysia,None
+SQ,Singapore Airlines,Singapore,Star Alliance
+TR,Scoot,Singapore,None
+MI,SilkAir,Singapore,None
+TG,Thai Airways,Thailand,Star Alliance
+FD,Thai AirAsia,Thailand,None
+DD,Nok Air,Thailand,None
+PG,Bangkok Airways,Thailand,None
+VN,Vietnam Airlines,Vietnam,SkyTeam
+VJ,VietJet Air,Vietnam,None
+BL,Jetstar Pacific,Vietnam,None
+QH,Bamboo Airways,Vietnam,None
+GA,Garuda Indonesia,Indonesia,SkyTeam
+JT,Lion Air,Indonesia,None
+ID,Batik Air,Indonesia,None
+SJ,Sriwijaya Air,Indonesia,None
+PR,Philippine Airlines,Philippines,None
+5J,Cebu Pacific,Philippines,None
+Z2,Philippines AirAsia,Philippines,None
+2P,PAL Express,Philippines,None
+UB,Myanmar National Airlines,Myanmar,None
+8M,Myanmar Airways International,Myanmar,None
+K7,Air KBZ,Myanmar,None
+QV,Lao Airlines,Laos,None
+K6,Cambodia Angkor Air,Cambodia,None
+LQ,Lanmei Airlines,Cambodia,None
+BI,Royal Brunei Airlines,Brunei,None
+CZ,China Southern Airlines,China,SkyTeam
+CA,Air China,China,Star Alliance
+MU,China Eastern Airlines,China,SkyTeam
+HU,Hainan Airlines,China,None
+ZH,Shenzhen Airlines,China,Star Alliance
+MF,Xiamen Airlines,China,SkyTeam
+3U,Sichuan Airlines,China,None
+FM,Shanghai Airlines,China,SkyTeam
+SC,Shandong Airlines,China,None
+HO,Juneyao Airlines,China,None
+BK,Okay Airways,China,None
+G5,China Express Airlines,China,None
+9C,Spring Airlines,China,None
+GS,Tianjin Airlines,China,None
+JD,Beijing Capital Airlines,China,None
+CX,Cathay Pacific,Hong Kong,Oneworld
+HX,Hong Kong Airlines,Hong Kong,None
+UO,Hong Kong Express,Hong Kong,None
+NX,Air Macau,Macau,None
+CI,China Airlines,Taiwan,SkyTeam
+BR,EVA Air,Taiwan,Star Alliance
+IT,Tigerair Taiwan,Taiwan,None
+B7,Uni Air,Taiwan,None
+NH,All Nippon Airways,Japan,Star Alliance
+JL,Japan Airlines,Japan,Oneworld
+BC,Skymark Airlines,Japan,None
+MM,Peach Aviation,Japan,None
+GK,Jetstar Japan,Japan,None
+IJ,Spring Airlines Japan,Japan,None
+OZ,Asiana Airlines,South Korea,Star Alliance
+KE,Korean Air,South Korea,SkyTeam
+7C,Jeju Air,South Korea,None
+LJ,Jin Air,South Korea,None
+TW,T'way Air,South Korea,None
+BX,Air Busan,South Korea,None
+ZE,Eastar Jet,South Korea,None
+QF,Qantas,Australia,Oneworld
+VA,Virgin Australia,Australia,None
+JQ,Jetstar Airways,Australia,None
+TT,Tigerair Australia,Australia,None
+NZ,Air New Zealand,New Zealand,Star Alliance
+FJ,Fiji Airways,Fiji,Oneworld
+PX,Air Niugini,Papua New Guinea,None
+SB,Air Caledonie International,New Caledonia,None
+VT,Air Tahiti,French Polynesia,None
+TN,Air Tahiti Nui,French Polynesia,None
+AM,Aeromexico,Mexico,SkyTeam
+Y4,Volaris,Mexico,None
+VB,VivaAerobus,Mexico,None
+4O,Interjet,Mexico,None
+VW,Aeromar,Mexico,None
+CM,Copa Airlines,Panama,Star Alliance
+AV,Avianca,Colombia,Star Alliance
+VH,Viva Air Colombia,Colombia,None
+5U,LATAM Colombia,Colombia,None
+LA,LATAM Airlines,Chile,None
+H2,Sky Airline,Chile,None
+JA,JetSMART,Chile,None
+AR,Aerolineas Argentinas,Argentina,SkyTeam
+FO,Flybondi,Argentina,None
+WJ,JetSMART Argentina,Argentina,None
+G3,Gol Transportes Aereos,Brazil,None
+AD,Azul Brazilian Airlines,Brazil,None
+JJ,LATAM Brasil,Brazil,None
+2Z,Voepass,Brazil,None
+PZ,LATAM Paraguay,Paraguay,None
+ZP,Paranair,Paraguay,None
+LP,LATAM Peru,Peru,None
+P9,Peruvian Airlines,Peru,None
+LC,Star Peru,Peru,None
+4M,LATAM Argentina,Argentina,None
+BW,Caribbean Airlines,Trinidad and Tobago,None
+TX,Air Caraibes,France,None
+3S,Air Antilles,France,None
+WM,Winair,Sint Maarten,None
+LI,LIAT,Antigua and Barbuda,None
+UP,Bahamasair,Bahamas,None
+KX,Cayman Airways,Cayman Islands,None
+7K,Kogalymavia,Russia,None
+DP,Pobeda,Russia,None
+FV,Rossiya Airlines,Russia,None
+YC,Yamal Airlines,Russia,None
+R3,Yakutia Airlines,Russia,None
+U6,Ural Airlines,Russia,Star Alliance
+UN,Transaero Airlines,Russia,None
+DV,SCAT Airlines,Kazakhstan,None
+KC,Air Astana,Kazakhstan,None
+HY,Uzbekistan Airways,Uzbekistan,None
+TJ,Tropic Air,Belize,None
+HR,Hahn Air,Germany,None
+VR,TACV Cabo Verde Airlines,Cape Verde,None
+TM,LAM Mozambique Airlines,Mozambique,None
+DT,TAAG Angola Airlines,Angola,None
+SW,Air Namibia,Namibia,None
+MD,Air Madagascar,Madagascar,None
+MK,Air Mauritius,Mauritius,Oneworld
+UU,Air Austral,Reunion,None
+SS,Corsair International,France,None
+XL,LATAM Ecuador,Ecuador,None
+EQ,TAME,Ecuador,None
+VV,Aerosvit Airlines,Ukraine,None
+5N,Nordavia,Russia,None
+R2,Orenair,Russia,None
+YQ,Polet Airlines,Russia,None
+GH,Globus Airlines,Russia,None
+4G,Gazpromavia,Russia,None
+D2,Dobrolet,Russia,None
+I8,Izhavia,Russia,None
+7R,RusLine,Russia,None
+A4,Azimuth,Russia,None
+FO2,Felix Airways,Yemen,None
+VF,FlyViking,Norway,None
+RC,Atlantic Airways,Faroe Islands,None
+GL,Air Greenland,Greenland,None
+WF,Wideroe,Norway,None
+FL,AirTran Airways,United States,None
+KN,China United Airlines,China,None
+BZ,Blue Bird Airways,Greece,None
+EZ,Sun Air of Scandinavia,Denmark,None

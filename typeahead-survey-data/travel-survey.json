@@ -1,0 +1,283 @@
+{
+  "title": "World Travel Experience Survey",
+  "description": "Share your international travel experiences and help us understand global travel patterns",
+  "logo": "/assets/travel-logo.png",
+  "logoPosition": "top",
+  "logoWidth": "150px",
+  "pages": [
+    {
+      "name": "personal_info",
+      "title": "About You",
+      "description": "Let's start with some basic information",
+      "elements": [
+        {
+          "type": "dropdown",
+          "name": "country_of_origin",
+          "title": "What is your country of origin?",
+          "isRequired": true,
+          "placeholder": "Start typing your country...",
+          "enableTypeahead": true,
+          "typeaheadMinLength": 2,
+          "typeaheadDebounceMs": 300,
+          "choicesByUrl": {
+            "url": "/api/lookups/countries",
+            "valueName": "code",
+            "titleName": "name"
+          }
+        },
+        {
+          "type": "dropdown",
+          "name": "city_of_origin",
+          "title": "What city are you originally from?",
+          "isRequired": true,
+          "placeholder": "Start typing your city...",
+          "enableTypeahead": true,
+          "typeaheadMinLength": 2,
+          "typeaheadDebounceMs": 300,
+          "choicesByUrl": {
+            "url": "/api/lookups/cities?country={country_of_origin}",
+            "valueName": "id",
+            "titleName": "name"
+          },
+          "visibleIf": "{country_of_origin} notempty"
+        },
+        {
+          "type": "dropdown",
+          "name": "age_range",
+          "title": "What is your age range?",
+          "isRequired": true,
+          "choices": [
+            { "value": "18-24", "text": "18-24 years" },
+            { "value": "25-34", "text": "25-34 years" },
+            { "value": "35-44", "text": "35-44 years" },
+            { "value": "45-54", "text": "45-54 years" },
+            { "value": "55-64", "text": "55-64 years" },
+            { "value": "65+", "text": "65 years and above" }
+          ]
+        },
+        {
+          "type": "dropdown",
+          "name": "travel_frequency",
+          "title": "How often do you travel internationally?",
+          "isRequired": true,
+          "choices": [
+            { "value": "never", "text": "This will be my first time" },
+            { "value": "rarely", "text": "Once every few years" },
+            { "value": "annually", "text": "Once or twice a year" },
+            { "value": "frequently", "text": "3-5 times a year" },
+            { "value": "very_frequently", "text": "More than 5 times a year" }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "countries_visited",
+      "title": "Countries You've Visited",
+      "description": "Tell us about the countries you've explored",
+      "elements": [
+        {
+          "type": "panel",
+          "name": "travel_intro",
+          "elements": [
+            {
+              "type": "html",
+              "name": "intro_text",
+              "html": "<p style='font-size: 14px; color: #666;'>Please add all the countries you've visited. You can add multiple entries.</p>"
+            }
+          ]
+        },
+        {
+          "type": "paneldynamic",
+          "name": "visited_countries",
+          "title": "Countries I've Visited",
+          "templateElements": [
+            {
+              "type": "dropdown",
+              "name": "country",
+              "title": "Country",
+              "isRequired": true,
+              "placeholder": "Type to search for a country...",
+              "enableTypeahead": true,
+              "typeaheadMinLength": 2,
+              "typeaheadDebounceMs": 250,
+              "choicesByUrl": {
+                "url": "/api/lookups/countries",
+                "valueName": "code",
+                "titleName": "name"
+              }
+            },
+            {
+              "type": "dropdown",
+              "name": "primary_city",
+              "title": "Primary city visited",
+              "placeholder": "Type to search for a city...",
+              "enableTypeahead": true,
+              "typeaheadMinLength": 2,
+              "typeaheadDebounceMs": 250,
+              "choicesByUrl": {
+                "url": "/api/lookups/cities?country={panel.country}",
+                "valueName": "id",
+                "titleName": "name"
+              },
+              "visibleIf": "{panel.country} notempty"
+            },
+            {
+              "type": "dropdown",
+              "name": "year_visited",
+              "title": "Year of visit (most recent if multiple)",
+              "choices": [
+                "2024", "2023", "2022", "2021", "2020", "2019", "2018", "2017", "2016", "2015",
+                "2014", "2013", "2012", "2011", "2010", "2009", "2008", "2007", "2006", "2005",
+                "2004", "2003", "2002", "2001", "2000", "Before 2000"
+              ]
+            },
+            {
+              "type": "dropdown",
+              "name": "duration",
+              "title": "How long did you stay?",
+              "choices": [
+                { "value": "1-3days", "text": "1-3 days" },
+                { "value": "4-7days", "text": "4-7 days" },
+                { "value": "1-2weeks", "text": "1-2 weeks" },
+                { "value": "2-4weeks", "text": "2-4 weeks" },
+                { "value": "1-3months", "text": "1-3 months" },
+                { "value": "3-6months", "text": "3-6 months" },
+                { "value": "6-12months", "text": "6-12 months" },
+                { "value": "over1year", "text": "Over 1 year" }
+              ]
+            },
+            {
+              "type": "dropdown",
+              "name": "purpose",
+              "title": "Primary purpose of visit",
+              "choices": [
+                { "value": "leisure", "text": "Leisure/Tourism" },
+                { "value": "business", "text": "Business" },
+                { "value": "study", "text": "Study/Education" },
+                { "value": "family", "text": "Visiting Family/Friends" },
+                { "value": "work", "text": "Work/Employment" },
+                { "value": "volunteer", "text": "Volunteer Work" },
+                { "value": "other", "text": "Other" }
+              ]
+            }
+          ],
+          "panelCount": 1,
+          "minPanelCount": 1,
+          "maxPanelCount": 50,
+          "panelAddText": "Add another country",
+          "panelRemoveText": "Remove",
+          "templateTitle": "Country #{panelIndex}"
+        }
+      ]
+    },
+    {
+      "name": "favorite_destinations",
+      "title": "Favorite Destinations",
+      "elements": [
+        {
+          "type": "dropdown",
+          "name": "favorite_country",
+          "title": "What's your all-time favorite country to visit?",
+          "placeholder": "Type to search...",
+          "enableTypeahead": true,
+          "typeaheadMinLength": 2,
+          "typeaheadDebounceMs": 300,
+          "choicesByUrl": {
+            "url": "/api/lookups/countries",
+            "valueName": "code",
+            "titleName": "name"
+          }
+        },
+        {
+          "type": "dropdown",
+          "name": "favorite_city",
+          "title": "What's your all-time favorite city?",
+          "placeholder": "Type to search...",
+          "enableTypeahead": true,
+          "typeaheadMinLength": 2,
+          "typeaheadDebounceMs": 300,
+          "choicesByUrl": {
+            "url": "/api/lookups/all_cities",
+            "valueName": "id",
+            "titleName": "name_with_country"
+          }
+        },
+        {
+          "type": "dropdown",
+          "name": "dream_destination",
+          "title": "Which country would you most like to visit next?",
+          "placeholder": "Type to search...",
+          "enableTypeahead": true,
+          "typeaheadMinLength": 2,
+          "typeaheadDebounceMs": 300,
+          "choicesByUrl": {
+            "url": "/api/lookups/countries",
+            "valueName": "code",
+            "titleName": "name"
+          }
+        },
+        {
+          "type": "comment",
+          "name": "travel_story",
+          "title": "Share a memorable travel experience (optional)",
+          "rows": 4
+        }
+      ]
+    },
+    {
+      "name": "travel_preferences",
+      "title": "Travel Preferences",
+      "elements": [
+        {
+          "type": "dropdown",
+          "name": "preferred_airline",
+          "title": "What's your preferred airline?",
+          "placeholder": "Type to search for an airline...",
+          "enableTypeahead": true,
+          "typeaheadMinLength": 2,
+          "typeaheadDebounceMs": 300,
+          "choicesByUrl": {
+            "url": "/api/lookups/airlines",
+            "valueName": "code",
+            "titleName": "name"
+          }
+        },
+        {
+          "type": "dropdown",
+          "name": "preferred_airport",
+          "title": "What's your favorite airport?",
+          "placeholder": "Type airport name or code...",
+          "enableTypeahead": true,
+          "typeaheadMinLength": 2,
+          "typeaheadDebounceMs": 300,
+          "choicesByUrl": {
+            "url": "/api/lookups/airports",
+            "valueName": "code",
+            "titleName": "name_with_code"
+          }
+        },
+        {
+          "type": "checkbox",
+          "name": "travel_activities",
+          "title": "What activities do you enjoy while traveling? (select all that apply)",
+          "choices": [
+            "Sightseeing",
+            "Museums & Culture",
+            "Local Cuisine",
+            "Adventure Sports",
+            "Beach & Relaxation",
+            "Hiking & Nature",
+            "Shopping",
+            "Nightlife",
+            "Photography",
+            "Meeting Locals"
+          ]
+        }
+      ]
+    }
+  ],
+  "showProgressBar": "top",
+  "progressBarType": "pages",
+  "completedHtml": "<h3>Thank you for sharing your travel experiences!</h3><p>Your responses help us understand global travel patterns and preferences.</p>",
+  "widthMode": "responsive"
+}
