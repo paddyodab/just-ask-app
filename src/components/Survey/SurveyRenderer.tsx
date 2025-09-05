@@ -28,8 +28,14 @@ import {
 import 'survey-core/defaultV2.css'
 import './survey-theme.css'
 import './theme-switcher.css'
+import './typeahead-dropdown.css'
 import { getAuthToken, getTenantId } from '../../utils/auth'
 import { assetLoader, type AssetConfig } from '../../utils/assetLoader'
+import { debounce } from '../../utils/debounce'
+import { registerTypeaheadWidget } from './TypeaheadDropdownWidget'
+
+// Register the typeahead widget
+registerTypeaheadWidget()
 
 // Available themes configuration
 const AVAILABLE_THEMES = [
@@ -151,6 +157,17 @@ export const SurveyRenderer: React.FC<SurveyRendererProps> = ({
           question.choicesByUrl.url = `${apiUrl}${question.choicesByUrl.url}`
           console.log(`Modified URL for ${question.name}:`, question.choicesByUrl.url)
         }
+        
+        // Enable typeahead for dropdowns with large datasets
+        if (question.type === 'dropdown' && question.enableTypeahead) {
+          // Enable lazy loading for typeahead dropdowns
+          question.choicesLazyLoadEnabled = true
+          // Set minimum search text length to trigger search
+          question.choicesLazyLoadPageSize = 20
+          // Enable search by typing
+          question.searchEnabled = true
+        }
+        
         // Handle nested questions in panels
         if (question.elements) {
           processQuestions(question.elements)
@@ -230,12 +247,16 @@ export const SurveyRenderer: React.FC<SurveyRendererProps> = ({
         }
       }
       
-      // Handle search for large lists
+      // Handle typeahead search
       const question = options.question
-      if ((question as any).searchEnabled && options.searchText) {
+      const searchText = options.filter || options.searchText || ''
+      
+      if (question.enableTypeahead && searchText.length >= 2) {
         const urlObj = new URL(url)
-        urlObj.searchParams.set('search', options.searchText)
+        urlObj.searchParams.set('search', searchText)
+        urlObj.searchParams.set('size', '20') // Limit results for performance
         url = urlObj.toString()
+        console.log(`Typeahead search for "${searchText}" on ${question.name}:`, url)
       }
 
       // Handle cascading dropdowns with parent values
