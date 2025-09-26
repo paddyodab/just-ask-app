@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import LoadingSpinner from '../common/LoadingSpinner'
+import { useAdminContext } from '../../contexts/AdminContext'
 import './NamespaceManagement.css'
 
 interface Customer {
@@ -20,9 +21,18 @@ interface Namespace {
 }
 
 const NamespaceManagement: React.FC = () => {
+  const {
+    selectedCustomerId,
+    selectedCustomerName,
+    selectedNamespaceId,
+    selectedNamespaceName,
+    setSelectedCustomer,
+    setSelectedNamespace,
+    setAvailableNamespaces
+  } = useAdminContext()
+  
   const [customers, setCustomers] = useState<Customer[]>([])
   const [namespaces, setNamespaces] = useState<Namespace[]>([])
-  const [selectedCustomer, setSelectedCustomer] = useState<string>('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [showCreateModal, setShowCreateModal] = useState(false)
@@ -44,12 +54,13 @@ const NamespaceManagement: React.FC = () => {
   }, [])
 
   useEffect(() => {
-    if (selectedCustomer) {
-      fetchNamespaces(selectedCustomer)
+    if (selectedCustomerId) {
+      fetchNamespaces(selectedCustomerId)
     } else {
       setNamespaces([])
+      setAvailableNamespaces([])
     }
-  }, [selectedCustomer])
+  }, [selectedCustomerId])
 
   const fetchCustomers = async () => {
     try {
@@ -59,8 +70,8 @@ const NamespaceManagement: React.FC = () => {
         const customersList = data.customers || []
         setCustomers(customersList)
         // Auto-select the first customer if available
-        if (customersList.length > 0 && !selectedCustomer) {
-          setSelectedCustomer(customersList[0].hex_id)
+        if (customersList.length > 0 && !selectedCustomerId) {
+          setSelectedCustomer(customersList[0].hex_id, customersList[0].name)
         }
       } else {
         throw new Error('Failed to fetch customers')
@@ -77,8 +88,8 @@ const NamespaceManagement: React.FC = () => {
       ]
       setCustomers(demoCustomers)
       // Auto-select the demo customer
-      if (!selectedCustomer) {
-        setSelectedCustomer(demoCustomers[0].hex_id)
+      if (!selectedCustomerId) {
+        setSelectedCustomer(demoCustomers[0].hex_id, demoCustomers[0].name)
       }
     }
   }
@@ -92,7 +103,9 @@ const NamespaceManagement: React.FC = () => {
       
       if (response.ok) {
         const data = await response.json()
-        setNamespaces(data.namespaces || [])
+        const namespacesList = data.namespaces || []
+        setNamespaces(namespacesList)
+        setAvailableNamespaces(namespacesList)
       } else {
         throw new Error('Failed to fetch namespaces')
       }
@@ -120,7 +133,7 @@ const NamespaceManagement: React.FC = () => {
       setSaving(true)
       setError(null)
       
-      const response = await fetch(`/api/v1/operations/customers/${selectedCustomer}/namespaces`, {
+      const response = await fetch(`/api/v1/operations/customers/${selectedCustomerId}/namespaces`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -156,7 +169,7 @@ const NamespaceManagement: React.FC = () => {
       setError(null)
       
       const response = await fetch(
-        `/api/v1/operations/customers/${selectedCustomer}/namespaces/${editingNamespace.slug}`,
+        `/api/v1/operations/customers/${selectedCustomerId}/namespaces/${editingNamespace.slug}`,
         {
           method: 'PUT',
           headers: {
@@ -201,8 +214,8 @@ const NamespaceManagement: React.FC = () => {
     try {
       setError(null)
       const url = deleteType === 'hard'
-        ? `/api/v1/operations/customers/${selectedCustomer}/namespaces/${deletingNamespace.slug}?hard_delete=true`
-        : `/api/v1/operations/customers/${selectedCustomer}/namespaces/${deletingNamespace.slug}`
+        ? `/api/v1/operations/customers/${selectedCustomerId}/namespaces/${deletingNamespace.slug}?hard_delete=true`
+        : `/api/v1/operations/customers/${selectedCustomerId}/namespaces/${deletingNamespace.slug}`
       
       const response = await fetch(url, {
         method: 'DELETE'
@@ -210,7 +223,7 @@ const NamespaceManagement: React.FC = () => {
 
       if (response.ok) {
         // Refresh the namespace list to get updated state from backend
-        await fetchNamespaces(selectedCustomer)
+        await fetchNamespaces(selectedCustomerId)
         
         setShowDeleteModal(false)
         setDeletingNamespace(null)
@@ -230,7 +243,7 @@ const NamespaceManagement: React.FC = () => {
     try {
       setError(null)
       const response = await fetch(
-        `/api/v1/operations/customers/${selectedCustomer}/namespaces/${namespace.slug}/restore`,
+        `/api/v1/operations/customers/${selectedCustomerId}/namespaces/${namespace.slug}/restore`,
         {
           method: 'POST'
         }
@@ -238,7 +251,7 @@ const NamespaceManagement: React.FC = () => {
 
       if (response.ok) {
         // Refresh the namespace list to get updated state from backend
-        await fetchNamespaces(selectedCustomer)
+        await fetchNamespaces(selectedCustomerId)
       } else {
         throw new Error('Failed to restore namespace')
       }
@@ -278,8 +291,15 @@ const NamespaceManagement: React.FC = () => {
         <div className="header-actions">
           <select 
             className="customer-select"
-            value={selectedCustomer}
-            onChange={(e) => setSelectedCustomer(e.target.value)}
+            value={selectedCustomerId || ''}
+            onChange={(e) => {
+              const customer = customers.find(c => c.hex_id === e.target.value)
+              if (customer) {
+                setSelectedCustomer(customer.hex_id, customer.name)
+              } else {
+                setSelectedCustomer(null, null)
+              }
+            }}
           >
             <option value="">Select a customer...</option>
             {customers.map(customer => (
@@ -288,7 +308,7 @@ const NamespaceManagement: React.FC = () => {
               </option>
             ))}
           </select>
-          {deletedCount > 0 && selectedCustomer && (
+          {deletedCount > 0 && selectedCustomerId && (
             <label className="toggle-deleted">
               <input 
                 type="checkbox"
@@ -301,7 +321,7 @@ const NamespaceManagement: React.FC = () => {
           <button 
             className="btn btn-primary"
             onClick={() => setShowCreateModal(true)}
-            disabled={!selectedCustomer}
+            disabled={!selectedCustomerId}
           >
             + New Namespace
           </button>
@@ -314,7 +334,7 @@ const NamespaceManagement: React.FC = () => {
         </div>
       )}
 
-      {!selectedCustomer ? (
+      {!selectedCustomerId ? (
         <div className="empty-state">
           <p>Please select a customer to manage namespaces</p>
         </div>

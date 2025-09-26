@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import LoadingSpinner from '../common/LoadingSpinner'
 import ConfirmationModal from '../common/ConfirmationModal'
+import { useAdminContext } from '../../contexts/AdminContext'
 import './LookupManagement.css'
 
 interface Customer {
@@ -24,11 +25,19 @@ interface Lookup {
 }
 
 const LookupManagement: React.FC = () => {
+  const {
+    selectedCustomerId,
+    selectedCustomerName,
+    selectedNamespaceId,
+    selectedNamespaceName,
+    availableNamespaces,
+    setSelectedCustomer,
+    setSelectedNamespace,
+    setAvailableNamespaces
+  } = useAdminContext()
+  
   const [customers, setCustomers] = useState<Customer[]>([])
-  const [namespaces, setNamespaces] = useState<Namespace[]>([])
   const [lookups, setLookups] = useState<Lookup[]>([])
-  const [selectedCustomer, setSelectedCustomer] = useState<string>('')
-  const [selectedNamespace, setSelectedNamespace] = useState<string>('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [showUploadModal, setShowUploadModal] = useState(false)
@@ -54,22 +63,22 @@ const LookupManagement: React.FC = () => {
   }, [])
 
   useEffect(() => {
-    if (selectedCustomer) {
-      fetchNamespaces(selectedCustomer)
+    if (selectedCustomerId) {
+      fetchNamespaces(selectedCustomerId)
       setLookups([])
     } else {
-      setNamespaces([])
+      setAvailableNamespaces([])
       setLookups([])
     }
-  }, [selectedCustomer])
+  }, [selectedCustomerId])
 
   useEffect(() => {
-    if (selectedCustomer && selectedNamespace) {
-      fetchLookups(selectedCustomer, selectedNamespace)
+    if (selectedCustomerId && selectedNamespaceId) {
+      fetchLookups(selectedCustomerId, selectedNamespaceId)
     } else {
       setLookups([])
     }
-  }, [selectedCustomer, selectedNamespace])
+  }, [selectedCustomerId, selectedNamespaceId])
 
   // ESC key handler for closing Lookup Data modal
   useEffect(() => {
@@ -97,8 +106,8 @@ const LookupManagement: React.FC = () => {
         const customersList = data.customers || []
         setCustomers(customersList)
         // Auto-select the first customer if available
-        if (customersList.length > 0 && !selectedCustomer) {
-          setSelectedCustomer(customersList[0].hex_id)
+        if (customersList.length > 0 && !selectedCustomerId) {
+          setSelectedCustomer(customersList[0].hex_id, customersList[0].name)
         }
       }
     } catch (err) {
@@ -113,8 +122,8 @@ const LookupManagement: React.FC = () => {
       ]
       setCustomers(demoCustomers)
       // Auto-select the demo customer
-      if (!selectedCustomer) {
-        setSelectedCustomer(demoCustomers[0].hex_id)
+      if (!selectedCustomerId) {
+        setSelectedCustomer(demoCustomers[0].hex_id, demoCustomers[0].name)
       }
     }
   }
@@ -125,10 +134,10 @@ const LookupManagement: React.FC = () => {
       if (response.ok) {
         const data = await response.json()
         const namespacesList = data.namespaces || []
-        setNamespaces(namespacesList)
+        setAvailableNamespaces(namespacesList)
         // Auto-select the first namespace if available
-        if (namespacesList.length > 0) {
-          setSelectedNamespace(namespacesList[0].slug)
+        if (namespacesList.length > 0 && !selectedNamespaceId) {
+          setSelectedNamespace(namespacesList[0].slug, namespacesList[0].name)
         }
       }
     } catch (err) {
@@ -141,9 +150,11 @@ const LookupManagement: React.FC = () => {
           slug: 'restaurant-survey'
         }
       ]
-      setNamespaces(demoNamespaces)
+      setAvailableNamespaces(demoNamespaces)
       // Auto-select the first namespace
-      setSelectedNamespace(demoNamespaces[0].slug)
+      if (!selectedNamespaceId) {
+        setSelectedNamespace(demoNamespaces[0].slug, demoNamespaces[0].name)
+      }
     }
   }
 
@@ -197,7 +208,7 @@ const LookupManagement: React.FC = () => {
       formData.append('file', uploadData.csvFile)
       
       const response = await fetch(
-        `/api/v1/operations/customers/${selectedCustomer}/namespaces/${selectedNamespace}/lookups/upload-csv`,
+        `/api/v1/operations/customers/${selectedCustomerId}/namespaces/${selectedNamespaceId}/lookups/upload-csv`,
         {
           method: 'POST',
           body: formData
@@ -205,7 +216,7 @@ const LookupManagement: React.FC = () => {
       )
 
       if (response.ok) {
-        await fetchLookups(selectedCustomer, selectedNamespace)
+        await fetchLookups(selectedCustomerId, selectedNamespaceId)
         setUploadData({ lookupName: '', lookupType: 'key_value', csvFile: null })
         setShowUploadModal(false)
       } else {
@@ -227,7 +238,7 @@ const LookupManagement: React.FC = () => {
     try {
       const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000'
       const response = await fetch(
-        `${apiUrl}/${selectedCustomer}/${selectedNamespace}/lookups/${lookup.name}?page=1&size=1000&reverse=false`
+        `${apiUrl}/${selectedCustomerId}/${selectedNamespaceId}/lookups/${lookup.name}?page=1&size=1000&reverse=false`
       )
       
       if (response.ok) {
@@ -326,7 +337,7 @@ const LookupManagement: React.FC = () => {
     try {
       setError(null)
       const response = await fetch(
-        `/api/v1/operations/customers/${selectedCustomer}/namespaces/${selectedNamespace}/lookups/${lookup.name}`,
+        `/api/v1/operations/customers/${selectedCustomerId}/namespaces/${selectedNamespaceId}/lookups/${lookup.name}`,
         {
           method: 'DELETE'
         }
@@ -392,8 +403,15 @@ const LookupManagement: React.FC = () => {
         <div className="header-actions">
           <select 
             className="select-control"
-            value={selectedCustomer}
-            onChange={(e) => setSelectedCustomer(e.target.value)}
+            value={selectedCustomerId || ''}
+            onChange={(e) => {
+              const customer = customers.find(c => c.hex_id === e.target.value)
+              if (customer) {
+                setSelectedCustomer(customer.hex_id, customer.name)
+              } else {
+                setSelectedCustomer(null, null)
+              }
+            }}
           >
             <option value="">Select customer...</option>
             {customers.map(customer => (
@@ -404,12 +422,19 @@ const LookupManagement: React.FC = () => {
           </select>
           <select 
             className="select-control"
-            value={selectedNamespace}
-            onChange={(e) => setSelectedNamespace(e.target.value)}
-            disabled={!selectedCustomer}
+            value={selectedNamespaceId || ''}
+            onChange={(e) => {
+              const namespace = availableNamespaces.find(n => n.slug === e.target.value)
+              if (namespace) {
+                setSelectedNamespace(namespace.slug, namespace.name)
+              } else {
+                setSelectedNamespace(null, null)
+              }
+            }}
+            disabled={!selectedCustomerId}
           >
             <option value="">Select namespace...</option>
-            {namespaces.map(namespace => (
+            {availableNamespaces.map(namespace => (
               <option key={namespace.slug} value={namespace.slug}>
                 {namespace.name}
               </option>
@@ -418,7 +443,7 @@ const LookupManagement: React.FC = () => {
           <button 
             className="btn btn-primary"
             onClick={() => setShowUploadModal(true)}
-            disabled={!selectedCustomer || !selectedNamespace}
+            disabled={!selectedCustomerId || !selectedNamespaceId}
           >
             📤 Upload CSV
           </button>
@@ -431,7 +456,7 @@ const LookupManagement: React.FC = () => {
         </div>
       )}
 
-      {!selectedCustomer || !selectedNamespace ? (
+      {!selectedCustomerId || !selectedNamespaceId ? (
         <div className="empty-state">
           <p>Please select a customer and namespace to manage lookup data</p>
         </div>
@@ -735,11 +760,11 @@ Option 2`}</pre>
               
               <div className="url-box">
                 <code className="api-url">
-                  /{selectedCustomer}/{selectedNamespace}/lookups/{urlLookup.name}
+                  /{selectedCustomerId}/{selectedNamespaceId}/lookups/{urlLookup.name}
                 </code>
                 <button 
                   className="copy-button"
-                  onClick={() => copyToClipboard(`/${selectedCustomer}/${selectedNamespace}/lookups/${urlLookup.name}`)}
+                  onClick={() => copyToClipboard(`/${selectedCustomerId}/${selectedNamespaceId}/lookups/${urlLookup.name}`)}
                   title="Copy URL"
                 >
                   📋
@@ -754,7 +779,7 @@ Option 2`}</pre>
   "title": "Choose an option:",
   "choicesOrder": "asc",
   "choices": {
-    "url": "/${selectedCustomer}/${selectedNamespace}/lookups/${urlLookup.name}",
+    "url": "/${selectedCustomerId}/${selectedNamespaceId}/lookups/${urlLookup.name}",
     "valueName": "${urlLookup.type === 'key_value' ? 'key' : 'value'}",
     "titleName": "value"
   }
