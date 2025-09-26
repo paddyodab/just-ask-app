@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import LoadingSpinner from '../common/LoadingSpinner'
+import { useAdminContext } from '../../contexts/AdminContext'
 import './ResponseManagement.css'
 
 interface Customer {
@@ -31,13 +32,21 @@ interface SurveyResponse {
 }
 
 const ResponseManagement: React.FC = () => {
+  const {
+    selectedCustomerId,
+    selectedCustomerName,
+    selectedNamespaceId,
+    selectedNamespaceName,
+    availableNamespaces,
+    setSelectedCustomer,
+    setSelectedNamespace,
+    setAvailableNamespaces
+  } = useAdminContext()
+  
   const [customers, setCustomers] = useState<Customer[]>([])
-  const [namespaces, setNamespaces] = useState<Namespace[]>([])
   const [surveys, setSurveys] = useState<Survey[]>([])
   const [responses, setResponses] = useState<SurveyResponse[]>([])
   
-  const [selectedCustomer, setSelectedCustomer] = useState<string>('')
-  const [selectedNamespace, setSelectedNamespace] = useState<string>('')
   const [selectedSurvey, setSelectedSurvey] = useState<string>('')
   
   const [surveyDefinition, setSurveyDefinition] = useState<any>(null)
@@ -57,34 +66,34 @@ const ResponseManagement: React.FC = () => {
   }, [])
 
   useEffect(() => {
-    if (selectedCustomer) {
-      fetchNamespaces(selectedCustomer)
+    if (selectedCustomerId) {
+      fetchNamespaces(selectedCustomerId)
       setSelectedSurvey('')
       setSurveys([])
       setResponses([])
     } else {
-      setNamespaces([])
+      setAvailableNamespaces([])
       setSurveys([])
       setResponses([])
     }
-  }, [selectedCustomer])
+  }, [selectedCustomerId])
 
   useEffect(() => {
-    if (selectedCustomer && selectedNamespace) {
-      fetchSurveys(selectedCustomer, selectedNamespace)
+    if (selectedCustomerId && selectedNamespaceId) {
+      fetchSurveys(selectedCustomerId, selectedNamespaceId)
       setResponses([])
     } else {
       setSurveys([])
       setResponses([])
     }
-  }, [selectedCustomer, selectedNamespace])
+  }, [selectedCustomerId, selectedNamespaceId])
 
   useEffect(() => {
-    if (selectedCustomer && selectedNamespace && selectedSurvey) {
+    if (selectedCustomerId && selectedNamespaceId && selectedSurvey) {
       fetchResponses()
       fetchSurveyDefinition()
     }
-  }, [selectedCustomer, selectedNamespace, selectedSurvey, currentPage, pageSize])
+  }, [selectedCustomerId, selectedNamespaceId, selectedSurvey, currentPage, pageSize])
 
   // ESC key handler for closing modal
   useEffect(() => {
@@ -111,8 +120,8 @@ const ResponseManagement: React.FC = () => {
         const customersList = data.customers || []
         setCustomers(customersList)
         // Auto-select the first customer if available
-        if (customersList.length > 0 && !selectedCustomer) {
-          setSelectedCustomer(customersList[0].hex_id)
+        if (customersList.length > 0 && !selectedCustomerId) {
+          setSelectedCustomer(customersList[0].hex_id, customersList[0].name)
         }
       }
     } catch (err) {
@@ -127,8 +136,8 @@ const ResponseManagement: React.FC = () => {
       ]
       setCustomers(demoCustomers)
       // Auto-select the demo customer
-      if (!selectedCustomer) {
-        setSelectedCustomer(demoCustomers[0].hex_id)
+      if (!selectedCustomerId) {
+        setSelectedCustomer(demoCustomers[0].hex_id, demoCustomers[0].name)
       }
     }
   }
@@ -139,10 +148,10 @@ const ResponseManagement: React.FC = () => {
       if (response.ok) {
         const data = await response.json()
         const namespacesList = data.namespaces || []
-        setNamespaces(namespacesList)
+        setAvailableNamespaces(namespacesList)
         // Auto-select the first namespace if available
-        if (namespacesList.length > 0) {
-          setSelectedNamespace(namespacesList[0].slug)
+        if (namespacesList.length > 0 && !selectedNamespaceId) {
+          setSelectedNamespace(namespacesList[0].slug, namespacesList[0].name)
         }
       }
     } catch (err) {
@@ -155,9 +164,11 @@ const ResponseManagement: React.FC = () => {
           slug: 'restaurant-survey'
         }
       ]
-      setNamespaces(demoNamespaces)
+      setAvailableNamespaces(demoNamespaces)
       // Auto-select the first namespace
-      setSelectedNamespace(demoNamespaces[0].slug)
+      if (!selectedNamespaceId) {
+        setSelectedNamespace(demoNamespaces[0].slug, demoNamespaces[0].name)
+      }
     }
   }
 
@@ -196,7 +207,7 @@ const ResponseManagement: React.FC = () => {
   const fetchSurveyDefinition = async () => {
     try {
       const response = await fetch(
-        `/${selectedCustomer}/${selectedNamespace}/survey?survey_name=${selectedSurvey}`
+        `/${selectedCustomerId}/${selectedNamespaceId}/survey?survey_name=${selectedSurvey}`
       )
       
       if (response.ok) {
@@ -213,7 +224,7 @@ const ResponseManagement: React.FC = () => {
       setLoading(true)
       setError(null)
       
-      const url = `/api/v1/operations/customers/${selectedCustomer}/namespaces/${selectedNamespace}/responses?page=${currentPage}&size=${pageSize}&survey_name=${selectedSurvey}`
+      const url = `/api/v1/operations/customers/${selectedCustomerId}/namespaces/${selectedNamespaceId}/responses?page=${currentPage}&size=${pageSize}&survey_name=${selectedSurvey}`
       const response = await fetch(url)
       
       if (response.ok) {
@@ -317,32 +328,35 @@ const ResponseManagement: React.FC = () => {
     if (Array.isArray(value)) {
       // Check if it's an array of objects (paneldynamic)
       if (value.length > 0 && typeof value[0] === 'object') {
-        // Handle dynamic panels like visited_countries, bucket_list
-        if (fieldName === 'visited_countries') {
-          return value.map((item, idx) => {
-            const parts = []
-            if (item.country) parts.push(`Country: ${item.country}`)
-            if (item.favorite_city) parts.push(`City: ${item.favorite_city}`)
-            if (item.country_rating) parts.push(`Rating: ${item.country_rating}/5`)
-            return `[${idx + 1}] ${parts.join(', ')}`
-          }).join(' | ')
-        }
-        
-        if (fieldName === 'bucket_list') {
-          return value.map((item, idx) => {
-            const parts = []
-            if (item.dream_country) parts.push(`Country: ${item.dream_country}`)
-            if (item.dream_city) parts.push(`City: ${item.dream_city}`)
-            if (item.visit_reason) parts.push(`Reason: ${item.visit_reason}`)
-            return `[${idx + 1}] ${parts.join(', ')}`
-          }).join(' | ')
-        }
-        
-        // Generic format for other panel arrays
+        // Generic format for ALL panel arrays - no hardcoding!
         return value.map((item, idx) => {
+          // Get all non-null entries
           const entries = Object.entries(item)
             .filter(([_, val]) => val != null)
-            .map(([key, val]) => `${key}: ${val}`)
+            .map(([key, val]) => {
+              // Format the key nicely (remove underscores, capitalize)
+              const formattedKey = key
+                .replace(/_/g, ' ')
+                .replace(/\b\w/g, l => l.toUpperCase())
+              
+              // Format the value (handle nested objects, arrays, etc.)
+              let formattedValue = val
+              if (typeof val === 'object') {
+                if (Array.isArray(val)) {
+                  formattedValue = val.join(', ')
+                } else {
+                  formattedValue = JSON.stringify(val)
+                }
+              }
+              
+              return `${formattedKey}: ${formattedValue}`
+            })
+          
+          // If no entries, show empty indicator
+          if (entries.length === 0) {
+            return `[${idx + 1}] (empty)`
+          }
+          
           return `[${idx + 1}] ${entries.join(', ')}`
         }).join(' | ')
       }
@@ -355,7 +369,12 @@ const ResponseManagement: React.FC = () => {
       // Format single objects
       const entries = Object.entries(value)
         .filter(([_, val]) => val != null)
-        .map(([key, val]) => `${key}: ${val}`)
+        .map(([key, val]) => {
+          const formattedKey = key
+            .replace(/_/g, ' ')
+            .replace(/\b\w/g, l => l.toUpperCase())
+          return `${formattedKey}: ${val}`
+        })
       return entries.join(', ')
     }
     
@@ -413,8 +432,15 @@ const ResponseManagement: React.FC = () => {
         <div className="header-actions">
           <select 
             className="select-control"
-            value={selectedCustomer}
-            onChange={(e) => setSelectedCustomer(e.target.value)}
+            value={selectedCustomerId || ''}
+            onChange={(e) => {
+              const customer = customers.find(c => c.hex_id === e.target.value)
+              if (customer) {
+                setSelectedCustomer(customer.hex_id, customer.name)
+              } else {
+                setSelectedCustomer(null, null)
+              }
+            }}
           >
             <option value="">Select customer...</option>
             {customers.map(customer => (
@@ -425,12 +451,19 @@ const ResponseManagement: React.FC = () => {
           </select>
           <select 
             className="select-control"
-            value={selectedNamespace}
-            onChange={(e) => setSelectedNamespace(e.target.value)}
-            disabled={!selectedCustomer}
+            value={selectedNamespaceId || ''}
+            onChange={(e) => {
+              const namespace = availableNamespaces.find(n => n.slug === e.target.value)
+              if (namespace) {
+                setSelectedNamespace(namespace.slug, namespace.name)
+              } else {
+                setSelectedNamespace(null, null)
+              }
+            }}
+            disabled={!selectedCustomerId}
           >
             <option value="">Select namespace...</option>
-            {namespaces.map(namespace => (
+            {availableNamespaces.map(namespace => (
               <option key={namespace.slug} value={namespace.slug}>
                 {namespace.name}
               </option>
@@ -440,7 +473,7 @@ const ResponseManagement: React.FC = () => {
             className="select-control"
             value={selectedSurvey}
             onChange={(e) => setSelectedSurvey(e.target.value)}
-            disabled={!selectedNamespace}
+            disabled={!selectedNamespaceId}
           >
             <option value="">Select survey...</option>
             {surveys.map(survey => (
@@ -466,7 +499,7 @@ const ResponseManagement: React.FC = () => {
         </div>
       )}
 
-      {!selectedCustomer || !selectedNamespace || !selectedSurvey ? (
+      {!selectedCustomerId || !selectedNamespaceId || !selectedSurvey ? (
         <div className="empty-state">
           <p>Please select a customer, namespace, and survey to view responses</p>
         </div>

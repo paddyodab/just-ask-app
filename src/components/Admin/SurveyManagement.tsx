@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import LoadingSpinner from '../common/LoadingSpinner'
+import { useAdminContext } from '../../contexts/AdminContext'
 import './SurveyManagement.css'
 
 interface Customer {
@@ -26,11 +27,19 @@ interface Survey {
 }
 
 const SurveyManagement: React.FC = () => {
+  const {
+    selectedCustomerId,
+    selectedCustomerName,
+    selectedNamespaceId,
+    selectedNamespaceName,
+    availableNamespaces,
+    setSelectedCustomer,
+    setSelectedNamespace,
+    setAvailableNamespaces
+  } = useAdminContext()
+  
   const [customers, setCustomers] = useState<Customer[]>([])
-  const [namespaces, setNamespaces] = useState<Namespace[]>([])
   const [surveys, setSurveys] = useState<Survey[]>([])
-  const [selectedCustomer, setSelectedCustomer] = useState<string>('')
-  const [selectedNamespace, setSelectedNamespace] = useState<string>('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [showUploadModal, setShowUploadModal] = useState(false)
@@ -57,22 +66,22 @@ const SurveyManagement: React.FC = () => {
   }, [])
 
   useEffect(() => {
-    if (selectedCustomer) {
-      fetchNamespaces(selectedCustomer)
+    if (selectedCustomerId) {
+      fetchNamespaces(selectedCustomerId)
       setSurveys([])
     } else {
-      setNamespaces([])
+      setAvailableNamespaces([])
       setSurveys([])
     }
-  }, [selectedCustomer])
+  }, [selectedCustomerId])
 
   useEffect(() => {
-    if (selectedCustomer && selectedNamespace) {
-      fetchSurveys(selectedCustomer, selectedNamespace)
+    if (selectedCustomerId && selectedNamespaceId) {
+      fetchSurveys(selectedCustomerId, selectedNamespaceId)
     } else {
       setSurveys([])
     }
-  }, [selectedCustomer, selectedNamespace])
+  }, [selectedCustomerId, selectedNamespaceId])
 
   // ESC key handler for closing Survey Definition modal
   useEffect(() => {
@@ -99,8 +108,8 @@ const SurveyManagement: React.FC = () => {
         const customersList = data.customers || []
         setCustomers(customersList)
         // Auto-select the first customer if available
-        if (customersList.length > 0 && !selectedCustomer) {
-          setSelectedCustomer(customersList[0].hex_id)
+        if (customersList.length > 0 && !selectedCustomerId) {
+          setSelectedCustomer(customersList[0].hex_id, customersList[0].name)
         }
       }
     } catch (err) {
@@ -115,8 +124,8 @@ const SurveyManagement: React.FC = () => {
       ]
       setCustomers(demoCustomers)
       // Auto-select the demo customer
-      if (!selectedCustomer) {
-        setSelectedCustomer(demoCustomers[0].hex_id)
+      if (!selectedCustomerId) {
+        setSelectedCustomer(demoCustomers[0].hex_id, demoCustomers[0].name)
       }
     }
   }
@@ -127,10 +136,10 @@ const SurveyManagement: React.FC = () => {
       if (response.ok) {
         const data = await response.json()
         const namespacesList = data.namespaces || []
-        setNamespaces(namespacesList)
+        setAvailableNamespaces(namespacesList)
         // Auto-select the first namespace if available
-        if (namespacesList.length > 0) {
-          setSelectedNamespace(namespacesList[0].slug)
+        if (namespacesList.length > 0 && !selectedNamespaceId) {
+          setSelectedNamespace(namespacesList[0].slug, namespacesList[0].name)
         }
       }
     } catch (err) {
@@ -143,9 +152,11 @@ const SurveyManagement: React.FC = () => {
           slug: 'restaurant-survey'
         }
       ]
-      setNamespaces(demoNamespaces)
+      setAvailableNamespaces(demoNamespaces)
       // Auto-select the first namespace
-      setSelectedNamespace(demoNamespaces[0].slug)
+      if (!selectedNamespaceId) {
+        setSelectedNamespace(demoNamespaces[0].slug, demoNamespaces[0].name)
+      }
     }
   }
 
@@ -215,7 +226,7 @@ const SurveyManagement: React.FC = () => {
       formData.append('definition', JSON.stringify(surveyDefinition))
       
       const response = await fetch(
-        `/api/v1/operations/customers/${selectedCustomer}/namespaces/${selectedNamespace}/surveys`,
+        `/api/v1/operations/customers/${selectedCustomerId}/namespaces/${selectedNamespaceId}/surveys`,
         {
           method: 'POST',
           body: formData
@@ -223,7 +234,7 @@ const SurveyManagement: React.FC = () => {
       )
 
       if (response.ok) {
-        await fetchSurveys(selectedCustomer, selectedNamespace)
+        await fetchSurveys(selectedCustomerId, selectedNamespaceId)
         setUploadData({ surveyId: '', name: '', version: '1.0', jsonFile: null, jsonContent: '' })
         setShowUploadModal(false)
       } else {
@@ -247,7 +258,7 @@ const SurveyManagement: React.FC = () => {
     try {
       const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000'
       const response = await fetch(
-        `${apiUrl}/${selectedCustomer}/${selectedNamespace}/survey?survey_name=${survey.survey_id}`
+        `${apiUrl}/${selectedCustomerId}/${selectedNamespaceId}/survey?survey_name=${survey.survey_id}`
       )
       if (response.ok) {
         const data = await response.json()
@@ -275,7 +286,7 @@ const SurveyManagement: React.FC = () => {
       // Fetch the full survey definition
       const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000'
       const response = await fetch(
-        `${apiUrl}/${selectedCustomer}/${selectedNamespace}/survey?survey_name=${survey.survey_id}`
+        `${apiUrl}/${selectedCustomerId}/${selectedNamespaceId}/survey?survey_name=${survey.survey_id}`
       )
       if (response.ok) {
         const surveyData = await response.json()
@@ -300,7 +311,7 @@ const SurveyManagement: React.FC = () => {
     try {
       // Fetch the full survey definition
       const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000'
-      const surveyUrl = `${apiUrl}/${selectedCustomer}/${selectedNamespace}/survey?survey_name=${survey.survey_id}`
+      const surveyUrl = `${apiUrl}/${selectedCustomerId}/${selectedNamespaceId}/survey?survey_name=${survey.survey_id}`
       console.log('Fetching survey for new version from:', surveyUrl)
       
       const response = await fetch(surveyUrl)
@@ -356,8 +367,8 @@ const SurveyManagement: React.FC = () => {
       // Remove metadata fields from the survey definition to get clean SurveyJS schema
       const { survey_id, name, version, ...surveyDefinition } = surveyJson
       const endpoint = isUpdating
-        ? `/api/v1/operations/customers/${selectedCustomer}/namespaces/${selectedNamespace}/surveys/${surveyId}`
-        : `/api/v1/operations/customers/${selectedCustomer}/namespaces/${selectedNamespace}/surveys`
+        ? `/api/v1/operations/customers/${selectedCustomerId}/namespaces/${selectedNamespaceId}/surveys/${surveyId}`
+        : `/api/v1/operations/customers/${selectedCustomerId}/namespaces/${selectedNamespaceId}/surveys`
       
       const formData = new FormData()
       
@@ -386,7 +397,7 @@ const SurveyManagement: React.FC = () => {
       })
 
       if (response.ok) {
-        await fetchSurveys(selectedCustomer, selectedNamespace)
+        await fetchSurveys(selectedCustomerId, selectedNamespaceId)
         setUploadData({ surveyId: '', name: '', version: '1.0', jsonFile: null, jsonContent: '' })
         setShowEditModal(false)
         setEditingSurvey(null)
@@ -422,8 +433,8 @@ const SurveyManagement: React.FC = () => {
     try {
       setError(null)
       const url = deleteType === 'hard'
-        ? `/api/v1/operations/customers/${selectedCustomer}/namespaces/${selectedNamespace}/surveys/${deletingSurvey.survey_id}?hard_delete=true`
-        : `/api/v1/operations/customers/${selectedCustomer}/namespaces/${selectedNamespace}/surveys/${deletingSurvey.survey_id}`
+        ? `/api/v1/operations/customers/${selectedCustomerId}/namespaces/${selectedNamespaceId}/surveys/${deletingSurvey.survey_id}?hard_delete=true`
+        : `/api/v1/operations/customers/${selectedCustomerId}/namespaces/${selectedNamespaceId}/surveys/${deletingSurvey.survey_id}`
       
       const response = await fetch(url, {
         method: 'DELETE'
@@ -431,7 +442,7 @@ const SurveyManagement: React.FC = () => {
 
       if (response.ok) {
         // Refresh the survey list to get updated state from backend
-        await fetchSurveys(selectedCustomer, selectedNamespace)
+        await fetchSurveys(selectedCustomerId, selectedNamespaceId)
         
         setShowDeleteModal(false)
         setDeletingSurvey(null)
@@ -451,7 +462,7 @@ const SurveyManagement: React.FC = () => {
     try {
       setError(null)
       const response = await fetch(
-        `/api/v1/operations/customers/${selectedCustomer}/namespaces/${selectedNamespace}/surveys/${survey.survey_id}/restore`,
+        `/api/v1/operations/customers/${selectedCustomerId}/namespaces/${selectedNamespaceId}/surveys/${survey.survey_id}/restore`,
         {
           method: 'POST'
         }
@@ -459,7 +470,7 @@ const SurveyManagement: React.FC = () => {
 
       if (response.ok) {
         // Refresh the survey list to get updated state from backend
-        await fetchSurveys(selectedCustomer, selectedNamespace)
+        await fetchSurveys(selectedCustomerId, selectedNamespaceId)
       } else {
         throw new Error('Failed to restore survey')
       }
@@ -523,8 +534,15 @@ const SurveyManagement: React.FC = () => {
         <div className="header-actions">
           <select 
             className="select-control"
-            value={selectedCustomer}
-            onChange={(e) => setSelectedCustomer(e.target.value)}
+            value={selectedCustomerId || ''}
+            onChange={(e) => {
+              const customer = customers.find(c => c.hex_id === e.target.value)
+              if (customer) {
+                setSelectedCustomer(customer.hex_id, customer.name)
+              } else {
+                setSelectedCustomer(null, null)
+              }
+            }}
           >
             <option value="">Select customer...</option>
             {customers.map(customer => (
@@ -535,18 +553,25 @@ const SurveyManagement: React.FC = () => {
           </select>
           <select 
             className="select-control"
-            value={selectedNamespace}
-            onChange={(e) => setSelectedNamespace(e.target.value)}
-            disabled={!selectedCustomer}
+            value={selectedNamespaceId || ''}
+            onChange={(e) => {
+              const namespace = availableNamespaces.find(n => n.slug === e.target.value)
+              if (namespace) {
+                setSelectedNamespace(namespace.slug, namespace.name)
+              } else {
+                setSelectedNamespace(null, null)
+              }
+            }}
+            disabled={!selectedCustomerId}
           >
             <option value="">Select namespace...</option>
-            {namespaces.map(namespace => (
+            {availableNamespaces.map(namespace => (
               <option key={namespace.slug} value={namespace.slug}>
                 {namespace.name}
               </option>
             ))}
           </select>
-          {deletedCount > 0 && selectedCustomer && selectedNamespace && (
+          {deletedCount > 0 && selectedCustomerId && selectedNamespaceId && (
             <label className="toggle-deleted">
               <input 
                 type="checkbox"
@@ -559,7 +584,7 @@ const SurveyManagement: React.FC = () => {
           <button 
             className="btn btn-primary"
             onClick={() => setShowUploadModal(true)}
-            disabled={!selectedCustomer || !selectedNamespace}
+            disabled={!selectedCustomerId || !selectedNamespaceId}
           >
             📝 Upload Survey
           </button>
@@ -572,7 +597,7 @@ const SurveyManagement: React.FC = () => {
         </div>
       )}
 
-      {!selectedCustomer || !selectedNamespace ? (
+      {!selectedCustomerId || !selectedNamespaceId ? (
         <div className="empty-state">
           <p>Please select a customer and namespace to manage surveys</p>
         </div>
@@ -681,7 +706,7 @@ const SurveyManagement: React.FC = () => {
                           className="btn-icon"
                           onClick={(e) => {
                             e.stopPropagation()
-                            window.open(`/survey?customer=${selectedCustomer}&namespace=${selectedNamespace}&survey=${survey.survey_id}`, '_blank')
+                            window.open(`/survey?customer=${selectedCustomerId}&namespace=${selectedNamespaceId}&survey=${survey.survey_id}`, '_blank')
                           }}
                           title="Preview survey"
                         >

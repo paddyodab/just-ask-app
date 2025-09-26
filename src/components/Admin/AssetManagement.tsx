@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import LoadingSpinner from '../common/LoadingSpinner'
 import ConfirmationModal from '../common/ConfirmationModal'
+import { useAdminContext } from '../../contexts/AdminContext'
 import './AssetManagement.css'
 
 interface Customer {
@@ -25,11 +26,19 @@ interface Asset {
 }
 
 const AssetManagement: React.FC = () => {
+  const {
+    selectedCustomerId,
+    selectedCustomerName,
+    selectedNamespaceId,
+    selectedNamespaceName,
+    availableNamespaces,
+    setSelectedCustomer,
+    setSelectedNamespace,
+    setAvailableNamespaces
+  } = useAdminContext()
+  
   const [customers, setCustomers] = useState<Customer[]>([])
-  const [namespaces, setNamespaces] = useState<Namespace[]>([])
   const [assets, setAssets] = useState<Asset[]>([])
-  const [selectedCustomer, setSelectedCustomer] = useState<string>('')
-  const [selectedNamespace, setSelectedNamespace] = useState<string>('')
   const [loading, setLoading] = useState(false)
   const [uploading, setUploading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -49,22 +58,22 @@ const AssetManagement: React.FC = () => {
   }, [])
 
   useEffect(() => {
-    if (selectedCustomer) {
-      fetchNamespaces(selectedCustomer)
+    if (selectedCustomerId) {
+      fetchNamespaces(selectedCustomerId)
       setAssets([])
     } else {
-      setNamespaces([])
+      setAvailableNamespaces([])
       setAssets([])
     }
-  }, [selectedCustomer])
+  }, [selectedCustomerId])
 
   useEffect(() => {
-    if (selectedCustomer && selectedNamespace) {
-      fetchAssets(selectedCustomer, selectedNamespace)
+    if (selectedCustomerId && selectedNamespaceId) {
+      fetchAssets(selectedCustomerId, selectedNamespaceId)
     } else {
       setAssets([])
     }
-  }, [selectedCustomer, selectedNamespace])
+  }, [selectedCustomerId, selectedNamespaceId])
 
   // ESC key handler for closing Asset Preview modal
   useEffect(() => {
@@ -92,8 +101,8 @@ const AssetManagement: React.FC = () => {
         const customersList = data.customers || []
         setCustomers(customersList)
         // Auto-select the first customer if available
-        if (customersList.length > 0 && !selectedCustomer) {
-          setSelectedCustomer(customersList[0].hex_id)
+        if (customersList.length > 0 && !selectedCustomerId) {
+          setSelectedCustomer(customersList[0].hex_id, customersList[0].name)
         }
       }
     } catch (err) {
@@ -107,8 +116,8 @@ const AssetManagement: React.FC = () => {
         }
       ]
       setCustomers(demoCustomers)
-      if (!selectedCustomer) {
-        setSelectedCustomer(demoCustomers[0].hex_id)
+      if (!selectedCustomerId) {
+        setSelectedCustomer(demoCustomers[0].hex_id, demoCustomers[0].name)
       }
     }
   }
@@ -119,10 +128,10 @@ const AssetManagement: React.FC = () => {
       if (response.ok) {
         const data = await response.json()
         const namespacesList = data.namespaces || []
-        setNamespaces(namespacesList)
+        setAvailableNamespaces(namespacesList)
         // Auto-select the first namespace if available
-        if (namespacesList.length > 0) {
-          setSelectedNamespace(namespacesList[0].slug)
+        if (namespacesList.length > 0 && !selectedNamespaceId) {
+          setSelectedNamespace(namespacesList[0].slug, namespacesList[0].name)
         }
       }
     } catch (err) {
@@ -135,9 +144,11 @@ const AssetManagement: React.FC = () => {
           slug: 'restaurant-survey'
         }
       ]
-      setNamespaces(demoNamespaces)
+      setAvailableNamespaces(demoNamespaces)
       // Auto-select the first namespace
-      setSelectedNamespace(demoNamespaces[0].slug)
+      if (!selectedNamespaceId) {
+        setSelectedNamespace(demoNamespaces[0].slug, demoNamespaces[0].name)
+      }
     }
   }
 
@@ -186,7 +197,7 @@ const AssetManagement: React.FC = () => {
         formData.append('name', file.name)
         
         const response = await fetch(
-          `/api/v1/operations/customers/${selectedCustomer}/namespaces/${selectedNamespace}/assets/upload`,
+          `/api/v1/operations/customers/${selectedCustomerId}/namespaces/${selectedNamespaceId}/assets/upload`,
           {
             method: 'POST',
             body: formData
@@ -199,7 +210,7 @@ const AssetManagement: React.FC = () => {
       }
 
       // Refresh assets list
-      await fetchAssets(selectedCustomer, selectedNamespace)
+      await fetchAssets(selectedCustomerId, selectedNamespaceId)
       setUploadFiles(null)
       setShowUploadModal(false)
     } catch (err) {
@@ -221,7 +232,7 @@ const AssetManagement: React.FC = () => {
     try {
       setError(null)
       const response = await fetch(
-        `/api/v1/operations/customers/${selectedCustomer}/namespaces/${selectedNamespace}/assets/${asset.name}`,
+        `/api/v1/operations/customers/${selectedCustomerId}/namespaces/${selectedNamespaceId}/assets/${asset.name}`,
         {
           method: 'DELETE'
         }
@@ -323,8 +334,15 @@ const AssetManagement: React.FC = () => {
         <div className="header-actions">
           <select 
             className="select-control"
-            value={selectedCustomer}
-            onChange={(e) => setSelectedCustomer(e.target.value)}
+            value={selectedCustomerId || ''}
+            onChange={(e) => {
+              const customer = customers.find(c => c.hex_id === e.target.value)
+              if (customer) {
+                setSelectedCustomer(customer.hex_id, customer.name)
+              } else {
+                setSelectedCustomer(null, null)
+              }
+            }}
           >
             <option value="">Select customer...</option>
             {customers.map(customer => (
@@ -335,12 +353,19 @@ const AssetManagement: React.FC = () => {
           </select>
           <select 
             className="select-control"
-            value={selectedNamespace}
-            onChange={(e) => setSelectedNamespace(e.target.value)}
-            disabled={!selectedCustomer}
+            value={selectedNamespaceId || ''}
+            onChange={(e) => {
+              const namespace = availableNamespaces.find(n => n.slug === e.target.value)
+              if (namespace) {
+                setSelectedNamespace(namespace.slug, namespace.name)
+              } else {
+                setSelectedNamespace(null, null)
+              }
+            }}
+            disabled={!selectedCustomerId}
           >
             <option value="">Select namespace...</option>
-            {namespaces.map(namespace => (
+            {availableNamespaces.map(namespace => (
               <option key={namespace.slug} value={namespace.slug}>
                 {namespace.name}
               </option>
@@ -349,7 +374,7 @@ const AssetManagement: React.FC = () => {
           <button 
             className="btn btn-primary"
             onClick={() => setShowUploadModal(true)}
-            disabled={!selectedCustomer || !selectedNamespace}
+            disabled={!selectedCustomerId || !selectedNamespaceId}
           >
             📤 Upload Assets
           </button>
@@ -362,7 +387,7 @@ const AssetManagement: React.FC = () => {
         </div>
       )}
 
-      {!selectedCustomer || !selectedNamespace ? (
+      {!selectedCustomerId || !selectedNamespaceId ? (
         <div className="empty-state">
           <p>Please select a customer and namespace to manage assets</p>
         </div>

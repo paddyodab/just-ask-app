@@ -6,6 +6,7 @@ import LookupManagement from '../components/Admin/LookupManagement'
 import AssetManagement from '../components/Admin/AssetManagement'
 import SurveyManagement from '../components/Admin/SurveyManagement'
 import ResponseManagement from '../components/Admin/ResponseManagement'
+import { AdminProvider } from '../contexts/AdminContext'
 import './AdminPage.css'
 
 const AdminPage: React.FC = () => {
@@ -13,8 +14,9 @@ const AdminPage: React.FC = () => {
   const currentPath = location.pathname
 
   return (
-    <div className="admin-page">
-      <div className="admin-container">
+    <AdminProvider>
+      <div className="admin-page">
+        <div className="admin-container">
         <div className="admin-header">
           <h1>Admin Dashboard</h1>
           <p className="admin-description">Manage customers, namespaces, lookups, assets, surveys, and responses</p>
@@ -78,6 +80,7 @@ const AdminPage: React.FC = () => {
         </div>
       </div>
     </div>
+    </AdminProvider>
   )
 }
 
