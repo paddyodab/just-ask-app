@@ -317,32 +317,35 @@ const ResponseManagement: React.FC = () => {
     if (Array.isArray(value)) {
       // Check if it's an array of objects (paneldynamic)
       if (value.length > 0 && typeof value[0] === 'object') {
-        // Handle dynamic panels like visited_countries, bucket_list
-        if (fieldName === 'visited_countries') {
-          return value.map((item, idx) => {
-            const parts = []
-            if (item.country) parts.push(`Country: ${item.country}`)
-            if (item.favorite_city) parts.push(`City: ${item.favorite_city}`)
-            if (item.country_rating) parts.push(`Rating: ${item.country_rating}/5`)
-            return `[${idx + 1}] ${parts.join(', ')}`
-          }).join(' | ')
-        }
-        
-        if (fieldName === 'bucket_list') {
-          return value.map((item, idx) => {
-            const parts = []
-            if (item.dream_country) parts.push(`Country: ${item.dream_country}`)
-            if (item.dream_city) parts.push(`City: ${item.dream_city}`)
-            if (item.visit_reason) parts.push(`Reason: ${item.visit_reason}`)
-            return `[${idx + 1}] ${parts.join(', ')}`
-          }).join(' | ')
-        }
-        
-        // Generic format for other panel arrays
+        // Generic format for ALL panel arrays - no hardcoding!
         return value.map((item, idx) => {
+          // Get all non-null entries
           const entries = Object.entries(item)
             .filter(([_, val]) => val != null)
-            .map(([key, val]) => `${key}: ${val}`)
+            .map(([key, val]) => {
+              // Format the key nicely (remove underscores, capitalize)
+              const formattedKey = key
+                .replace(/_/g, ' ')
+                .replace(/\b\w/g, l => l.toUpperCase())
+              
+              // Format the value (handle nested objects, arrays, etc.)
+              let formattedValue = val
+              if (typeof val === 'object') {
+                if (Array.isArray(val)) {
+                  formattedValue = val.join(', ')
+                } else {
+                  formattedValue = JSON.stringify(val)
+                }
+              }
+              
+              return `${formattedKey}: ${formattedValue}`
+            })
+          
+          // If no entries, show empty indicator
+          if (entries.length === 0) {
+            return `[${idx + 1}] (empty)`
+          }
+          
           return `[${idx + 1}] ${entries.join(', ')}`
         }).join(' | ')
       }
@@ -355,7 +358,12 @@ const ResponseManagement: React.FC = () => {
       // Format single objects
       const entries = Object.entries(value)
         .filter(([_, val]) => val != null)
-        .map(([key, val]) => `${key}: ${val}`)
+        .map(([key, val]) => {
+          const formattedKey = key
+            .replace(/_/g, ' ')
+            .replace(/\b\w/g, l => l.toUpperCase())
+          return `${formattedKey}: ${val}`
+        })
       return entries.join(', ')
     }
     
