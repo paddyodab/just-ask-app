@@ -60,6 +60,8 @@
   cursor: pointer;
   transition: background-color 0.15s;
   border-bottom: 1px solid #f0f0f0;
+  color: #333333;
+  font-size: 14px;
 }
 
 .typeahead-result-item:last-child {
@@ -68,11 +70,13 @@
 
 .typeahead-result-item:hover {
   background-color: #f8f8f8;
+  color: #000000;
 }
 
 .typeahead-result-item.selected {
   background-color: #e8f7f5;
   font-weight: 500;
+  color: #0d7a5f;
 }
 
 .typeahead-no-results,

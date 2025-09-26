@@ -1,0 +1,171 @@
+{
+  "title": "World Travel Experience Survey (Mock Test)",
+  "description": "Testing typeahead with mock data - no backend required",
+  "logo": "/assets/travel-logo.png",
+  "logoPosition": "top",
+  "logoWidth": "150px",
+  "pages": [
+    {
+      "name": "personal_info",
+      "title": "About You",
+      "description": "Let's start with some basic information",
+      "elements": [
+        {
+          "type": "dropdown",
+          "name": "country_of_origin",
+          "title": "What is your country of origin?",
+          "isRequired": true,
+          "placeholder": "Start typing your country...",
+          "enableTypeahead": true,
+          "typeaheadMinLength": 2,
+          "typeaheadDebounceMs": 300,
+          "choicesByUrl": {
+            "url": "/mock-api/countries",
+            "valueName": "key",
+            "titleName": "value"
+          }
+        },
+        {
+          "type": "dropdown",
+          "name": "city_of_origin",
+          "title": "What city are you originally from?",
+          "isRequired": true,
+          "placeholder": "Start typing your city...",
+          "enableTypeahead": true,
+          "typeaheadMinLength": 2,
+          "typeaheadDebounceMs": 300,
+          "choicesByUrl": {
+            "url": "/mock-api/cities?country={country_of_origin}",
+            "valueName": "key",
+            "titleName": "text"
+          },
+          "visibleIf": "{country_of_origin} notempty"
+        },
+        {
+          "type": "dropdown",
+          "name": "age_range",
+          "title": "What is your age range?",
+          "isRequired": true,
+          "choices": [
+            { "value": "18-24", "text": "18-24 years" },
+            { "value": "25-34", "text": "25-34 years" },
+            { "value": "35-44", "text": "35-44 years" },
+            { "value": "45-54", "text": "45-54 years" },
+            { "value": "55-64", "text": "55-64 years" },
+            { "value": "65+", "text": "65 years and above" }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "countries_visited",
+      "title": "Countries You've Visited",
+      "description": "Tell us about the countries you've explored",
+      "elements": [
+        {
+          "type": "paneldynamic",
+          "name": "visited_countries",
+          "title": "Countries I've Visited",
+          "templateElements": [
+            {
+              "type": "dropdown",
+              "name": "country",
+              "title": "Country",
+              "isRequired": true,
+              "placeholder": "Type to search for a country...",
+              "enableTypeahead": true,
+              "typeaheadMinLength": 2,
+              "typeaheadDebounceMs": 250,
+              "choicesByUrl": {
+                "url": "/mock-api/countries",
+                "valueName": "key",
+                "titleName": "value"
+              }
+            },
+            {
+              "type": "dropdown",
+              "name": "primary_city",
+              "title": "Primary city visited",
+              "placeholder": "Type to search for a city...",
+              "enableTypeahead": true,
+              "typeaheadMinLength": 2,
+              "typeaheadDebounceMs": 250,
+              "choicesByUrl": {
+                "url": "/mock-api/cities?country={panel.country}",
+                "valueName": "key",
+                "titleName": "text"
+              },
+              "visibleIf": "{panel.country} notempty"
+            },
+            {
+              "type": "dropdown",
+              "name": "year_visited",
+              "title": "Year of visit (most recent if multiple)",
+              "choices": [
+                "2024", "2023", "2022", "2021", "2020", "2019", "2018", "2017", "2016", "2015"
+              ]
+            }
+          ],
+          "panelCount": 1,
+          "minPanelCount": 1,
+          "maxPanelCount": 10,
+          "panelAddText": "Add another country",
+          "panelRemoveText": "Remove",
+          "templateTitle": "Country #{panelIndex}"
+        }
+      ]
+    },
+    {
+      "name": "favorite_destinations",
+      "title": "Favorite Destinations",
+      "elements": [
+        {
+          "type": "dropdown",
+          "name": "favorite_country",
+          "title": "What's your all-time favorite country to visit?",
+          "placeholder": "Type to search...",
+          "enableTypeahead": true,
+          "typeaheadMinLength": 2,
+          "typeaheadDebounceMs": 300,
+          "choicesByUrl": {
+            "url": "/mock-api/countries",
+            "valueName": "key",
+            "titleName": "value"
+          }
+        },
+        {
+          "type": "dropdown",
+          "name": "favorite_airline",
+          "title": "What's your preferred airline?",
+          "placeholder": "Type to search for an airline...",
+          "enableTypeahead": true,
+          "typeaheadMinLength": 2,
+          "typeaheadDebounceMs": 300,
+          "choicesByUrl": {
+            "url": "/mock-api/airlines",
+            "valueName": "key",
+            "titleName": "text"
+          }
+        },
+        {
+          "type": "dropdown",
+          "name": "favorite_airport",
+          "title": "What's your favorite airport?",
+          "placeholder": "Type airport name or code...",
+          "enableTypeahead": true,
+          "typeaheadMinLength": 2,
+          "typeaheadDebounceMs": 300,
+          "choicesByUrl": {
+            "url": "/mock-api/airports",
+            "valueName": "key",
+            "titleName": "text"
+          }
+        }
+      ]
+    }
+  ],
+  "showProgressBar": "top",
+  "progressBarType": "pages",
+  "completedHtml": "<h3>Thank you for testing the typeahead functionality!</h3><p>Your responses have been recorded.</p>",
+  "widthMode": "responsive"
+}

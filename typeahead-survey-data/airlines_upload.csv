@@ -1,0 +1,243 @@
+key,value,text,country,alliance,iata_code
+aa,aa,American Airlines (AA),us,oneworld,AA
+dl,dl,Delta Air Lines (DL),us,skyteam,DL
+ua,ua,United Airlines (UA),us,star-alliance,UA
+wn,wn,Southwest Airlines (WN),us,none,WN
+b6,b6,JetBlue Airways (B6),us,none,B6
+as,as,Alaska Airlines (AS),us,oneworld,AS
+nk,nk,Spirit Airlines (NK),us,none,NK
+f9,f9,Frontier Airlines (F9),us,none,F9
+g4,g4,Allegiant Air (G4),us,none,G4
+ha,ha,Hawaiian Airlines (HA),us,none,HA
+sy,sy,Sun Country Airlines (SY),us,none,SY
+ac,ac,Air Canada (AC),ca,star-alliance,AC
+ws,ws,WestJet (WS),ca,none,WS
+ts,ts,Air Transat (TS),ca,none,TS
+pd,pd,Porter Airlines (PD),ca,none,PD
+ba,ba,British Airways (BA),gb,oneworld,BA
+vs,vs,Virgin Atlantic (VS),gb,none,VS
+u2,u2,easyJet (U2),gb,none,U2
+ls,ls,Jet2 (LS),gb,none,LS
+fr,fr,Ryanair (FR),ireland,none,FR
+ei,ei,Aer Lingus (EI),ireland,none,EI
+af,af,Air France (AF),fr,skyteam,AF
+xk,xk,Air Corsica (XK),fr,none,XK
+to,to,Transavia France (TO),fr,none,TO
+lh,lh,Lufthansa (LH),de,star-alliance,LH
+ew,ew,Eurowings (EW),de,none,EW
+de,de,Condor (DE),de,none,DE
+x3,x3,TUIfly (X3),de,none,X3
+kl,kl,KLM (KL),nl,skyteam,KL
+hv,hv,Transavia (HV),nl,none,HV
+az,az,ITA Airways (AZ),it,skyteam,AZ
+ig,ig,Air Italy (IG),it,none,IG
+ap,ap,AlbaStar (AP),es,none,AP
+ib,ib,Iberia (IB),es,oneworld,IB
+vy,vy,Vueling (VY),es,none,VY
+ux,ux,Air Europa (UX),es,skyteam,UX
+nt,nt,Binter Canarias (NT),es,none,NT
+tp,tp,TAP Air Portugal (TP),portugal,star-alliance,TP
+ni,ni,Portugalia (NI),portugal,none,NI
+sk,sk,SAS Scandinavian Airlines (SK),sweden,star-alliance,SK
+dy,dy,Norwegian Air (DY),norway,none,DY
+ay,ay,Finnair (AY),finland,oneworld,AY
+lo,lo,LOT Polish Airlines (LO),poland,star-alliance,LO
+ok,ok,Czech Airlines (OK),czech-republic,skyteam,OK
+os,os,Austrian Airlines (OS),austria,star-alliance,OS
+lx,lx,Swiss International Air Lines (LX),ch,star-alliance,LX
+sn,sn,Brussels Airlines (SN),belgium,star-alliance,SN
+km,km,Air Malta (KM),malta,none,KM
+a3,a3,Aegean Airlines (A3),greece,star-alliance,A3
+oa,oa,Olympic Air (OA),greece,none,OA
+tk,tk,Turkish Airlines (TK),tr,star-alliance,TK
+pc,pc,Pegasus Airlines (PC),tr,none,PC
+su,su,Aeroflot (SU),ru,skyteam,SU
+s7,s7,S7 Airlines (S7),ru,oneworld,S7
+ut,ut,UTair (UT),ru,none,UT
+ps,ps,Ukraine International Airlines (PS),ukraine,none,PS
+ro,ro,TAROM (RO),romania,skyteam,RO
+fb,fb,Bulgaria Air (FB),bulgaria,none,FB
+ju,ju,Air Serbia (JU),serbia,none,JU
+ou,ou,Croatia Airlines (OU),croatia,star-alliance,OU
+jp,jp,Adria Airways (JP),slovenia,star-alliance,JP
+ek,ek,Emirates (EK),ae,none,EK
+ey,ey,Etihad Airways (EY),ae,none,EY
+fz,fz,flydubai (FZ),ae,none,FZ
+qr,qr,Qatar Airways (QR),qatar,oneworld,QR
+wy,wy,Oman Air (WY),oman,none,WY
+gf,gf,Gulf Air (GF),bahrain,none,GF
+sv,sv,Saudia (SV),sa,skyteam,SV
+ku,ku,Kuwait Airways (KU),kuwait,none,KU
+ms,ms,EgyptAir (MS),egypt,star-alliance,MS
+me,me,Middle East Airlines (ME),lebanon,skyteam,ME
+rj,rj,Royal Jordanian (RJ),jordan,oneworld,RJ
+ly,ly,El Al (LY),israel,none,LY
+et,et,Ethiopian Airlines (ET),ethiopia,star-alliance,ET
+sa,sa,South African Airways (SA),south-africa,star-alliance,SA
+kq,kq,Kenya Airways (KQ),kenya,skyteam,KQ
+rw,rw,RwandAir (RW),rwanda,none,RW
+wb,wb,RwandAir (WB),rwanda,none,WB
+at,at,Royal Air Maroc (AT),morocco,oneworld,AT
+tu,tu,Tunisair (TU),tunisia,none,TU
+ah,ah,Air Algerie (AH),algeria,none,AH
+ln,ln,Libyan Airlines (LN),libya,none,LN
+sd,sd,Sudan Airways (SD),sudan,none,SD
+ai,ai,Air India (AI),in,star-alliance,AI
+uk,uk,Vistara (UK),in,none,UK
+6e,6e,IndiGo (6E),in,none,6E
+sg,sg,SpiceJet (SG),in,none,SG
+g8,g8,Go First (G8),in,none,G8
+ix,ix,Air India Express (IX),in,none,IX
+i5,i5,AirAsia India (I5),in,none,I5
+pk,pk,Pakistan International Airlines (PK),pakistan,none,PK
+bg,bg,Biman Bangladesh Airlines (BG),bangladesh,none,BG
+ul,ul,SriLankan Airlines (UL),sri-lanka,oneworld,UL
+mh,mh,Malaysia Airlines (MH),my,oneworld,MH
+ak,ak,AirAsia (AK),my,none,AK
+d7,d7,AirAsia X (D7),my,none,D7
+od,od,Malindo Air (OD),my,none,OD
+sq,sq,Singapore Airlines (SQ),sg,star-alliance,SQ
+tr,tr,Scoot (TR),sg,none,TR
+mi,mi,SilkAir (MI),sg,none,MI
+tg,tg,Thai Airways (TG),th,star-alliance,TG
+fd,fd,Thai AirAsia (FD),th,none,FD
+dd,dd,Nok Air (DD),th,none,DD
+pg,pg,Bangkok Airways (PG),th,none,PG
+vn,vn,Vietnam Airlines (VN),vietnam,skyteam,VN
+vj,vj,VietJet Air (VJ),vietnam,none,VJ
+bl,bl,Jetstar Pacific (BL),vietnam,none,BL
+qh,qh,Bamboo Airways (QH),vietnam,none,QH
+ga,ga,Garuda Indonesia (GA),id,skyteam,GA
+jt,jt,Lion Air (JT),id,none,JT
+id,id,Batik Air (ID),id,none,ID
+sj,sj,Sriwijaya Air (SJ),id,none,SJ
+pr,pr,Philippine Airlines (PR),philippines,none,PR
+5j,5j,Cebu Pacific (5J),philippines,none,5J
+z2,z2,Philippines AirAsia (Z2),philippines,none,Z2
+2p,2p,PAL Express (2P),philippines,none,2P
+ub,ub,Myanmar National Airlines (UB),myanmar,none,UB
+8m,8m,Myanmar Airways International (8M),myanmar,none,8M
+k7,k7,Air KBZ (K7),myanmar,none,K7
+qv,qv,Lao Airlines (QV),laos,none,QV
+k6,k6,Cambodia Angkor Air (K6),cambodia,none,K6
+lq,lq,Lanmei Airlines (LQ),cambodia,none,LQ
+bi,bi,Royal Brunei Airlines (BI),brunei,none,BI
+cz,cz,China Southern Airlines (CZ),cn,skyteam,CZ
+ca,ca,Air China (CA),cn,star-alliance,CA
+mu,mu,China Eastern Airlines (MU),cn,skyteam,MU
+hu,hu,Hainan Airlines (HU),cn,none,HU
+zh,zh,Shenzhen Airlines (ZH),cn,star-alliance,ZH
+mf,mf,Xiamen Airlines (MF),cn,skyteam,MF
+3u,3u,Sichuan Airlines (3U),cn,none,3U
+fm,fm,Shanghai Airlines (FM),cn,skyteam,FM
+sc,sc,Shandong Airlines (SC),cn,none,SC
+ho,ho,Juneyao Airlines (HO),cn,none,HO
+bk,bk,Okay Airways (BK),cn,none,BK
+g5,g5,China Express Airlines (G5),cn,none,G5
+9c,9c,Spring Airlines (9C),cn,none,9C
+gs,gs,Tianjin Airlines (GS),cn,none,GS
+jd,jd,Beijing Capital Airlines (JD),cn,none,JD
+cx,cx,Cathay Pacific (CX),hong-kong,oneworld,CX
+hx,hx,Hong Kong Airlines (HX),hong-kong,none,HX
+uo,uo,Hong Kong Express (UO),hong-kong,none,UO
+nx,nx,Air Macau (NX),macau,none,NX
+ci,ci,China Airlines (CI),tw,skyteam,CI
+br,br,EVA Air (BR),tw,star-alliance,BR
+it,it,Tigerair Taiwan (IT),tw,none,IT
+b7,b7,Uni Air (B7),tw,none,B7
+nh,nh,All Nippon Airways (NH),jp,star-alliance,NH
+jl,jl,Japan Airlines (JL),jp,oneworld,JL
+bc,bc,Skymark Airlines (BC),jp,none,BC
+mm,mm,Peach Aviation (MM),jp,none,MM
+gk,gk,Jetstar Japan (GK),jp,none,GK
+ij,ij,Spring Airlines Japan (IJ),jp,none,IJ
+oz,oz,Asiana Airlines (OZ),kr,star-alliance,OZ
+ke,ke,Korean Air (KE),kr,skyteam,KE
+7c,7c,Jeju Air (7C),kr,none,7C
+lj,lj,Jin Air (LJ),kr,none,LJ
+tw,tw,T'way Air (TW),kr,none,TW
+bx,bx,Air Busan (BX),kr,none,BX
+ze,ze,Eastar Jet (ZE),kr,none,ZE
+qf,qf,Qantas (QF),au,oneworld,QF
+va,va,Virgin Australia (VA),au,none,VA
+jq,jq,Jetstar Airways (JQ),au,none,JQ
+tt,tt,Tigerair Australia (TT),au,none,TT
+nz,nz,Air New Zealand (NZ),new-zealand,star-alliance,NZ
+fj,fj,Fiji Airways (FJ),fiji,oneworld,FJ
+px,px,Air Niugini (PX),papua-new-guinea,none,PX
+sb,sb,Air Caledonie International (SB),new-caledonia,none,SB
+vt,vt,Air Tahiti (VT),french-polynesia,none,VT
+tn,tn,Air Tahiti Nui (TN),french-polynesia,none,TN
+am,am,Aeromexico (AM),mx,skyteam,AM
+y4,y4,Volaris (Y4),mx,none,Y4
+vb,vb,VivaAerobus (VB),mx,none,VB
+4o,4o,Interjet (4O),mx,none,4O
+vw,vw,Aeromar (VW),mx,none,VW
+cm,cm,Copa Airlines (CM),panama,star-alliance,CM
+av,av,Avianca (AV),colombia,star-alliance,AV
+vh,vh,Viva Air Colombia (VH),colombia,none,VH
+5u,5u,LATAM Colombia (5U),colombia,none,5U
+la,la,LATAM Airlines (LA),chile,none,LA
+h2,h2,Sky Airline (H2),chile,none,H2
+ja,ja,JetSMART (JA),chile,none,JA
+ar,ar,Aerolineas Argentinas (AR),argentina,skyteam,AR
+fo,fo,Flybondi (FO),argentina,none,FO
+wj,wj,JetSMART Argentina (WJ),argentina,none,WJ
+g3,g3,Gol Transportes Aereos (G3),br,none,G3
+ad,ad,Azul Brazilian Airlines (AD),br,none,AD
+jj,jj,LATAM Brasil (JJ),br,none,JJ
+2z,2z,Voepass (2Z),br,none,2Z
+pz,pz,LATAM Paraguay (PZ),paraguay,none,PZ
+zp,zp,Paranair (ZP),paraguay,none,ZP
+lp,lp,LATAM Peru (LP),peru,none,LP
+p9,p9,Peruvian Airlines (P9),peru,none,P9
+lc,lc,Star Peru (LC),peru,none,LC
+4m,4m,LATAM Argentina (4M),argentina,none,4M
+bw,bw,Caribbean Airlines (BW),trinidad-and-tobago,none,BW
+tx,tx,Air Caraibes (TX),fr,none,TX
+3s,3s,Air Antilles (3S),fr,none,3S
+wm,wm,Winair (WM),sint-maarten,none,WM
+li,li,LIAT (LI),antigua-and-barbuda,none,LI
+up,up,Bahamasair (UP),bahamas,none,UP
+kx,kx,Cayman Airways (KX),cayman-islands,none,KX
+7k,7k,Kogalymavia (7K),ru,none,7K
+dp,dp,Pobeda (DP),ru,none,DP
+fv,fv,Rossiya Airlines (FV),ru,none,FV
+yc,yc,Yamal Airlines (YC),ru,none,YC
+r3,r3,Yakutia Airlines (R3),ru,none,R3
+u6,u6,Ural Airlines (U6),ru,star-alliance,U6
+un,un,Transaero Airlines (UN),ru,none,UN
+dv,dv,SCAT Airlines (DV),kazakhstan,none,DV
+kc,kc,Air Astana (KC),kazakhstan,none,KC
+hy,hy,Uzbekistan Airways (HY),uzbekistan,none,HY
+tj,tj,Tropic Air (TJ),belize,none,TJ
+hr,hr,Hahn Air (HR),de,none,HR
+vr,vr,TACV Cabo Verde Airlines (VR),cape-verde,none,VR
+tm,tm,LAM Mozambique Airlines (TM),mozambique,none,TM
+dt,dt,TAAG Angola Airlines (DT),angola,none,DT
+sw,sw,Air Namibia (SW),namibia,none,SW
+md,md,Air Madagascar (MD),madagascar,none,MD
+mk,mk,Air Mauritius (MK),mauritius,oneworld,MK
+uu,uu,Air Austral (UU),reunion,none,UU
+ss,ss,Corsair International (SS),fr,none,SS
+xl,xl,LATAM Ecuador (XL),ecuador,none,XL
+eq,eq,TAME (EQ),ecuador,none,EQ
+vv,vv,Aerosvit Airlines (VV),ukraine,none,VV
+5n,5n,Nordavia (5N),ru,none,5N
+r2,r2,Orenair (R2),ru,none,R2
+yq,yq,Polet Airlines (YQ),ru,none,YQ
+gh,gh,Globus Airlines (GH),ru,none,GH
+4g,4g,Gazpromavia (4G),ru,none,4G
+d2,d2,Dobrolet (D2),ru,none,D2
+i8,i8,Izhavia (I8),ru,none,I8
+7r,7r,RusLine (7R),ru,none,7R
+a4,a4,Azimuth (A4),ru,none,A4
+fo2,fo2,Felix Airways (FO2),yemen,none,FO2
+vf,vf,FlyViking (VF),norway,none,VF
+rc,rc,Atlantic Airways (RC),faroe-islands,none,RC
+gl,gl,Air Greenland (GL),greenland,none,GL
+wf,wf,Wideroe (WF),norway,none,WF
+fl,fl,AirTran Airways (FL),us,none,FL
+kn,kn,China United Airlines (KN),cn,none,KN
+bz,bz,Blue Bird Airways (BZ),greece,none,BZ
+ez,ez,Sun Air of Scandinavia (EZ),denmark,none,EZ

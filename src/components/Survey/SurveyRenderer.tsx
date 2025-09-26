@@ -160,12 +160,10 @@ export const SurveyRenderer: React.FC<SurveyRendererProps> = ({
         
         // Enable typeahead for dropdowns with large datasets
         if (question.type === 'dropdown' && question.enableTypeahead) {
-          // Enable lazy loading for typeahead dropdowns
-          question.choicesLazyLoadEnabled = true
-          // Set minimum search text length to trigger search
-          question.choicesLazyLoadPageSize = 20
-          // Enable search by typing
-          question.searchEnabled = true
+          // Don't enable built-in search when using custom typeahead widget
+          // The custom widget handles search functionality
+          question.choicesLazyLoadEnabled = false
+          question.searchEnabled = false
         }
         
         // Handle nested questions in panels
@@ -318,6 +316,11 @@ export const SurveyRenderer: React.FC<SurveyRendererProps> = ({
     }
     
     setSurvey(model)
+    
+    // Expose survey for debugging and custom widgets
+    if (import.meta.env.DEV) {
+      (window as any).currentSurvey = model
+    }
 
     // Cleanup
     return () => {

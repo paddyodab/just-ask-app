@@ -1,0 +1,198 @@
+key,value,text,region
+af,af,Afghanistan,asia
+al,al,Albania,europe
+dz,dz,Algeria,africa
+ad,ad,Andorra,europe
+ao,ao,Angola,africa
+ag,ag,Antigua and Barbuda,americas
+ar,ar,Argentina,americas
+am,am,Armenia,asia
+au,au,Australia,oceania
+at,at,Austria,europe
+az,az,Azerbaijan,asia
+bs,bs,Bahamas,americas
+bh,bh,Bahrain,asia
+bd,bd,Bangladesh,asia
+bb,bb,Barbados,americas
+by,by,Belarus,europe
+be,be,Belgium,europe
+bz,bz,Belize,americas
+bj,bj,Benin,africa
+bt,bt,Bhutan,asia
+bo,bo,Bolivia,americas
+ba,ba,Bosnia and Herzegovina,europe
+bw,bw,Botswana,africa
+br,br,Brazil,americas
+bn,bn,Brunei,asia
+bg,bg,Bulgaria,europe
+bf,bf,Burkina Faso,africa
+bi,bi,Burundi,africa
+cv,cv,Cabo Verde,africa
+kh,kh,Cambodia,asia
+cm,cm,Cameroon,africa
+ca,ca,Canada,americas
+cf,cf,Central African Republic,africa
+td,td,Chad,africa
+cl,cl,Chile,americas
+cn,cn,China,asia
+co,co,Colombia,americas
+km,km,Comoros,africa
+cg,cg,Congo,africa
+cd,cd,Congo (Democratic Republic),africa
+cr,cr,Costa Rica,americas
+ci,ci,Côte d'Ivoire,africa
+hr,hr,Croatia,europe
+cu,cu,Cuba,americas
+cy,cy,Cyprus,europe
+cz,cz,Czech Republic,europe
+dk,dk,Denmark,europe
+dj,dj,Djibouti,africa
+dm,dm,Dominica,americas
+do,do,Dominican Republic,americas
+ec,ec,Ecuador,americas
+eg,eg,Egypt,africa
+sv,sv,El Salvador,americas
+gq,gq,Equatorial Guinea,africa
+er,er,Eritrea,africa
+ee,ee,Estonia,europe
+sz,sz,Eswatini,africa
+et,et,Ethiopia,africa
+fj,fj,Fiji,oceania
+fi,fi,Finland,europe
+fr,fr,France,europe
+ga,ga,Gabon,africa
+gm,gm,Gambia,africa
+ge,ge,Georgia,asia
+de,de,Germany,europe
+gh,gh,Ghana,africa
+gr,gr,Greece,europe
+gd,gd,Grenada,americas
+gt,gt,Guatemala,americas
+gn,gn,Guinea,africa
+gw,gw,Guinea-Bissau,africa
+gy,gy,Guyana,americas
+ht,ht,Haiti,americas
+hn,hn,Honduras,americas
+hu,hu,Hungary,europe
+is,is,Iceland,europe
+in,in,India,asia
+id,id,Indonesia,asia
+ir,ir,Iran,asia
+iq,iq,Iraq,asia
+ie,ie,Ireland,europe
+il,il,Israel,asia
+it,it,Italy,europe
+jm,jm,Jamaica,americas
+jp,jp,Japan,asia
+jo,jo,Jordan,asia
+kz,kz,Kazakhstan,asia
+ke,ke,Kenya,africa
+ki,ki,Kiribati,oceania
+kp,kp,North Korea,asia
+kr,kr,South Korea,asia
+xk,xk,Kosovo,europe
+kw,kw,Kuwait,asia
+kg,kg,Kyrgyzstan,asia
+la,la,Laos,asia
+lv,lv,Latvia,europe
+lb,lb,Lebanon,asia
+ls,ls,Lesotho,africa
+lr,lr,Liberia,africa
+ly,ly,Libya,africa
+li,li,Liechtenstein,europe
+lt,lt,Lithuania,europe
+lu,lu,Luxembourg,europe
+mg,mg,Madagascar,africa
+mw,mw,Malawi,africa
+my,my,Malaysia,asia
+mv,mv,Maldives,asia
+ml,ml,Mali,africa
+mt,mt,Malta,europe
+mh,mh,Marshall Islands,oceania
+mr,mr,Mauritania,africa
+mu,mu,Mauritius,africa
+mx,mx,Mexico,americas
+fm,fm,Micronesia,oceania
+md,md,Moldova,europe
+mc,mc,Monaco,europe
+mn,mn,Mongolia,asia
+me,me,Montenegro,europe
+ma,ma,Morocco,africa
+mz,mz,Mozambique,africa
+mm,mm,Myanmar,asia
+na,na,Namibia,africa
+nr,nr,Nauru,oceania
+np,np,Nepal,asia
+nl,nl,Netherlands,europe
+nz,nz,New Zealand,oceania
+ni,ni,Nicaragua,americas
+ne,ne,Niger,africa
+ng,ng,Nigeria,africa
+mk,mk,North Macedonia,europe
+no,no,Norway,europe
+om,om,Oman,asia
+pk,pk,Pakistan,asia
+pw,pw,Palau,oceania
+ps,ps,Palestine,asia
+pa,pa,Panama,americas
+pg,pg,Papua New Guinea,oceania
+py,py,Paraguay,americas
+pe,pe,Peru,americas
+ph,ph,Philippines,asia
+pl,pl,Poland,europe
+pt,pt,Portugal,europe
+qa,qa,Qatar,asia
+ro,ro,Romania,europe
+ru,ru,Russia,europe/asia
+rw,rw,Rwanda,africa
+kn,kn,Saint Kitts and Nevis,americas
+lc,lc,Saint Lucia,americas
+vc,vc,Saint Vincent and the Grenadines,americas
+ws,ws,Samoa,oceania
+sm,sm,San Marino,europe
+st,st,Sao Tome and Principe,africa
+sa,sa,Saudi Arabia,asia
+sn,sn,Senegal,africa
+rs,rs,Serbia,europe
+sc,sc,Seychelles,africa
+sl,sl,Sierra Leone,africa
+sg,sg,Singapore,asia
+sk,sk,Slovakia,europe
+si,si,Slovenia,europe
+sb,sb,Solomon Islands,oceania
+so,so,Somalia,africa
+za,za,South Africa,africa
+ss,ss,South Sudan,africa
+es,es,Spain,europe
+lk,lk,Sri Lanka,asia
+sd,sd,Sudan,africa
+sr,sr,Suriname,americas
+se,se,Sweden,europe
+ch,ch,Switzerland,europe
+sy,sy,Syria,asia
+tw,tw,Taiwan,asia
+tj,tj,Tajikistan,asia
+tz,tz,Tanzania,africa
+th,th,Thailand,asia
+tl,tl,Timor-Leste,asia
+tg,tg,Togo,africa
+to,to,Tonga,oceania
+tt,tt,Trinidad and Tobago,americas
+tn,tn,Tunisia,africa
+tr,tr,Turkey,asia/europe
+tm,tm,Turkmenistan,asia
+tv,tv,Tuvalu,oceania
+ug,ug,Uganda,africa
+ua,ua,Ukraine,europe
+ae,ae,United Arab Emirates,asia
+gb,gb,United Kingdom,europe
+us,us,United States,americas
+uy,uy,Uruguay,americas
+uz,uz,Uzbekistan,asia
+vu,vu,Vanuatu,oceania
+va,va,Vatican City,europe
+ve,ve,Venezuela,americas
+vn,vn,Vietnam,asia
+ye,ye,Yemen,asia
+zm,zm,Zambia,africa
+zw,zw,Zimbabwe,africa

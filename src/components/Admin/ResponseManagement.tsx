@@ -305,7 +305,7 @@ const ResponseManagement: React.FC = () => {
       .replace(/\b\w/g, l => l.toUpperCase())
   }
 
-  const formatFieldValue = (value: any): string => {
+  const formatFieldValue = (value: any, fieldName?: string): string => {
     if (value === null || value === undefined) {
       return '-'
     }
@@ -315,11 +315,48 @@ const ResponseManagement: React.FC = () => {
     }
     
     if (Array.isArray(value)) {
+      // Check if it's an array of objects (paneldynamic)
+      if (value.length > 0 && typeof value[0] === 'object') {
+        // Handle dynamic panels like visited_countries, bucket_list
+        if (fieldName === 'visited_countries') {
+          return value.map((item, idx) => {
+            const parts = []
+            if (item.country) parts.push(`Country: ${item.country}`)
+            if (item.favorite_city) parts.push(`City: ${item.favorite_city}`)
+            if (item.country_rating) parts.push(`Rating: ${item.country_rating}/5`)
+            return `[${idx + 1}] ${parts.join(', ')}`
+          }).join(' | ')
+        }
+        
+        if (fieldName === 'bucket_list') {
+          return value.map((item, idx) => {
+            const parts = []
+            if (item.dream_country) parts.push(`Country: ${item.dream_country}`)
+            if (item.dream_city) parts.push(`City: ${item.dream_city}`)
+            if (item.visit_reason) parts.push(`Reason: ${item.visit_reason}`)
+            return `[${idx + 1}] ${parts.join(', ')}`
+          }).join(' | ')
+        }
+        
+        // Generic format for other panel arrays
+        return value.map((item, idx) => {
+          const entries = Object.entries(item)
+            .filter(([_, val]) => val != null)
+            .map(([key, val]) => `${key}: ${val}`)
+          return `[${idx + 1}] ${entries.join(', ')}`
+        }).join(' | ')
+      }
+      
+      // Simple array of strings/numbers
       return value.join(', ')
     }
     
     if (typeof value === 'object') {
-      return JSON.stringify(value)
+      // Format single objects
+      const entries = Object.entries(value)
+        .filter(([_, val]) => val != null)
+        .map(([key, val]) => `${key}: ${val}`)
+      return entries.join(', ')
     }
     
     return String(value)
@@ -338,7 +375,7 @@ const ResponseManagement: React.FC = () => {
     const rows = responses.map(response => [
       response.response_id || response.id,
       new Date(response.submitted_at).toLocaleString(),
-      ...fieldNames.map(name => formatFieldValue(response.survey_data?.[name]))
+      ...fieldNames.map(name => formatFieldValue(response.survey_data?.[name], name))
     ])
     
     const csvContent = [
@@ -512,7 +549,7 @@ const ResponseManagement: React.FC = () => {
                     </td>
                     {fieldNames.map(fieldName => (
                       <td key={fieldName} className="response-data">
-                        {formatFieldValue(response.survey_data?.[fieldName])}
+                        {formatFieldValue(response.survey_data?.[fieldName], fieldName)}
                       </td>
                     ))}
                   </tr>
@@ -556,7 +593,7 @@ const ResponseManagement: React.FC = () => {
                 {Object.entries(selectedResponse.survey_data || {}).map(([key, value]) => (
                   <div key={key} className="response-field">
                     <div className="field-label">{getFieldTitle(key)}</div>
-                    <div className="field-value">{formatFieldValue(value)}</div>
+                    <div className="field-value">{formatFieldValue(value, key)}</div>
                   </div>
                 ))}
               </div>
@@ -568,7 +605,7 @@ const ResponseManagement: React.FC = () => {
                     {Object.entries(selectedResponse.metadata).map(([key, value]) => (
                       <div key={key} className="response-field">
                         <div className="field-label">{key}</div>
-                        <div className="field-value">{formatFieldValue(value)}</div>
+                        <div className="field-value">{formatFieldValue(value, key)}</div>
                       </div>
                     ))}
                   </div>
