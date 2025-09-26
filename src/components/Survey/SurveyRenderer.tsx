@@ -154,18 +154,22 @@ export const SurveyRenderer: React.FC<SurveyRendererProps> = ({
     const processQuestions = (questions: any[]) => {
       questions?.forEach(question => {
         if (question.choicesByUrl?.url && question.choicesByUrl.url.startsWith('/')) {
-          question.choicesByUrl.url = `${apiUrl}${question.choicesByUrl.url}`
-          console.log(`Modified URL for ${question.name}:`, question.choicesByUrl.url)
+          // Don't prepend API URL for mock-api endpoints when in mock mode
+          if (import.meta.env.VITE_USE_MOCK === 'true' && question.choicesByUrl.url.startsWith('/mock-api/')) {
+            // Keep the URL as-is for mock endpoints
+            console.log(`Mock URL for ${question.name}:`, question.choicesByUrl.url)
+          } else {
+            question.choicesByUrl.url = `${apiUrl}${question.choicesByUrl.url}`
+            console.log(`Modified URL for ${question.name}:`, question.choicesByUrl.url)
+          }
         }
         
         // Enable typeahead for dropdowns with large datasets
         if (question.type === 'dropdown' && question.enableTypeahead) {
-          // Enable lazy loading for typeahead dropdowns
-          question.choicesLazyLoadEnabled = true
-          // Set minimum search text length to trigger search
-          question.choicesLazyLoadPageSize = 20
-          // Enable search by typing
-          question.searchEnabled = true
+          // Don't enable built-in search when using custom typeahead widget
+          // The custom widget handles search functionality
+          question.choicesLazyLoadEnabled = false
+          question.searchEnabled = false
         }
         
         // Handle nested questions in panels
@@ -318,6 +322,11 @@ export const SurveyRenderer: React.FC<SurveyRendererProps> = ({
     }
     
     setSurvey(model)
+    
+    // Expose survey for debugging and custom widgets
+    if (import.meta.env.DEV) {
+      (window as any).currentSurvey = model
+    }
 
     // Cleanup
     return () => {

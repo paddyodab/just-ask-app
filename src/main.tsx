@@ -4,10 +4,16 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { BrowserRouter } from 'react-router-dom'
 import App from './App.tsx'
 import { setupMockInterceptor } from './mocks/mockServer'
+import { setupTypeaheadMockServer } from './mocks/typeaheadMockServer'
 import './index.css'
 
-// Setup mock server in development
-setupMockInterceptor()
+// Setup mock servers in development
+// Initialize typeahead mock server if on the test page
+if (window.location.pathname === '/typeahead-test') {
+  setupTypeaheadMockServer()
+} else {
+  setupMockInterceptor()
+}
 
 const queryClient = new QueryClient({
   defaultOptions: {
