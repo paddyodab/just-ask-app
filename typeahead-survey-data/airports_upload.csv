@@ -1,0 +1,313 @@
+key,value,text,city,country,iata_code
+atl,atl,Hartsfield-Jackson Atlanta International (ATL),atlanta,us,ATL
+pek,pek,Beijing Capital International (PEK),beijing,cn,PEK
+lax,lax,Los Angeles International (LAX),los-angeles,us,LAX
+dxb,dxb,Dubai International (DXB),dubai,ae,DXB
+hnd,hnd,Tokyo Haneda (HND),tokyo,jp,HND
+ord,ord,O'Hare International (ORD),chicago,us,ORD
+lhr,lhr,London Heathrow (LHR),london,gb,LHR
+pvg,pvg,Shanghai Pudong International (PVG),shanghai,cn,PVG
+cdg,cdg,Charles de Gaulle (CDG),paris,fr,CDG
+dfw,dfw,Dallas/Fort Worth International (DFW),dallas,us,DFW
+can,can,Guangzhou Baiyun International (CAN),guangzhou,cn,CAN
+ams,ams,Amsterdam Airport Schiphol (AMS),amsterdam,nl,AMS
+hkg,hkg,Hong Kong International (HKG),hong-kong,hong-kong,HKG
+icn,icn,Seoul Incheon International (ICN),seoul,kr,ICN
+fra,fra,Frankfurt am Main (FRA),frankfurt,de,FRA
+den,den,Denver International (DEN),denver,us,DEN
+del,del,Indira Gandhi International (DEL),new-delhi,in,DEL
+sin,sin,Singapore Changi (SIN),singapore,sg,SIN
+bkk,bkk,Suvarnabhumi (BKK),bangkok,th,BKK
+jfk,jfk,John F. Kennedy International (JFK),new-york,us,JFK
+kul,kul,Kuala Lumpur International (KUL),kuala-lumpur,my,KUL
+mad,mad,Adolfo Suárez Madrid-Barajas (MAD),madrid,es,MAD
+sfo,sfo,San Francisco International (SFO),san-francisco,us,SFO
+cgk,cgk,Soekarno-Hatta International (CGK),jakarta,id,CGK
+ist,ist,Istanbul Airport (IST),istanbul,tr,IST
+las,las,Harry Reid International (LAS),las-vegas,us,LAS
+sea,sea,Seattle-Tacoma International (SEA),seattle,us,SEA
+phx,phx,Phoenix Sky Harbor International (PHX),phoenix,us,PHX
+mia,mia,Miami International (MIA),miami,us,MIA
+clt,clt,Charlotte Douglas International (CLT),charlotte,us,CLT
+muc,muc,Munich Airport (MUC),munich,de,MUC
+mco,mco,Orlando International (MCO),orlando,us,MCO
+bcn,bcn,Barcelona-El Prat (BCN),barcelona,es,BCN
+yyz,yyz,Toronto Pearson International (YYZ),toronto,ca,YYZ
+bom,bom,Chhatrapati Shivaji Maharaj International (BOM),mumbai,in,BOM
+mex,mex,Mexico City International (MEX),mexico-city,mx,MEX
+fco,fco,Leonardo da Vinci-Fiumicino (FCO),rome,it,FCO
+nrt,nrt,Narita International (NRT),tokyo,jp,NRT
+lgw,lgw,London Gatwick (LGW),london,gb,LGW
+ewr,ewr,Newark Liberty International (EWR),newark,us,EWR
+msp,msp,Minneapolis-Saint Paul International (MSP),minneapolis,us,MSP
+iah,iah,George Bush Intercontinental (IAH),houston,us,IAH
+bos,bos,Logan International (BOS),boston,us,BOS
+dtw,dtw,Detroit Metropolitan Wayne County (DTW),detroit,us,DTW
+phl,phl,Philadelphia International (PHL),philadelphia,us,PHL
+lga,lga,LaGuardia (LGA),new-york,us,LGA
+gru,gru,São Paulo-Guarulhos International (GRU),são-paulo,br,GRU
+man,man,Manchester Airport (MAN),manchester,gb,MAN
+zrh,zrh,Zurich Airport (ZRH),zurich,ch,ZRH
+vie,vie,Vienna International (VIE),vienna,austria,VIE
+dub,dub,Dublin Airport (DUB),dublin,ireland,DUB
+bru,bru,Brussels Airport (BRU),brussels,belgium,BRU
+cph,cph,Copenhagen Airport (CPH),copenhagen,denmark,CPH
+osl,osl,Oslo Airport Gardermoen (OSL),oslo,norway,OSL
+arn,arn,Stockholm Arlanda (ARN),stockholm,sweden,ARN
+hel,hel,Helsinki-Vantaa (HEL),helsinki,finland,HEL
+ath,ath,Athens International (ATH),athens,greece,ATH
+waw,waw,Warsaw Chopin (WAW),warsaw,poland,WAW
+prg,prg,Václav Havel Airport Prague (PRG),prague,czech-republic,PRG
+bud,bud,Budapest Ferenc Liszt International (BUD),budapest,hungary,BUD
+lis,lis,Humberto Delgado Airport (LIS),lisbon,portugal,LIS
+edi,edi,Edinburgh Airport (EDI),edinburgh,gb,EDI
+gla,gla,Glasgow Airport (GLA),glasgow,gb,GLA
+bhx,bhx,Birmingham Airport (BHX),birmingham,gb,BHX
+nce,nce,Nice Côte d'Azur (NCE),nice,fr,NCE
+lys,lys,Lyon-Saint Exupéry (LYS),lyon,fr,LYS
+mrs,mrs,Marseille Provence (MRS),marseille,fr,MRS
+tls,tls,Toulouse-Blagnac (TLS),toulouse,fr,TLS
+ham,ham,Hamburg Airport (HAM),hamburg,de,HAM
+dus,dus,Düsseldorf Airport (DUS),düsseldorf,de,DUS
+txl,txl,Berlin Tegel (TXL),berlin,de,TXL
+str,str,Stuttgart Airport (STR),stuttgart,de,STR
+mxp,mxp,Milan Malpensa (MXP),milan,it,MXP
+vce,vce,Venice Marco Polo (VCE),venice,it,VCE
+nap,nap,Naples International (NAP),naples,it,NAP
+pmi,pmi,Palma de Mallorca (PMI),palma,es,PMI
+agp,agp,Málaga-Costa del Sol (AGP),málaga,es,AGP
+alc,alc,Alicante-Elche (ALC),alicante,es,ALC
+vlc,vlc,Valencia Airport (VLC),valencia,es,VLC
+svo,svo,Sheremetyevo International (SVO),moscow,ru,SVO
+dme,dme,Domodedovo International (DME),moscow,ru,DME
+led,led,Pulkovo Airport (LED),saint-petersburg,ru,LED
+cai,cai,Cairo International (CAI),cairo,egypt,CAI
+cpt,cpt,Cape Town International (CPT),cape-town,south-africa,CPT
+jnb,jnb,O. R. Tambo International (JNB),johannesburg,south-africa,JNB
+nbo,nbo,Jomo Kenyatta International (NBO),nairobi,kenya,NBO
+los,los,Murtala Muhammed International (LOS),lagos,nigeria,LOS
+add,add,Addis Ababa Bole International (ADD),addis-ababa,ethiopia,ADD
+cmn,cmn,Mohammed V International (CMN),casablanca,morocco,CMN
+alg,alg,Houari Boumediene (ALG),algiers,algeria,ALG
+tun,tun,Tunis-Carthage International (TUN),tunis,tunisia,TUN
+dkr,dkr,Blaise Diagne International (DKR),dakar,senegal,DKR
+abj,abj,Félix-Houphouët-Boigny International (ABJ),abidjan,ivory-coast,ABJ
+acc,acc,Kotoka International (ACC),accra,ghana,ACC
+ebb,ebb,Entebbe International (EBB),kampala,uganda,EBB
+dar,dar,Julius Nyerere International (DAR),dar-es-salaam,tanzania,DAR
+mpm,mpm,Maputo International (MPM),maputo,mozambique,MPM
+tnr,tnr,Ivato International (TNR),antananarivo,madagascar,TNR
+mru,mru,Sir Seewoosagur Ramgoolam International (MRU),port-louis,mauritius,MRU
+sez,sez,Seychelles International (SEZ),mahé,seychelles,SEZ
+auh,auh,Abu Dhabi International (AUH),abu-dhabi,ae,AUH
+doh,doh,Hamad International (DOH),doha,qatar,DOH
+kwi,kwi,Kuwait International (KWI),kuwait-city,kuwait,KWI
+bah,bah,Bahrain International (BAH),manama,bahrain,BAH
+mct,mct,Muscat International (MCT),muscat,oman,MCT
+ruh,ruh,King Khalid International (RUH),riyadh,sa,RUH
+jed,jed,King Abdulaziz International (JED),jeddah,sa,JED
+amm,amm,Queen Alia International (AMM),amman,jordan,AMM
+bey,bey,Beirut-Rafic Hariri International (BEY),beirut,lebanon,BEY
+tlv,tlv,Ben Gurion (TLV),tel-aviv,israel,TLV
+saw,saw,Sabiha Gökçen International (SAW),istanbul,tr,SAW
+esb,esb,Esenboğa International (ESB),ankara,tr,ESB
+adb,adb,Adnan Menderes (ADB),izmir,tr,ADB
+ayt,ayt,Antalya Airport (AYT),antalya,tr,AYT
+hyd,hyd,Rajiv Gandhi International (HYD),hyderabad,in,HYD
+blr,blr,Kempegowda International (BLR),bangalore,in,BLR
+maa,maa,Chennai International (MAA),chennai,in,MAA
+ccu,ccu,Netaji Subhas Chandra Bose International (CCU),kolkata,in,CCU
+amd,amd,Sardar Vallabhbhai Patel International (AMD),ahmedabad,in,AMD
+cok,cok,Cochin International (COK),kochi,in,COK
+pnq,pnq,Pune Airport (PNQ),pune,in,PNQ
+gau,gau,Lokpriya Gopinath Bordoloi International (GAU),guwahati,in,GAU
+cmb,cmb,Bandaranaike International (CMB),colombo,sri-lanka,CMB
+dac,dac,Hazrat Shahjalal International (DAC),dhaka,bangladesh,DAC
+isb,isb,Islamabad International (ISB),islamabad,pakistan,ISB
+khi,khi,Jinnah International (KHI),karachi,pakistan,KHI
+lhe,lhe,Allama Iqbal International (LHE),lahore,pakistan,LHE
+ktm,ktm,Tribhuvan International (KTM),kathmandu,nepal,KTM
+pen,pen,Penang International (PEN),penang,my,PEN
+bki,bki,Kota Kinabalu International (BKI),kota-kinabalu,my,BKI
+mnl,mnl,Ninoy Aquino International (MNL),manila,philippines,MNL
+ceb,ceb,Mactan-Cebu International (CEB),cebu,philippines,CEB
+dvo,dvo,Francisco Bangoy International (DVO),davao,philippines,DVO
+sgn,sgn,Tan Son Nhat International (SGN),ho-chi-minh-city,vietnam,SGN
+han,han,Noi Bai International (HAN),hanoi,vietnam,HAN
+dad,dad,Da Nang International (DAD),da-nang,vietnam,DAD
+rgn,rgn,Yangon International (RGN),yangon,myanmar,RGN
+mdl,mdl,Mandalay International (MDL),mandalay,myanmar,MDL
+pnh,pnh,Phnom Penh International (PNH),phnom-penh,cambodia,PNH
+rep,rep,Siem Reap International (REP),siem-reap,cambodia,REP
+vte,vte,Wattay International (VTE),vientiane,laos,VTE
+bwn,bwn,Brunei International (BWN),bandar-seri-begawan,brunei,BWN
+dps,dps,Ngurah Rai International (DPS),denpasar,id,DPS
+sub,sub,Juanda International (SUB),surabaya,id,SUB
+mes,mes,Polonia International (MES),medan,id,MES
+upg,upg,Sultan Hasanuddin International (UPG),makassar,id,UPG
+sha,sha,Shanghai Hongqiao International (SHA),shanghai,cn,SHA
+ctu,ctu,Chengdu Shuangliu International (CTU),chengdu,cn,CTU
+szx,szx,Shenzhen Bao'an International (SZX),shenzhen,cn,SZX
+xiy,xiy,Xi'an Xianyang International (XIY),xi'an,cn,XIY
+wuh,wuh,Wuhan Tianhe International (WUH),wuhan,cn,WUH
+ckg,ckg,Chongqing Jiangbei International (CKG),chongqing,cn,CKG
+nkg,nkg,Nanjing Lukou International (NKG),nanjing,cn,NKG
+hgh,hgh,Hangzhou Xiaoshan International (HGH),hangzhou,cn,HGH
+tsn,tsn,Tianjin Binhai International (TSN),tianjin,cn,TSN
+tao,tao,Qingdao Jiaodong International (TAO),qingdao,cn,TAO
+dlc,dlc,Dalian Zhoushuizi International (DLC),dalian,cn,DLC
+she,she,Shenyang Taoxian International (SHE),shenyang,cn,SHE
+hak,hak,Haikou Meilan International (HAK),haikou,cn,HAK
+xmn,xmn,Xiamen Gaoqi International (XMN),xiamen,cn,XMN
+foc,foc,Fuzhou Changle International (FOC),fuzhou,cn,FOC
+csx,csx,Changsha Huanghua International (CSX),changsha,cn,CSX
+kmg,kmg,Kunming Changshui International (KMG),kunming,cn,KMG
+cgo,cgo,Zhengzhou Xinzheng International (CGO),zhengzhou,cn,CGO
+hrb,hrb,Harbin Taiping International (HRB),harbin,cn,HRB
+urc,urc,Ürümqi Diwopu International (URC),ürümqi,cn,URC
+tpe,tpe,Taiwan Taoyuan International (TPE),taipei,tw,TPE
+khh,khh,Kaohsiung International (KHH),kaohsiung,tw,KHH
+kix,kix,Kansai International (KIX),osaka,jp,KIX
+itm,itm,Osaka International (ITM),osaka,jp,ITM
+ngo,ngo,Chubu Centrair International (NGO),nagoya,jp,NGO
+fuk,fuk,Fukuoka Airport (FUK),fukuoka,jp,FUK
+cts,cts,New Chitose Airport (CTS),sapporo,jp,CTS
+oka,oka,Naha Airport (OKA),okinawa,jp,OKA
+hij,hij,Hiroshima Airport (HIJ),hiroshima,jp,HIJ
+sdj,sdj,Sendai Airport (SDJ),sendai,jp,SDJ
+koj,koj,Kagoshima Airport (KOJ),kagoshima,jp,KOJ
+kmq,kmq,Komatsu Airport (KMQ),komatsu,jp,KMQ
+gmp,gmp,Gimpo International (GMP),seoul,kr,GMP
+pus,pus,Gimhae International (PUS),busan,kr,PUS
+cju,cju,Jeju International (CJU),jeju,kr,CJU
+syd,syd,Sydney Kingsford Smith (SYD),sydney,au,SYD
+mel,mel,Melbourne Airport (MEL),melbourne,au,MEL
+bne,bne,Brisbane Airport (BNE),brisbane,au,BNE
+per,per,Perth Airport (PER),perth,au,PER
+adl,adl,Adelaide Airport (ADL),adelaide,au,ADL
+ool,ool,Gold Coast Airport (OOL),gold-coast,au,OOL
+cns,cns,Cairns Airport (CNS),cairns,au,CNS
+cbr,cbr,Canberra Airport (CBR),canberra,au,CBR
+hba,hba,Hobart International (HBA),hobart,au,HBA
+drw,drw,Darwin International (DRW),darwin,au,DRW
+akl,akl,Auckland Airport (AKL),auckland,new-zealand,AKL
+wlg,wlg,Wellington International (WLG),wellington,new-zealand,WLG
+chc,chc,Christchurch International (CHC),christchurch,new-zealand,CHC
+zqn,zqn,Queenstown Airport (ZQN),queenstown,new-zealand,ZQN
+dud,dud,Dunedin Airport (DUD),dunedin,new-zealand,DUD
+nan,nan,Nadi International (NAN),nadi,fiji,NAN
+suv,suv,Nausori International (SUV),suva,fiji,SUV
+pom,pom,Jacksons International (POM),port-moresby,papua-new-guinea,POM
+nou,nou,La Tontouta International (NOU),nouméa,new-caledonia,NOU
+ppt,ppt,Faa'a International (PPT),papeete,french-polynesia,PPT
+hir,hir,Honiara International (HIR),honiara,solomon-islands,HIR
+vli,vli,Port Vila Bauerfield (VLI),port-vila,vanuatu,VLI
+apw,apw,Faleolo International (APW),apia,samoa,APW
+tbu,tbu,Fuaʻamotu International (TBU),nuku'alofa,tonga,TBU
+gdl,gdl,Don Miguel Hidalgo y Costilla International (GDL),guadalajara,mx,GDL
+mty,mty,General Mariano Escobedo International (MTY),monterrey,mx,MTY
+cun,cun,Cancún International (CUN),cancún,mx,CUN
+tij,tij,General Abelardo L. Rodríguez International (TIJ),tijuana,mx,TIJ
+pty,pty,Tocumen International (PTY),panama-city,panama,PTY
+sjo,sjo,Juan Santamaría International (SJO),san-josé,costa-rica,SJO
+gua,gua,La Aurora International (GUA),guatemala-city,guatemala,GUA
+sal,sal,Monseñor Óscar Arnulfo Romero International (SAL),san-salvador,el-salvador,SAL
+tgu,tgu,Toncontín International (TGU),tegucigalpa,honduras,TGU
+mga,mga,Augusto C. Sandino International (MGA),managua,nicaragua,MGA
+hav,hav,José Martí International (HAV),havana,cuba,HAV
+kin,kin,Norman Manley International (KIN),kingston,jamaica,KIN
+mbj,mbj,Sangster International (MBJ),montego-bay,jamaica,MBJ
+nas,nas,Lynden Pindling International (NAS),nassau,bahamas,NAS
+sdq,sdq,Las Américas International (SDQ),santo-domingo,dominican-republic,SDQ
+puj,puj,Punta Cana International (PUJ),punta-cana,dominican-republic,PUJ
+pap,pap,Toussaint Louverture International (PAP),port-au-prince,haiti,PAP
+sju,sju,Luis Muñoz Marín International (SJU),san-juan,puerto-rico,SJU
+bgi,bgi,Grantley Adams International (BGI),bridgetown,barbados,BGI
+pos,pos,Piarco International (POS),port-of-spain,trinidad-and-tobago,POS
+geo,geo,Cheddi Jagan International (GEO),georgetown,guyana,GEO
+pbm,pbm,Johan Adolf Pengel International (PBM),paramaribo,suriname,PBM
+cay,cay,Félix Eboué Airport (CAY),cayenne,french-guiana,CAY
+bog,bog,El Dorado International (BOG),bogotá,colombia,BOG
+mde,mde,José María Córdova International (MDE),medellín,colombia,MDE
+clo,clo,Alfonso Bonilla Aragón International (CLO),cali,colombia,CLO
+ctg,ctg,Rafael Núñez International (CTG),cartagena,colombia,CTG
+baq,baq,Ernesto Cortissoz International (BAQ),barranquilla,colombia,BAQ
+ccs,ccs,Simón Bolívar International (CCS),caracas,venezuela,CCS
+mar,mar,La Chinita International (MAR),maracaibo,venezuela,MAR
+vln,vln,Arturo Michelena International (VLN),valencia,venezuela,VLN
+uio,uio,Mariscal Sucre International (UIO),quito,ecuador,UIO
+gye,gye,José Joaquín de Olmedo International (GYE),guayaquil,ecuador,GYE
+lim,lim,Jorge Chávez International (LIM),lima,peru,LIM
+cuz,cuz,Alejandro Velasco Astete International (CUZ),cusco,peru,CUZ
+lpb,lpb,El Alto International (LPB),la-paz,bolivia,LPB
+vvi,vvi,Viru Viru International (VVI),santa-cruz,bolivia,VVI
+scl,scl,Comodoro Arturo Merino Benítez International (SCL),santiago,chile,SCL
+eze,eze,Ministro Pistarini International (EZE),buenos-aires,argentina,EZE
+aep,aep,Aeroparque Jorge Newbery (AEP),buenos-aires,argentina,AEP
+cor,cor,Ingeniero Ambrosio Taravella International (COR),córdoba,argentina,COR
+mdz,mdz,Governor Francisco Gabrielli International (MDZ),mendoza,argentina,MDZ
+mvd,mvd,Carrasco International (MVD),montevideo,uruguay,MVD
+asu,asu,Silvio Pettirossi International (ASU),asunción,paraguay,ASU
+gig,gig,Rio de Janeiro-Galeão International (GIG),rio-de-janeiro,br,GIG
+bsb,bsb,Presidente Juscelino Kubitschek International (BSB),brasília,br,BSB
+cnf,cnf,Tancredo Neves International (CNF),belo-horizonte,br,CNF
+ssa,ssa,Deputado Luís Eduardo Magalhães International (SSA),salvador,br,SSA
+for,for,Pinto Martins International (FOR),fortaleza,br,FOR
+rec,rec,Recife International (REC),recife,br,REC
+mao,mao,Eduardo Gomes International (MAO),manaus,br,MAO
+cwb,cwb,Afonso Pena International (CWB),curitiba,br,CWB
+poa,poa,Salgado Filho International (POA),porto-alegre,br,POA
+bel,bel,Val de Cans International (BEL),belém,br,BEL
+vcp,vcp,Viracopos International (VCP),campinas,br,VCP
+fln,fln,Hercílio Luz International (FLN),florianópolis,br,FLN
+nat,nat,Governador Aluízio Alves International (NAT),natal,br,NAT
+yvr,yvr,Vancouver International (YVR),vancouver,ca,YVR
+yyc,yyc,Calgary International (YYC),calgary,ca,YYC
+yeg,yeg,Edmonton International (YEG),edmonton,ca,YEG
+yow,yow,Ottawa Macdonald-Cartier International (YOW),ottawa,ca,YOW
+yul,yul,Montréal-Pierre Elliott Trudeau International (YUL),montreal,ca,YUL
+ywg,ywg,Winnipeg James Armstrong Richardson International (YWG),winnipeg,ca,YWG
+yhz,yhz,Halifax Stanfield International (YHZ),halifax,ca,YHZ
+yqb,yqb,Québec City Jean Lesage International (YQB),quebec-city,ca,YQB
+yxu,yxu,London International (YXU),london,ca,YXU
+yyj,yyj,Victoria International (YYJ),victoria,ca,YYJ
+yqr,yqr,Regina International (YQR),regina,ca,YQR
+yxe,yxe,Saskatoon John G. Diefenbaker International (YXE),saskatoon,ca,YXE
+yyt,yyt,St. John's International (YYT),st.-john's,ca,YYT
+anc,anc,Ted Stevens Anchorage International (ANC),anchorage,us,ANC
+hnl,hnl,Daniel K. Inouye International (HNL),honolulu,us,HNL
+pdx,pdx,Portland International (PDX),portland,us,PDX
+slc,slc,Salt Lake City International (SLC),salt-lake-city,us,SLC
+san,san,San Diego International (SAN),san-diego,us,SAN
+smf,smf,Sacramento International (SMF),sacramento,us,SMF
+sjc,sjc,Norman Y. Mineta San Jose International (SJC),san-jose,us,SJC
+oak,oak,Oakland International (OAK),oakland,us,OAK
+rno,rno,Reno-Tahoe International (RNO),reno,us,RNO
+abq,abq,Albuquerque International Sunport (ABQ),albuquerque,us,ABQ
+tus,tus,Tucson International (TUS),tucson,us,TUS
+elp,elp,El Paso International (ELP),el-paso,us,ELP
+aus,aus,Austin-Bergstrom International (AUS),austin,us,AUS
+sat,sat,San Antonio International (SAT),san-antonio,us,SAT
+msy,msy,Louis Armstrong New Orleans International (MSY),new-orleans,us,MSY
+mci,mci,Kansas City International (MCI),kansas-city,us,MCI
+stl,stl,St. Louis Lambert International (STL),st.-louis,us,STL
+mke,mke,Milwaukee Mitchell International (MKE),milwaukee,us,MKE
+cle,cle,Cleveland Hopkins International (CLE),cleveland,us,CLE
+cvg,cvg,Cincinnati/Northern Kentucky International (CVG),cincinnati,us,CVG
+cmh,cmh,John Glenn Columbus International (CMH),columbus,us,CMH
+ind,ind,Indianapolis International (IND),indianapolis,us,IND
+pit,pit,Pittsburgh International (PIT),pittsburgh,us,PIT
+buf,buf,Buffalo Niagara International (BUF),buffalo,us,BUF
+rdu,rdu,Raleigh-Durham International (RDU),raleigh,us,RDU
+bna,bna,Nashville International (BNA),nashville,us,BNA
+mem,mem,Memphis International (MEM),memphis,us,MEM
+bdl,bdl,Bradley International (BDL),hartford,us,BDL
+pvd,pvd,Rhode Island T. F. Green International (PVD),providence,us,PVD
+pwm,pwm,Portland International Jetport (PWM),portland,us,PWM
+ric,ric,Richmond International (RIC),richmond,us,RIC
+orf,orf,Norfolk International (ORF),norfolk,us,ORF
+jax,jax,Jacksonville International (JAX),jacksonville,us,JAX
+tpa,tpa,Tampa International (TPA),tampa,us,TPA
+rsw,rsw,Southwest Florida International (RSW),fort-myers,us,RSW
+pbi,pbi,Palm Beach International (PBI),west-palm-beach,us,PBI
+fll,fll,Fort Lauderdale-Hollywood International (FLL),fort-lauderdale,us,FLL

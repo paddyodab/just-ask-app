@@ -154,14 +154,8 @@ export const SurveyRenderer: React.FC<SurveyRendererProps> = ({
     const processQuestions = (questions: any[]) => {
       questions?.forEach(question => {
         if (question.choicesByUrl?.url && question.choicesByUrl.url.startsWith('/')) {
-          // Don't prepend API URL for mock-api endpoints when in mock mode
-          if (import.meta.env.VITE_USE_MOCK === 'true' && question.choicesByUrl.url.startsWith('/mock-api/')) {
-            // Keep the URL as-is for mock endpoints
-            console.log(`Mock URL for ${question.name}:`, question.choicesByUrl.url)
-          } else {
-            question.choicesByUrl.url = `${apiUrl}${question.choicesByUrl.url}`
-            console.log(`Modified URL for ${question.name}:`, question.choicesByUrl.url)
-          }
+          question.choicesByUrl.url = `${apiUrl}${question.choicesByUrl.url}`
+          console.log(`Modified URL for ${question.name}:`, question.choicesByUrl.url)
         }
         
         // Enable typeahead for dropdowns with large datasets
